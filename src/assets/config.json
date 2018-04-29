@@ -1,0 +1,8 @@
+{
+    "api": "http://localhost:81/api/",
+    "wishlogo": "../../../assets/wish.jpg",
+    "wishmotto": "../../../assets/motto.png",
+    "APIBasePath":"http://localhost:8080/Iotproject/api/",
+    "uploadedLogoPath":"src/routes/iot/uploads/"
+ }
+ 

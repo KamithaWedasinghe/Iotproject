@@ -1,0 +1,49 @@
+.switch-primary{
+    width:82.6px;
+    height: 35px;
+    margin-top:-6px;
+   
+  }
+  
+  .switch.switch-text .switch-input:checked ~ .switch-handle {
+    left: 58px;
+  
+  }
+  .switch.switch-text .switch-handle{
+    left: 5px
+  }
+  .switch.switch-text .switch-handle{
+    height: 30px;
+    margin-top: 1px
+    
+  }
+  .switch.switch-text .switch-label::after{
+    content: "Female";
+    font-size: 11px;
+   
+  }
+  
+  .switch.switch-text .switch-label::before{
+    content: "Male";
+    font-size:11px;
+    text-align: left;
+  }
+  
+  .switch.switch-text .switch-label::before{
+    right:7px
+  }
+  .switch.switch-text .switch-label::after{
+    left:7px
+  }
+  .switch.switch-text .switch-label{
+    background-color: #4dbd74;
+    color: white
+  }
+  .switch.switch-text .switch-label::before{
+    color: white
+  }
+  
+
+  .txt{
+    font-size: 12.5px
+  }

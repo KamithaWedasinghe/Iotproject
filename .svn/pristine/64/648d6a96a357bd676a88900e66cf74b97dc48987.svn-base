@@ -1,0 +1,25 @@
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { MonthlyAllowanceComponent } from './monthly-allowance.component';
+
+describe('MonthlyAllowanceComponent', () => {
+  let component: MonthlyAllowanceComponent;
+  let fixture: ComponentFixture<MonthlyAllowanceComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ MonthlyAllowanceComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(MonthlyAllowanceComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

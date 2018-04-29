@@ -1,0 +1,115 @@
+import { Component } from '@angular/core';
+import { WishHospitalService } from '../services/wishHospital.service';
+import { AuthenticationService } from '../services/common/authentication.service'
+import { Router } from '@angular/router';
+import alertify from 'alertify.js';
+import { Directive, ElementRef, HostListener, Input } from'@angular/core';
+
+@Component({
+  selector:'login',
+  templateUrl: 'login.component.html',
+  styleUrls: [ './login.component.css' ]
+})
+export class LoginComponent {
+  constructor(
+    private wishHospitalservice:WishHospitalService,
+    private router:Router,
+    private authenticationService:AuthenticationService
+  ){}
+
+  password="";
+  username="";
+
+// login(){
+//   if(this.username=="" && this.password==""){
+//     console.log('enter un &pw');
+//   }
+//   if(this.username!="" && this.password==""){
+//     console.log('enter pwd');
+//   }
+//   if(this.username=="" && this.password!=""){
+//     console.log('enter un');
+//   }
+//   if(this.username!="" && this.password!=""){
+//     console.log('welcome');
+//     var data={
+//       username:this.username,
+//       password:this.password
+//     }
+//     this.wishHospitalservice.loginToHospitalManagement(data).then(res=>{
+//       console.log(res.json());
+//       if(res.json()==[]){
+//         console.log('sssss');
+//       }
+//       else{
+//         console.log('ddd');
+//         this.router.navigate(['/dashboard'])
+//       }
+//     });
+//   }
+// }
+
+submitLogin(){
+  this.generateTokenForLogin();
+}
+
+ngOnInit() {
+  this.authenticationService.logout();
+}
+//generating token to check login
+generateTokenForLogin() {
+  this.authenticationService.getToken()
+      .subscribe(
+          (response) => {
+              if (response.token && response.email) {
+                  this.checkLogin(response.token);
+              }
+          },
+          error => {
+              console.log("error generating token")
+          }
+      );
+}
+
+//if login true save data in local storage and rederect router
+checkLogin(token: string): void {
+  let loginDetails = {
+    "username": this.username,
+    "password": this.password,
+  };
+
+this.authenticationService.getLoginStatus(loginDetails, token)
+    .subscribe(
+        () => {
+            if (this.authenticationService.isLoggedIn) {
+
+                let redirect = this.authenticationService.reDirectURL ? this.authenticationService.reDirectURL : '/dashboard';
+                this.router.navigate([redirect]);
+            }else{
+                console.log('error login');
+                alertify.delay(2000);
+                alertify.logPosition("bottom right");
+                alertify.error('Invalid Username or Password');
+            }
+        }
+        ,
+        error => {
+          console.log('error in login');
+          alertify.delay(2000);
+          alertify.logPosition("bottom right");
+          alertify.error('Enter Username & Password');
+        }
+    );
+}
+keyTab(event) {
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        const inputs = Array.prototype.slice.call(document.querySelectorAll("input"))
+        const index = (inputs.indexOf(document.activeElement) + 1) % inputs.length
+        const input = inputs[index]
+        input.focus()
+    }
+}
+
+
+}

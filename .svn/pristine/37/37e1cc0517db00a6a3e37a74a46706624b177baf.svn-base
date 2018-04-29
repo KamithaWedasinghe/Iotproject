@@ -1,0 +1,47 @@
+import { NgModule } from '@angular/core';
+import { ParollRoutingModule } from './payroll-routing.module';
+import {  EmployeeRegistationComponent } from './employee-registation/employee-registation.component';
+import { FormsModule }   from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+import { OnlyNumber } from '../directive/numberValidation';
+import { EmployeeDetailComponent } from './employee-detail/employee-detail.component';
+import {DataTableModule} from "angular2-datatable";
+import { DataFilterPipe }   from './data-filter.pipe';
+import { DeductionAlowancesComponent } from './deduction-alowances/deduction-alowances.component';
+import { PayrollComponent } from './payroll.component';
+import { ReadMoreDirective } from 'read-more-directive-angular2';
+import {FocusModule} from 'angular2-focus';
+import { MyInput} from '../directive/autoFocus';
+import { AllowancesComponent } from './deduction-alowances/allowances/allowances.component'
+@NgModule({
+  imports: [
+      ParollRoutingModule,
+      FormsModule,
+      CommonModule,
+      DataTableModule,
+      [FocusModule.forRoot()],
+   
+  ],
+      declarations: [ 
+        PayrollComponent,
+      EmployeeRegistationComponent,
+      OnlyNumber,
+      EmployeeDetailComponent,
+      DataFilterPipe,
+      DeductionAlowancesComponent,
+      ReadMoreDirective,
+      MyInput,
+      AllowancesComponent
+    
+    ],
+      providers:[
+      EmployeeRegistationComponent,
+      EmployeeDetailComponent
+    
+  ],
+   
+      exports: [DataFilterPipe]
+ 
+})
+export class PayrollModule { }

@@ -1,0 +1,44 @@
+{  
+    "fields": [
+{
+    "id":"",
+    "idLength":4,
+    "paddingStatusForId":0
+    
+},
+{
+    "fullName":"",
+    "NameLength":25,
+    "paddingStatusForName":" "
+
+},
+{
+    "companyBankName":"BOC",
+    "bankLength":4,
+    "paddingStatusForBank":" "
+    
+},
+{
+    "companyAccountNumber":"05265656565",
+    "comanyLength":15,
+    "paddingStatusForCoAccount":0
+},
+{
+    "empAccountNumber":"",
+    "empLength":15,
+    "paddingStatusForempAccount":0
+},
+{
+    "paymentType":"cash",
+    "paymentLength":6,
+    "paddingStatusForEmpPayment":" "
+
+},
+{
+    "description":"defegfrgr",
+    "descriptionLength":25,
+    "paddingStatusForDescription":" "
+}
+]
+
+}

@@ -1,0 +1,117 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card form-body form-body" style="margin-top:30px">
+      <div class="card-header">
+        <strong>Employee personal Details</strong>
+      </div>
+
+      <div class="row" style="padding:30px">
+        <div class="col-sm-6">
+          <div class="card">
+            <ul class="list-group list-group-flush">
+
+              <li class="list-group-item text-item">Id
+                <span class="text-dowwn"> {{employeeid}}</span>
+              </li>
+              <li class="list-group-item text-item">First Name
+                <span class="text-dowwn"> {{FirstName}}</span>
+              </li>
+              <li class="list-group-item text-item">Last Name
+                <span class="text-dowwn"> {{empLastName}}</span>
+              </li>
+              <li class="list-group-item text-item">NIC Number
+                <span class="text-dowwn"> {{empNicNumber}}</span>
+              </li>
+              <li class="list-group-item text-item">Gender
+                <span class="text-dowwn"> {{gender}}</span>
+              </li>
+              <li class="list-group-item text-item">Phone Number
+                <span class="text-dowwn"> {{phonenumber}}</span>
+              </li>
+              <li class="list-group-item text-item">Email
+                <span class="text-dowwn"> {{empEmail}}</span>
+              </li>
+              <li class="list-group-item text-item">Job Catogery
+                <span class="text-dowwn"> {{jobName}}</span>
+              </li>
+              <li class="list-group-item text-item">Date Employeed
+                <span class="text-dowwn"> {{empDateEmployee}}</span>
+              </li>
+              <li class="list-group-item text-item">Address
+                <span class="text-dowwn"> {{empAddress}}</span>
+              </li>
+              <li class="list-group-item text-item">Postal Code
+                <span class="text-dowwn"> {{empPostalCode}}</span>
+              </li>
+              <li class="list-group-item ">City
+                <span class="text-dowwn"> {{empCity}}</span>
+
+              </li>
+              <li class="list-group-item "> Street
+                <span class="text-dowwn"> {{empStreet}}</span>
+
+              </li>
+
+
+            </ul>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card dd">
+            <div class="card-block">
+              <div class="row">
+                <div class="col-sm-12">
+                  <h3>Salary Details</h3>
+               </div>
+              </div><br>
+              <div class="row">
+                <div class="col-sm-6">
+                 <h5>Basic Salary</h5>
+                </div>
+                <div class="col-sm-6">
+                  ggggg
+               </div>
+              </div>
+              <div class="row">
+                  <div class="col-sm-6">
+                   <h5>Basic Salary</h5>
+                  </div>
+                  <div class="col-sm-6">
+                    ggggg
+                 </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                     <h5>Basic Salary</h5>
+                    </div>
+                    <div class="col-sm-6">
+                      ggggg
+                   </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-sm-6">
+                       <h5>Basic Salary</h5>
+                      </div>
+                      <div class="col-sm-6">
+                        ggggg
+                     </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                         <h5>Basic Salary</h5>
+                        </div>
+                        <div class="col-sm-6">
+                          ggggg
+                       </div>
+                      </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+
+    </div>
+  </div>
+</div>

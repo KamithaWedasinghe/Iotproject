@@ -1,0 +1,200 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card form-body form-body" style="margin-top:30px">
+      <div class="card-header">
+        <strong>Employee Registation</strong>
+      </div>
+      <div class="card-body">
+
+        <!--employee registation form -->
+        <form [formGroup]='userForm' (ngSubmit)="EmployeeRegistationUpdateDetail(userForm.value)">
+          <div class="row">
+            <div class="form-group col-sm-6">
+              <label for="exampleInputEmail1">Identifier Number</label>
+              <input type="email" name="identifierId" formControlName="identifierId" OnlyNumber="true" [(ngModel)]="identifierId" class="form-control"
+                id="exampleInputEmail1">
+            </div>
+          </div>
+
+          <div class="row">
+
+            <div class="form-group col-sm-6">
+              <label for="lastName">First Name</label>
+              <input type="text" class="form-control" formControlName="FirstName" [(ngModel)]='FirstName' #empFirstName placeholder="Enter the first name">
+              <div *ngIf="userForm.get('FirstName').touched || submitted" style='color:red'>
+                <div *ngIf="userForm.get('FirstName').hasError('required')">First Name is required</div>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+              <label for="lastName">Last Name</label>
+              <input type="text" class="form-control" formControlName="empLastName" [(ngModel)]='empLastName' placeholder="Enter the last name">
+              <div *ngIf="userForm.get('empLastName').touched || submitted" style='color:red'>
+                <div *ngIf="userForm.get('empLastName').hasError('required')">Last Name is required</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+
+            <div class="form-group col-sm-6">
+              <label for="lastName">Nic Number</label>
+              <input type="text" class="form-control" formControlName="empNicNumber" [(ngModel)]='empNicNumber' placeholder="Enter the NIC number">
+              <div *ngIf="userForm.get('empNicNumber').touched || submitted" style='color:red'>
+                <div *ngIf="userForm.get('empNicNumber').hasError('required')">NIC Number is required</div>
+              </div>
+            </div>
+
+            <div class="form-group col-sm-6">
+              <p>Gender</p>
+              <div class="col-sm-12">
+                <label class="switch switch-text switch-primary">
+                  <input type="checkbox" [(ngModel)]="gender" formControlName="gender" class="switch-input" checked>
+                  <span class="switch-label" data-on="On" data-off="Off"></span>
+                  <span class="switch-handle"></span>
+                </label>
+
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="row">
+
+            <div class="form-group col-sm-6">
+              <label for="lastName">Phone number</label>
+              <input type="text" class="form-control" formControlName="empPhoneNumber" [(ngModel)]='phonenumber' placeholder="Enter the phone number">
+              <div *ngIf="userForm.get('empPhoneNumber').touched || submitted" style='color:red'>
+                <div *ngIf="userForm.get('empPhoneNumber').hasError('required')">Phone number is required</div>
+              </div>
+            </div>
+
+
+            <div class="form-group col-sm-6">
+              <label for="lastName">Email</label>
+              <input type="text" class="form-control" formControlName="empEmail" [(ngModel)]='empEmail' placeholder="Enter the email">
+              <div *ngIf="userForm.get('empEmail').touched || submitted" style='color:red'>
+                <div *ngIf="userForm.get('empEmail').hasError('required')">Email is required</div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-12">
+              <label for="lastName">Address</label>
+              <input type="text" class="form-control" formControlName="empAddress" [(ngModel)]='empAddress' placeholder="Enter the address">
+              <div *ngIf="userForm.get('empAddress').touched || submitted" style='color:red'>
+                <div *ngIf="userForm.get('empAddress').hasError('required')">Address is required</div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="form-group col-sm-4">
+              <label for="lastName">Postal Code</label>
+              <input type="text" class="form-control" formControlName="empPostalCode" [(ngModel)]='empPostalCode' placeholder="Enter the address">
+              <div *ngIf="userForm.get('empPostalCode').touched || submitted" style='color:red'>
+                <div *ngIf="userForm.get('empPostalCode').hasError('required')">Postal code is required</div>
+              </div>
+            </div>
+            <div class="form-group col-sm-4">
+              <label for="lastName">Street</label>
+              <input type="text" class="form-control" formControlName="empStreet" [(ngModel)]='empStreet' placeholder="Enter the address">
+              <div *ngIf="userForm.get('empStreet').touched || submitted" style='color:red'>
+                <div *ngIf="userForm.get('empStreet').hasError('required')">Street is required</div>
+              </div>
+            </div>
+            <div class="form-group col-sm-4">
+              <label for="lastName">City</label>
+              <input type="text" class="form-control" formControlName="empCity" [(ngModel)]='empCity' placeholder="Enter the address">
+              <div *ngIf="userForm.get('empCity').touched || submitted" style='color:red'>
+                <div *ngIf="userForm.get('empCity').hasError('required')">Postal code is required</div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="form-group col-sm-6">
+              <label for="empCatogery">Designation</label>
+              <select class="form-control" id="ccmonth" [(ngModel)]="categoryTypeid" formControlName="categoryTypeid" name='categoryTypeid'>
+                <option *ngFor='let jobType of category' [ngValue]="jobType.id">{{jobType.name}} </option>
+              </select>
+            </div>
+            <div class="form-group col-sm-6">
+              <label for="employeeDate">Date Employeed</label>
+              <input type="date" class="form-control" [(ngModel)]="empDateEmployee" formControlName="empDateEmployee" name='empDateEmployee'
+                placeholder="empDateEmployee">
+            </div>
+
+          </div>
+
+
+          <div class="row">
+            <div class="col-sm-12 ">
+              <div class="card text-white  bg-info text-center">
+                <div class="card-body">
+                  <blockquote class="card-bodyquote">
+
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="lastName" style="float:left">Basic Salary</label>
+                        <input type="text" class="form-control" formControlName="empBasicSalery" [(ngModel)]='empBasicSalery' placeholder="Enter the basic salary">
+                        <div *ngIf="userForm.get('empBasicSalery').touched || submitted" style='color:red'>
+                          <div *ngIf="userForm.get('empBasicSalery').hasError('required')">
+                            <p style="float:left">Basic salery code is required</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="lastName" style="float:left">Total Salary</label>
+                        <input type="text" class="form-control" formControlName="empTotalSalery" [(ngModel)]='empTotalSalery' placeholder="Enter the total salary">
+                        <div *ngIf="userForm.get('empTotalSalery').touched || submitted" style='color:red'>
+                          <div *ngIf="userForm.get('empTotalSalery').hasError('required')">
+                            <p style="float:left">Total salery is required</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="form-group col-sm-6">
+                        <label for="lastName" style="float:left">Etf</label>
+                        <input type="text" class="form-control" formControlName="empEtf" [(ngModel)]='empEtfNo' placeholder="Enter the etf">
+                        <div *ngIf="userForm.get('empEtf').touched || submitted" style='color:red'>
+                          <div *ngIf="userForm.get('empEtf').hasError('required')">
+                            <p style="float:left">Etf is required</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="form-group col-sm-6">
+                        <label for="lastName" style="float:left">Epf</label>
+                        <input type="text" class="form-control" formControlName="empEpf" [(ngModel)]='empEpfNo' placeholder="Enter the etf">
+                        <div *ngIf="userForm.get('empEpf').touched || submitted" style='color:red'>
+                          <div *ngIf="userForm.get('empEpf').hasError('required')">
+                            <p style="float:left">Epf is required</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+
+
+
+                  </blockquote>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <button type="submit"  [disabled]="!userForm.valid" class="btn btn-sm btn-success">
+            <i class="fa fa-dot-circle-o"></i> Update</button>
+        </form>
+
+
+      </div>
+    </div>
+  </div>
+</div>

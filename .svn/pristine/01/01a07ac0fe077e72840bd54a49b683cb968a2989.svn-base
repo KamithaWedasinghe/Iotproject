@@ -1,0 +1,141 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card form-body form-body">
+      <div class="card-header">
+        <strong>Employee Registation</strong>
+      </div>
+      <div class="card-body">
+
+        <!--employee registation form -->
+
+        <form #form="ngForm" (ngSubmit)="addEmployeeRegistationDetail(form.value)">
+        
+          <div class="row">
+            <div class="form-group col-sm-6">
+              <label for="lastName">First Name</label>
+              <input type="text" class="form-control" name='FirstName' [focus]="autoFocus" ngModel (keyup.enter)='keytab($event,empFirstName.value)' #empFirstName
+                placeholder="Enter the first name">
+            </div>
+
+            <div class="form-group col-sm-6">
+              <label for="lastName">Last Name</label>
+              <input type="text" class="form-control" name='empLastName' ngModel (keyup.enter)='keytab($event,empLastName.value)' #empLastName
+                placeholder="Enter the last name">
+            </div>
+         </div>
+
+          <div class="row">
+            <div class="form-group col-sm-6  ">
+              <label for="phoneNumber">NIC Number</label>
+              <input type="text" class="form-control" name='empNicNumber' (keyup.enter)='keytab($event,empNicNumber.value)' #empNicNumber
+                ngModel placeholder="Enter Employee The NIC Number" >
+            </div>
+         <div class="form-group col-sm-6">
+          <p>Gender</p>
+          <div class="radio">
+            <label><input type="radio" name="genderTypeid"(keyup.enter)='keytab($event,male.value)' #male class="gender-input"value="male" ngModel>Male</label>
+            <label><input type="radio" name="genderTypeid"  (keyup.enter)='keytab($event,female.value)' #female class="gender-input" value="female" ngModel >Female</label>
+          </div>
+
+        </div>
+        <div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-6  ">
+          <label for="phoneNumber">Phone Number</label>
+          <input type="text" class="form-control" name='empPhoneNumber' (keyup.enter)='keytab($event,phoneNumber.value)' #phoneNumber
+            ngModel placeholder="Enter Employee The Phone Number" >
+        </div>
+        <div class="form-group col-sm-6  ">
+          <label for="email">Email Address</label>
+          <input type="text" class="form-control" id="street" name='empEmail' (keyup.enter)='keytab($event,empEmail.value)' #empEmail
+            ngModel placeholder="Enter Employee The Email Address ">
+        </div>
+        <div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-12">
+          <label for="address">Address</label>
+          <input type="text" class="form-control" name='empAddress' (keyup.enter)='keytab($event,empAddress.value)' #empAddress ngModel
+            placeholder="Enter The Address" >
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="form-group col-sm-4">
+          <label for="city">City</label>
+          <input type="text" class="form-control" name='empCity' (keyup.enter)='keytab($event,empCity.value)' #empCity ngModel placeholder="Enter employee city"
+           >
+        </div>
+        <div class="form-group col-sm-4">
+          <label for="city">Street</label>
+          <input type="text" class="form-control" name='empStreet' (keyup.enter)='keytab($event,empStreet.value)' #empStreet ngModel placeholder="Enter employee Street"
+           >
+        </div>
+        <div class="form-group col-sm-4">
+          <label for="postal-code">Postal Code</label>
+          <input type="text" class="form-control" name='empPostalCode' ngModel placeholder="Postal Code"  placeholder="Enter employee postal code" >
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-sm-6">
+          <label for="empCatogery">Select Catogery</label>
+          <select class="form-control" id="ccmonth" name='categoryTypeid' ngModel>
+              <option *ngFor='let jobType of category' [ngValue]="jobType.id">{{jobType.name}} </option>
+            </select>
+        </div>
+        <div class="form-group col-sm-6">
+          <label for="employeeDate">Date Employeed</label>
+          <input type="date" class="form-control" name='empDateEmployee' ngModel placeholder="">
+        </div>
+      </div>
+      <!--/.row-->
+      <div class="row">
+        <div class="col-sm-12 ">
+          <div class="card text-white  bg-info text-center">
+            <div class="card-body">
+              <blockquote class="card-bodyquote">
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label for="salary">Employee Basic Salary</label>
+                    <input  class="form-control" name='empBasicSalery' (keyup.enter)='keytab($event,empBasicSalery.value)' #empBasicSalery
+                      ngModel placeholder="Basic Income"  OnlyNumber="true">
+                  </div>
+
+                  <div class="form-group col-sm-6">
+                    <label for="country"> Employee Total Salary</label>
+                    <input  class="form-control" name='empTotalSalery' (keyup.enter)='keytab($event,empTotalSalery.value)' #empTotalSalery
+                      ngModel placeholder="Total" OnlyNumber="true">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    <label for="salary">Employee ETF No:</label>
+                    <input type="text" class="form-control" name='empEtf' (keyup.enter)='keytab($event,etf.value)' #etf ngModel placeholder="Employee ETF No"
+                      >
+                  </div>
+
+                  <div class="form-group col-sm-6">
+                    <label for="salary">Employee EPF No:</label>
+                    <input type="text" class="form-control" name='empEpf' ngModel placeholder="Employee EPF No" >
+                  </div>
+
+                </div>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+      </div>
+     
+      <button type="submit" class="btn btn-sm btn-success" ><i class="fa fa-dot-circle-o"></i> Register</button>
+
+      </form>
+    </div>
+  </div>
+ </div>
+</div>
+
+

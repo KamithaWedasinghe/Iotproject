@@ -1,0 +1,186 @@
+import { Component, OnInit } from '@angular/core';
+import { PayrollService } from '../../services/Payroll.service';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import alertify from 'alertify.js';
+import { BankDetail } from '../employee-registation/bank';
+@Component({
+  selector: 'app-update-registed-employee',
+  templateUrl: './update-registed-employee.component.html',
+  styleUrls: ['./update-registed-employee.component.css']
+})
+export class UpdateRegistedEmployeeComponent implements OnInit {
+  identifierId
+  employeeDetail
+  FirstName
+  empLastName
+  empNicNumber
+  gender;
+  phonenumber
+  empAddress
+  empPostalCode
+  empCity
+  t
+  totalSalery
+  empEmail
+  empStreet
+  categoryTypeid
+  empDateEmployee
+  empEtfNo
+  empEpfNo
+  empBasicSalery
+  empTotalSalery
+  userForm
+  category
+  empIdentifier
+  firstName
+  employeeDate
+  basicSalery
+  empEtf
+  empEpf
+  female
+  BankDetaill = [
+    new BankDetail( 'Peoples Bank' ),
+    new BankDetail( 'Bank of Ceylon' ),
+    new BankDetail( 'Sampath Bank' ),
+    
+  
+ ];
+  empPhoneNumber
+  bankName
+  accountNumber
+  identifierIdTest
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private wishPayrollService: PayrollService,
+    private formBuilder: FormBuilder
+  ) { 
+    this.userForm =false;
+    this.userForm = this.formBuilder.group({
+      'FirstName': ['', Validators.required],
+      'empLastName': ['', Validators.required],
+       'identifierId': ['', [Validators.required]],
+       'empNicNumber': ['', [Validators.required]],
+       'empPhoneNumber': ['', [Validators.required]],
+       'empAddress': ['', [Validators.required]],
+       'empCity': ['', [Validators.required]],
+       'empStreet': ['', [Validators.required]],
+       'empPostalCode': ['', [Validators.required]],
+       'empBasicSalery': ['', [Validators.required]],
+       'accountNumber': ['', [Validators.required]],
+       'categoryTypeid': ['', [Validators.required,]],
+       'empDateEmployee': ['', [Validators.required,]],
+       'bankName': ['', [Validators.required,]],
+       'empEmail': ['', [Validators.required,]],
+       'empEpf': ['', [Validators.required,]],
+       'gender': ['', [Validators.required,]]
+    });
+
+    let desc = this.route.snapshot.paramMap.get('identifierId');
+    this.identifierId = desc;
+    console.log(this.identifierId)
+    let employeeDetail = {
+      id: parseInt(this.identifierId)
+      
+    }
+  
+
+    this.wishPayrollService.getEmployeeDetailForUpadate(employeeDetail).then(response => {
+      this.employeeDetail = response.json().data[0]
+    
+    })
+  }
+
+  ngOnInit() {
+    this.wishPayrollService.getEmployeeCategory(this.t)
+    .then((response) => {
+      this.category = response.json().data;
+      console.log('nnn',this.category)
+})
+
+  
+    let desc = this.route.snapshot.paramMap.get('identifierIdTest');
+    this.identifierId = desc;
+    this.identifierIdTest=("0000"+this.identifierId).slice(-4)
+    let employeeDetail = {
+      id: parseInt(this.identifierId)
+      
+    }
+  
+    this.wishPayrollService.getEmployeeDetailForUpadate(employeeDetail).then(response => {
+      this.employeeDetail = response.json().data[0]
+     let gender;
+      console.log('det', this.employeeDetail)
+      if(this.employeeDetail.gender=='male'){
+        gender=false
+      }else{
+        gender=true;
+      }
+    // const did = this.category.find((item: any) => item.name === name).this.categoryTypeid;
+    //  console.log('det',did)
+      this.FirstName = this.employeeDetail.FirstName;
+      this.empLastName = this.employeeDetail.empLastName
+      this.empNicNumber = this.employeeDetail.empNicNumber
+      this.gender = gender
+      this.phonenumber = this.employeeDetail.phonenumber
+      this.empAddress = this.employeeDetail.empAddress
+      this.empEmail = this.employeeDetail.empEmail
+      this.empPostalCode = this.employeeDetail.empPostalCode
+      this.empCity = this.employeeDetail.empCity
+      this.empStreet = this.employeeDetail.empStreet
+      this.categoryTypeid = this.employeeDetail.categoryTypeid
+      this.empDateEmployee = this.employeeDetail.empDateEmployee
+      this.bankName = this.employeeDetail.bankName
+      this.empBasicSalery = this.employeeDetail.empBasicSalery
+      this.accountNumber = this.employeeDetail.accountNumber
+      this.identifierId = this.employeeDetail.identifierId
+      this.empEpfNo = this.employeeDetail.empEpfNo
+    })
+ 
+  }
+ 
+  EmployeeRegistationUpdateDetail(form){
+   
+    let value = form.value ;
+    let gender
+    if(!this.gender){
+      gender = 'male'
+    }
+    if(this.gender){
+      gender='female'
+    }
+   let upadateDetail ={
+    empIdentifier : this.identifierId,
+    empFirstName: this.FirstName,
+    empLastName:this.empLastName,
+    employeeDate:this.empDateEmployee,
+    empBasicSalery:this.empBasicSalery,
+    empTotalSalery:this.empTotalSalery,
+    empEtfNo:this.empEtfNo,
+    empEpfNo:this.empEpfNo,
+    empPhoneNumber:this.phonenumber,
+    empNicNumber:this.empNicNumber,
+    empAddress:this.empAddress,
+    empPostalCode :this.empPostalCode,
+    empStreet:this.empStreet,
+    empCity:this.empCity,
+    empEmail:this.empEmail,
+    categoryTypeid:this.categoryTypeid,
+    gender:gender
+   } 
+ 
+this.wishPayrollService.EmployeeRegistationUpdateDetail(upadateDetail).then(response =>{
+  alertify.success('Updated Successfully');
+  this.userForm.reset();
+})
+    
+
+  }
+
+
+
+
+}

@@ -1,0 +1,43 @@
+<div class="row"></div>
+<div class="row  frame-padding">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <label class="label-main">Pre Requirements</label>
+        <div class="card main-border">
+            <div class="card-block">
+
+                <form #form="ngForm" (ngSubmit)="addPreRequests(form.value)">
+                    <div class="row">
+                        <div class="col-md-6">
+                            Company name:
+                            <span class="required-icon">*</span>
+                            <input tabindex="1" type="text" name="companyName" id="companyName" value="" class="form-control" ngModel> Phone Number:
+                            <input tabindex="2" type="text" name="contact" id="contact" value="" class="form-control" ngModel> Address Line 01:
+                            <input tabindex="3" type="text" name="addressOne" id="addressOne" value="" class="form-control" ngModel> Address Line 02:
+                            <input tabindex="4" type="text" name="addressTwo" id="addressTwo" value="" class="form-control" ngModel> City:
+                            <input tabindex="5" type="text" name="city" id="city" value="" class="form-control" ngModel> Email:
+                            <input tabindex="6" type="text" name="email" id="email" value="" class="form-control" ngModel> Fax:
+                            <input tabindex="7" type="text" name="fax" id="fax" value="" class="form-control" ngModel>
+                        </div>
+                        <div class="col-md-6">
+                            Register Number:
+                            <span class="required-icon"></span>
+                            <input tabindex="8" type="text" name="registerNumber" id="registerNumber" value="" class="form-control" ngModel> ETF(%):
+                            <input tabindex="9" type="text" name="etf" id="etf" value="" class="form-control" ngModel required OnlyNumber="true" [(ngModel)]="etf"> EPF(%):
+                            <input tabindex="10" type="text" name="epf" id="epf" value="" class="form-control" ngModel required OnlyNumber="true" [(ngModel)]="epf"> Tax(%):
+                            <input tabindex="11" type="text" name="tax" id="tax" value="" class="form-control" ngModel required OnlyNumber="true" [(ngModel)]="tax">
+                            <label class="main-font">Upload Logo:</label>
+                            <image-upload #imageUpload [url]="this.imageUploadApiUrl" (uploadFinished)="imageUploaded($event)" (onRemove)="imageRemoved($event)"
+                                [max]="1" [extensions]="['jpg','png']" [fileTooLargeMessage]="'Image too large!'" [maxFileSize]="1024000"></image-upload>
+                        </div>
+
+                    </div>
+                    <br>
+                    <button tabindex="13" type="submit" class="btn btn-primary btn-sm buttion-align ">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+<div class="row"></div>

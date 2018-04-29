@@ -1,0 +1,16 @@
+.heading{
+
+    font: italic bold 20px/30px Georgia, serif;
+}
+.profile{
+    margin-right: 20px;
+}
+.header{
+}
+.body{
+}
+.img-logo {
+    border-radius: 100%;
+    width: 4%;
+    height: 90%;
+}

@@ -1,0 +1,37 @@
+.bg{
+    background: url('3.jpg') center fixed ;
+ }
+ 
+ .buttion-save{
+    width: 77px;
+    height: 34px;
+    margin-left: -16px;
+    cursor: pointer;
+    /* margin-top: 30px; */
+    top: 41px;
+    position: relative;
+}
+.frame-padding{
+    margin-left: -18%; 
+    margin-right: 0px;  
+    margin-bottom: 10px;
+    margin-top: 10px;   
+    
+}
+.back-buttion-save{
+    /* width: 77px;
+    height: 34px;
+    margin-left: -16px;
+    cursor: pointer;
+    /* margin-top: 32px; */
+    /* position: relative;
+    top: 27px;  */
+    width: 77px;
+    height: 34px;
+    margin-left: -16px;
+    cursor: pointer;
+    /* margin-top: 30px; */
+    top: 41px;
+    position: relative;
+
+} 

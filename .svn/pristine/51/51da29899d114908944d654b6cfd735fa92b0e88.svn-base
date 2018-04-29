@@ -1,0 +1,27 @@
+import { NgModule } from '@angular/core';
+import { Routes,RouterModule } from '@angular/router';
+import { EmployeeRegistationComponent } from './employee-registation/employee-registation.component';
+
+
+const routes: Routes = [
+    {
+      path: '',
+      component: EmployeeRegistationComponent,
+      data: {
+        title: 'EmployeeRegistation'
+      }
+    }
+  ];
+@NgModule({
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule],
+    providers:[
+      //WishPayrollService
+    ],
+    declarations:[
+     
+    ]
+  })
+
+
+export class EmployeeRegisterRouter{}

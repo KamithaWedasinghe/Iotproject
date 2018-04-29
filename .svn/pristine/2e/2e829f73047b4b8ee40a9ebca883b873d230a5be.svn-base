@@ -1,0 +1,139 @@
+import { Injectable } from '@angular/core';
+import { Http, Response, Headers, RequestOptions } from '@angular/http'
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/throw';
+
+import { CommonService } from './common/common.service';
+
+@Injectable()
+export class PayrollService {
+    constructor(private commonsService: CommonService) { }
+
+    getDeductionType() {
+        return this.commonsService.apiGet('pr', 'DeductionType');
+    }
+
+    getEmployeeCategory(data) {
+        return this.commonsService.apiGet('pr', 'getCategory');
+    }
+
+    addEmployerRegistationDetail(data) {
+        return this.commonsService.apiPost(data, 'pr', 'setEmployee');
+    }
+
+    getEmployeeDetail() {
+        return this.commonsService.apiGet('pr', 'getEmployeeDetails');
+    }
+
+    getEmployeeName(id) {
+        return this.commonsService.apiPost(id, 'pr', 'getEmployeeName');
+    }
+
+    //add employee deduction............
+    deductionDropDown(deductionDetail) {
+        return this.commonsService.apiPost(deductionDetail, 'pr', 'addEmployeeDeduction');
+    }
+
+    getDeductionDetails(id) {
+        return this.commonsService.apiPost(id, 'pr', 'getDeductionDetail');
+    }
+
+    deleteEmployeeDeductionItem(data) {
+        return this.commonsService.apiPost(data, 'pr', 'deletedEmployeeDeductionItem');
+    }
+
+    updatedDeduction(data) {
+        return this.commonsService.apiPost(data, 'pr', 'updatedEmployeeDeductionItem');
+    }
+
+    // get allowances type to dropdown
+    getAllowancesType() {
+        return this.commonsService.apiGet('pr', 'getAllowancesType');
+    }
+
+    // add allowances detail of employee
+
+    addEmployeeAllowance(allowanceAllDetail) {
+        return this.commonsService.apiPost(allowanceAllDetail, 'pr', 'addEmployeeallowance');
+    }
+
+    // send employee id and get allowance detaial of employee
+    getAllowanceDetail(id) {
+        return this.commonsService.apiPost(id, 'pr', 'getAllowanceDetailOfEmploloyee');
+    }
+
+    deleteEmployeeAlowanceItem(data) {
+        return this.commonsService.apiPost(data, 'pr', 'deletedAlowanceEmployeeItem')
+    }
+    updatedAllowance(data) {
+        return this.commonsService.apiPost(data, 'pr', 'updateEmployeeAllowance')
+    }
+
+    // get payroll run month 
+    getPayrollRunMonth() {
+        return this.commonsService.apiGet('pr', 'getPayrollRunMonth')
+    }
+
+    // add employee monthly deduction
+
+    addMonthlyEmployeeDeduction(data) {
+        return this.commonsService.apiPost(data, 'pr', 'addMonthlyEmployeeDeduction')
+    }
+
+    // delete employee monthly deduction
+    deleteMonthlyEmployeeDeductionItem(data) {
+        return this.commonsService.apiPost(data, 'pr', 'deleteMonthlyEmployeeDeduction')
+    }
+
+    //updated monthly deduction
+    upadateMonthlyDeduction(data) {
+        return this.commonsService.apiPost(data, 'pr', 'updateMonthlyEmployeeDeduction')
+    }
+    //add monthly allowance
+    addMonthlyEmployeeAllowance(data) {
+        return this.commonsService.apiPost(data, 'pr', 'addEmployeeMonthlyAllowance')
+    }
+    // get detail of monthly employee allowance
+    getMonthlyAllowanceDetail(data){
+        return this.commonsService.apiPost(data, 'pr', 'getMonthlyAllowanceDetail');
+    }
+    //update allowance monthly
+    updatedMonthlyAllowance(data) {
+        return this.commonsService.apiPost(data, 'pr', 'updateMonthlyEmployeeAllowance')
+    }
+  
+    // delete employee monthly allowance
+    deleteMonthlyEmployeeAllowanceItem(data) {
+        return this.commonsService.apiPost(data, 'pr', 'deleteMonthlyEmployeeAllowance')
+    }
+
+    // get last month
+    getLastMonth() {
+        return this.commonsService.apiGet('pr', 'getlastpayrollrunmonth');
+    }
+
+    // getting mothly dedution 
+    getMonthlyDeductionDetail(data){
+        return this.commonsService.apiPost(data, 'pr', 'getMonthlyDeductionDetail');
+    }
+
+    // getting max idenifier id 
+    getMaxIdentifierId(){
+        return this.commonsService.apiGet('pr','getMaxIdentifierId')
+    }
+
+    // getting employees personal detail for upadate
+
+    getEmployeeDetailForUpadate(data){
+        return this.commonsService.apiPost(data, 'pr', 'getEmployeeResgisterDetail');    
+    }
+    EmployeeRegistationUpdateDetail(data){
+        return this.commonsService.apiPost(data, 'pr', 'employeeResgisterUpdateDetail');    
+    }
+    getEmployeePersonalDetail(id){
+        return this.commonsService.apiPost(id, 'pr', 'getEmployeeResgisterDetail');    
+    }
+}

@@ -1,0 +1,57 @@
+<div class="card card-main">
+        <div class="card-header">
+            <strong>Upload Excell</strong>
+        </div>
+        <div class="container">
+            <div *ngIf="!nextClicked">
+                <div class="add-excell">
+                    <input [disabled]="excellUploaded" class="input-excell" type="file" (change)="onFileChange($event)" multiple="false" />
+                </div>
+                <div class="excell-table-view">
+                    <table border="1">
+                        <tr *ngFor="let row of excellData">
+                            <td class="attendance-td-css" *ngFor="let val of row">
+                                {{val}}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="div-btn-next">
+                    <button [hidden]="excellAdded" type="button" (click)="next()" class="btn btn-primary btn-next">Next</button>
+                </div>
+            </div>
+
+            <div *ngIf="nextClicked" class="div-next-mapping">
+                <div class="row">
+                    <div class="col-md-3">
+                        <table class="table table-bordered" width="100%">
+                            <tr *ngFor="let heading of newHeadingArray;let i=index" (click)="clickedHeading(heading,i)" [class.active]="i == selectedHeadingRow">
+                                <td class="td-table-heading">{{heading.name}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-3">
+                        <table class="table table-bordered" width="100%">
+                            <tr *ngFor="let headingDb of newHeadingDb; let i=index" (click)="clickedHeadingDb(headingDb,i)" [class.active]="i == selectedDbCollumnRow">
+                                <td class="td-table-heading">{{headingDb.name}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" (click)="map()" class="btn btn-success">Map</button>
+                    </div>
+                    <div class="col-md-4">
+                        <table class="table table-bordered" width="100%">
+                            <tr *ngFor="let mappedArray of mappedArray; let i=index">
+                                <td class="td-table-heading">{{mappedArray.headingName}} => {{mappedArray.headingDbCollumn}} <i class="delete-icon fa fa-trash"
+                                        (click)="deleteMapping(mappedArray,i)"></i></td>
+                            </tr>
+                        </table>
+                        <div *ngIf="mappedArray.length>0" class="btn-save">
+                            <button [disabled]="saved" type="button" (click)="save(mappedArray)" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>

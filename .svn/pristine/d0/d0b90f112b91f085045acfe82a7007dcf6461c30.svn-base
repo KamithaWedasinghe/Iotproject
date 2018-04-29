@@ -1,0 +1,218 @@
+import { Component, OnInit } from '@angular/core';
+import { PayrollService } from '../../services/Payroll.service';
+import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import alertify from 'alertify.js';
+import * as moment from 'moment';
+declare var $: any;
+import { FormBuilder, Validators } from '@angular/forms';
+import { ValidationService } from '../validation.service';
+import { ActivatedRoute } from '@angular/router';
+import { BankDetail } from './bank';
+import * as _ from 'lodash';
+@Component({
+  selector: 'app-employee-registation',
+  templateUrl: './employee-registation.component.html',
+  styleUrls: ['./employee-registation.component.css']
+})
+export class EmployeeRegistationComponent implements OnInit {
+  empFirstName
+  male;
+  submited;
+  category
+  isDisabled: boolean;
+  employeeRegisterValidation
+  female
+  gender = 'male'
+  aa
+  empId
+  userForm
+  ff
+  empTotalSalery
+  identifierId
+  identifierIdd
+  identifierIdTest
+  name
+  FirstName
+  empLastNamee
+  BankDetaill = [
+    new BankDetail( 'Peoples Bank' ),
+    new BankDetail( 'Bank of Ceylon' ),
+    new BankDetail( 'Sampath Bank' ),
+    
+  
+ ];
+ empPhoneNumber
+ invalidnumber=false;
+ invalidlength
+ empEpf
+ epf
+  constructor(
+     private route: ActivatedRoute,
+     private router: Router,
+     private wishPayrollService: PayrollService, 
+     private formBuilder: FormBuilder )
+     
+     {
+      this.userForm =true;
+      this.userForm = this.formBuilder.group({
+         'FirstName': ['', Validators.required],
+         'empLastName': ['', Validators.required],
+         'identifierId': ['', [Validators.required]],
+         'empNicNumber': ['', [Validators.required]],
+         'empPhoneNumber': [null, Validators.compose([Validators.required])],
+         'empAddress': ['', [Validators.required]],
+         'empCity': ['', [Validators.required]],
+         'empStreet': ['', [Validators.required]],
+         'empPostalCode': ['', [Validators.required]],
+         'empBasicSalery': ['', [Validators.required]],
+         'accountNumber': ['', [Validators.required,]],
+         'categoryTypeid': ['', [Validators.required,]],
+         'empDateEmployee': ['', [Validators.required,]],
+         'bankName': ['', [Validators.required,]],
+         'empEmail': ['', [Validators.required,]],
+         'empEpf': ['', [Validators.required,]],
+      
+      });
+    
+ 
+  }
+
+
+
+  ngOnInit() {
+    $(function () {
+      //Input radio-group visual controls
+      $('.radio-group label').on('click', function () {
+        $(this).removeClass('not-active').siblings().addClass('not-active');
+      });
+    });
+
+    let desc = this.route.snapshot.paramMap.get('identifierId');
+    this.identifierId = desc;
+    console.log(this.identifierId)
+    
+    let employeeDetail = {
+      id: parseInt(this.identifierId)
+      
+    }
+
+
+    this.wishPayrollService.getEmployeeCategory(this.addEmployeeRegistationDetail)
+      .then((response) => {
+        this.category = response.json().data;
+  })
+
+      this.wishPayrollService.getMaxIdentifierId().then((response) => {
+        if(response.json().data.length<1){
+          this.identifierId=1;
+        }else{
+          this.ff= response.json().data["0"].empIdentifier ;
+          this.identifierId= parseInt(this.ff) +1
+        }
+        this.epf=_.padStart(this.identifierId, 3,'0')
+        this.empEpf = "WH - "+this.epf;
+         this.identifierIdTest=("0000"+this.identifierId).slice(-4);
+   
+
+      })
+     
+      
+  }
+
+
+  // add employee ragister form
+
+  addEmployeeRegistationDetail(form) {
+   let value = form.value ;
+    if(value.gender==true){
+      this.gender = 'female'
+    }
+    if(value.gender1==false){
+      this.gender = 'male'
+    }
+
+  
+    let userinfo = JSON.parse(localStorage.getItem('userInfo'));
+    let username = userinfo.username;
+    let createdate = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+    value.gender=this.gender;
+    let data = {
+      username: username,
+      createdate: createdate,
+      formdata:value,
+      
+
+    }
+   
+    this.wishPayrollService.addEmployerRegistationDetail(data).then(response => {
+      this.submited = true;
+      alertify.success('Registered Successfuly');
+      form.reset();
+      this. updateIdentifire();
+
+    })
+  }
+
+  keytab(event, value) {
+    if (value == '') {
+      //do nothing
+    } else {
+      if (event.keyCode === 13) {
+        event.preventDefault()
+        const inputs = Array.prototype.slice.call(document.querySelectorAll("input"))
+        const index =
+          (inputs.indexOf(document.activeElement) + 1) % inputs.length
+        const input = inputs[index]
+        input.focus()
+        input.select()
+
+      }
+    }
+  }
+
+
+  updateIdentifire(){
+    this.wishPayrollService.getMaxIdentifierId().then((response) => {
+      if(response.json().data.length<1){
+        this.identifierId=1;
+      }else{
+        this.ff= response.json().data["0"].empIdentifier ;
+        this.identifierId= parseInt(this.ff) +1
+      }
+      this.identifierIdTest=("000"+this.identifierId).slice(-3)
+    })
+  }
+
+  formatnumber(e: any) {
+    this.empPhoneNumber = e;
+    if (this.userForm.controls['empPhoneNumber'].valid) {
+        const re1 = /^[0-9]*$/;
+        const isNumber = /^\d+$/.test(e);
+        if (isNumber) {
+            this.invalidnumber = false;
+            if (e.length === 10) {
+                this.invalidlength = false;
+                const re = /\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})/g;
+                const subst = '$1 $2-$3';
+                const result = e.replace(re, subst);
+                this.userForm.controls['empPhoneNumber'].patchValue(result);
+            } else {
+                this.invalidlength = true;
+            }
+        } else {
+            this.invalidnumber = true;
+        }
+        //console.log(e.length);
+    }
+}
+
+
+removenumber() {
+    this.userForm.controls['empPhoneNumber'].patchValue(this.empPhoneNumber);
+    this.invalidnumber = false;
+    this.invalidlength = false;
+}
+
+
+}

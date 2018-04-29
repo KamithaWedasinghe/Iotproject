@@ -1,0 +1,12 @@
+import { Component } from '@angular/core';
+import {IMyDpOptions} from 'mydatepicker';
+
+@Component({
+  // tslint:disable-next-line
+  selector: 'body',
+  templateUrl: 'app.component.html'
+
+})
+export class AppComponent { 
+ 
+}

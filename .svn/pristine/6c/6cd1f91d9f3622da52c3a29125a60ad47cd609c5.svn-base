@@ -1,0 +1,139 @@
+import { Component, OnInit } from '@angular/core';
+import { PayrollMasterService } from '../services/payrollMaster.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import alertify from 'alertify.js';
+import { PreRequirementsService } from '../services/preRequirements.service';
+import { AuthenticationService } from '../services/common/authentication.service';
+import { ConfigService } from '../services/config/index';
+declare var jQuery: any;
+import { SharedModule } from "../shared/shared.module";
+
+
+
+@Component({
+  selector: 'app-setting',
+  templateUrl: './preRequirements.component.html',
+  styleUrls: ['./preRequirements.component.css']
+})
+export class PreRequirementsComponent implements OnInit {
+  preRequirementsStatus: any;
+  userInfoforPrereq;
+  userAccessNumber;
+  imageUploadApiUrl;
+  imageUpload;
+  imageArray: String[] = [];
+  imageCount = 0;
+  isClear = true;
+  fileNameForTB;
+  etf:number=0;
+  epf:number=0;
+  tax:number=0;
+  companyInfoToView;
+  NameOfCompany;
+  companyDetails;
+
+  
+  constructor(private router: Router, private PreRequirementsService: PreRequirementsService, private AuthenticationService: AuthenticationService, private formBuilder: FormBuilder, private config: ConfigService) {
+    this.imageUploadApiUrl = this.config.getAPIBasePath() + 'public/' + this.config.useWhichAPI('pr') + 'uploadLogo';
+  }
+
+  ngOnInit() {
+
+    this.checkPreRequirmentsDetails();
+   // this.getUserInfo();
+    let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    this.userAccessNumber=userInfo.useraccess;
+
+  }
+  // getUserInfo() {
+  //   this.userInfoforPrereq = this.AuthenticationService.getLoginInfoForPreReq();
+  //   this.userAccessNumber = this.userInfoforPrereq.userAcess;
+
+  // }
+  checkPreRequirmentsDetails() {
+    if (localStorage.getItem('hasPreRequirements') == '1') {
+      let redirect = this.PreRequirementsService.reDirectURL ? this.PreRequirementsService.reDirectURL : '/dashboard';
+      this.router.navigate([redirect]);
+    } else {
+      this.PreRequirementsService.checkPreRequirments().then(details => {
+        this.preRequirementsStatus = details.json().data;
+
+        if (this.preRequirementsStatus[0].count == 0) {
+          if (this.userAccessNumber == 8) {
+            let redirect = this.PreRequirementsService.reDirectURL ? this.PreRequirementsService.reDirectURL : '/preRequirements';
+            this.router.navigate([redirect]);
+            alertify.delay(4000);
+            alertify.logPosition("bottom right");
+            alertify.error("Please Fill Pre Requirements");
+          } else {
+            let redirect = this.PreRequirementsService.reDirectURL ? this.PreRequirementsService.reDirectURL : '/login';
+            this.router.navigate([redirect]);
+            alertify.delay(4000);
+            alertify.logPosition("bottom right");
+            alertify.error("Please Log By Admin");
+          }
+
+        } else {
+          let redirect = this.PreRequirementsService.reDirectURL ? this.PreRequirementsService.reDirectURL : '/dashboard';
+          this.router.navigate([redirect]);
+        }
+      });
+    }
+  }
+  imageUploaded(file) {
+
+    let fname: String = file.serverResponse._body;
+    this.fileNameForTB = fname.replace(/['"]+/g, '');
+    
+  }
+ 
+  addPreRequests(formData) {
+   
+    if(formData.companyName){
+      let details = {
+        companyName: formData.companyName,
+        phoneNumber: formData.contact,
+        addressLineOne: formData.addressOne,
+        addressLineTwo: formData.addressTwo,
+        city: formData.city,
+        registerNumber: formData.registerNumber,
+        email: formData.email,
+        fax: formData.fax,
+        etfPrecentage: this.etf,
+        epfPrecentage: this.epf,
+        logoName: this.fileNameForTB,
+        tax: this.tax,
+      }
+      console.log(details);
+      this.PreRequirementsService.addPreRequirementsToTB(details).then(details => {
+        let res = details.json();
+        if (res.error == false) {
+          alertify.delay(4000);
+          alertify.logPosition("bottom right");
+          alertify.success("Save successfully");
+          localStorage.setItem('hasPreRequirements', '1');
+          let redirect = this.PreRequirementsService.reDirectURL ? this.PreRequirementsService.reDirectURL : '/login';
+          this.router.navigate([redirect]);
+  
+        } else {
+          alertify.delay(4000);
+          alertify.logPosition("bottom right");
+          alertify.error("Please Fill Again Pre Requirements");
+        }
+      });
+      this.PreRequirementsService.getCompanyDetails().then(details => {
+        this.companyDetails = details.json().data;
+       
+      // localStorage.setItem('companyName',this.companyDetails[0].companyName );
+        localStorage.setItem('companyInfo', '{"companyName": "' + this.companyDetails[0].companyName + '", "LogoName": "' + this.companyDetails[0].logoName + '"}');
+
+      });
+    }else{
+      alertify.delay(4000);
+      alertify.logPosition("bottom right");
+      alertify.error("Please Fill Again Required Fields");
+    }
+
+  }
+}

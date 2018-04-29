@@ -1,0 +1,67 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { PayrollService } from '../../services/Payroll.service';
+import { SharedModule } from "../../shared/shared.module";
+import { ActivatedRoute } from '@angular/router';
+@Component({
+  selector: 'app-employee-detail',
+  templateUrl: './employee-detail.component.html',
+  styleUrls: ['./employee-detail.component.css'],
+  styles: [`
+  @media only screen and (min-width: 1024px) {
+      .action-button{
+          width:35% ;
+         
+      
+      
+      }
+  }
+ 
+}
+@media only screen and (min-width: 1024px) {
+  .i-btn{
+      margin-left:60px ;
+       
+  }
+}
+
+
+ 
+`]
+})
+export class EmployeeDetailComponent implements OnInit {
+ 
+  public data;
+  public filterQuery = "";
+  public rowsOnPage = 5;
+  public sortBy ="id";
+  public sortOrder = "desc";
+
+  constructor(private wishPayrollService:PayrollService,  private router: Router ,private route: ActivatedRoute, ) { }
+
+  ngOnInit() {
+    this.wishPayrollService.getEmployeeDetail()
+    .then( (response) => {
+      
+      this.data = response.json().data;
+      console.log(this.data)
+
+     
+    } 
+    );
+  }
+  public toInt(num: string) {
+    return +num;
+}
+
+public sortByWordLength = (a: any) => {
+    return a.city.length;
+}
+
+// navigate to deduction component
+
+// addDeductionAlowances(value){
+//   this.router.navigate(['/heroes']);
+// }
+
+}

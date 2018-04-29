@@ -1,0 +1,201 @@
+import {ViewChildren, Component, Directive, ElementRef, Renderer, OnInit} from '@angular/core';
+import{DeductionAlowancesComponent} from '../deduction-alowances.component'
+import { PayrollService } from '../../../services/Payroll.service';
+import 'rxjs/add/operator/map';
+import { DecimalPipe } from '@angular/common';
+import alertify from 'alertify.js';
+import {MyInput} from '../../../directive/autoFocus';
+import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+@Component({
+  selector: 'app-allowances',
+  templateUrl: './allowances.component.html',
+  styleUrls: ['./allowances.component.css'],
+  styles: [`
+  @media only screen and (max-width: 1300px) {
+      .pencil-button{
+      margin-right:-25px;
+      margin-top:-13px;
+      
+      
+      }
+  }
+
+
+
+ 
+`]
+})
+export class AllowancesComponent implements OnInit {
+  @ViewChildren(MyInput) inputs;
+     employeeId;
+     allowancesType;
+     payrollMonth;
+     allowanceName;
+     allowanceId;
+     allowanceAmount;
+     allowanceComment;
+     allowance
+     id;
+     name;
+     userId;
+     allowanceDetail=[];
+     createDate;
+     totalAllowanceAmount;
+     updateid;
+     autoFocus=true;
+     updatebtnVisibility=false;
+     hiddenType = false
+     userForm
+     identifier
+    
+  constructor(  
+    private wishPayrollService: PayrollService,
+    private allowances:DeductionAlowancesComponent,
+    private formBuilder: FormBuilder
+  ) { 
+     this.userForm =true;
+    this.userForm = this.formBuilder.group({
+      'allowanceAmount': ['', Validators.required],
+      'allowance': ['', [Validators.required]],
+      'allowanceComment': ['', [Validators.required, Validators.minLength(5)]]
+    }); }
+  ngOnInit( ) {
+  this.identifier= this.allowances.identifierId;
+  this.userId = this.allowances.username;
+  this.createDate = this.allowances.createdate;
+ 
+  this.wishPayrollService.getAllowancesType().then(response => {
+    this.allowancesType = response.json().data;
+   
+    let empdata=
+    {
+      identifier:parseInt(this.identifier)
+    }
+  this.wishPayrollService.getAllowanceDetail(empdata).then(response =>{
+    if(response.json().data==undefined)
+     this.allowanceDetail =[]; 
+     else
+     this.allowanceDetail=response.json().data;
+      this.totalEmployeeAllowanceAmount();
+  })
+   
+  });
+  
+
+  
+  }
+  addAllowance(id:number):void{ 
+    let all=this;
+    console.log('mmmmmmm',id)
+    const did = this.allowancesType.find((item: any) => item.name === id).id;
+      var allowanceAllDetail ={
+              name:this.allowance,
+              allowanceTypeid:did,
+              comment:this.allowanceComment,
+              amount:this.allowanceAmount,
+              identifierId: parseInt(this.identifier),
+              username: this.userId,
+              createdDate:this.createDate
+      }
+    
+      console.log('mmmmmmm',allowanceAllDetail)
+   let allowancesAvailable = false;
+    for(let allowance=0;allowance<this.allowanceDetail.length; allowance++){
+          if(this.allowance == this.allowanceDetail[allowance].name){
+            allowancesAvailable = true;
+            break;
+          }
+    }
+
+    if(allowancesAvailable){
+         
+    } else{
+
+    this.wishPayrollService.addEmployeeAllowance(allowanceAllDetail).then(response =>{
+   
+      this.allowanceDetail.push(allowanceAllDetail)
+      all.totalEmployeeAllowanceAmount();
+      this.resetForm()
+      })}
+     
+  }
+ 
+// Delete table row in alowance table
+  deleteAllowanceRow(name,index){
+    let allowanceDeletedRowId  = this.allowancesType.find(data=>data.name== name.name).id
+    let deleteAllowanceId ={  
+      allowanceTypeid:parseInt(allowanceDeletedRowId),
+      id : parseInt(this.identifier)
+    }
+    let self = this;
+    alertify.confirm("", function () {
+      self.wishPayrollService.deleteEmployeeAlowanceItem(deleteAllowanceId).then(response =>{
+        self.allowanceDetail .splice(index, 1);
+        alertify.logPosition("bottom right");
+        alertify.delay(500);
+        alertify.success('Delete Succesful');
+        self.totalEmployeeAllowanceAmount();
+      });
+
+    }, function () {
+      alertify.error('Declined');
+    })
+   }
+ // calculate the total allowances amount
+
+   totalEmployeeAllowanceAmount(){
+   let grossAmount = 0;
+      for(let allowance = 0; allowance<this.allowanceDetail.length; allowance++){
+          grossAmount = grossAmount +parseInt(this.allowanceDetail[allowance].amount);
+      }
+    this.totalAllowanceAmount = grossAmount;
+
+   }
+
+   updateAllowanceRow(id,index){
+     console.log('ddddaada',id)
+    this.updatebtnVisibility=true;
+   this.hiddenType = true,
+    this.allowance = id.name,
+    this.allowanceId = id.allowanceTypeid,
+    this.allowanceComment= id.comment,
+    this.allowanceAmount =id.amount
+    //this.allowanceId = id.id
+    this.updateid=index;
+    this.autoFocus=true;
+ 
+  }
+  updateAllowance(){
+    this.updatebtnVisibility=false;
+    this.allowanceDetail[this.updateid].amount=this.allowanceAmount;
+    this.allowanceDetail[this.updateid].name=this.allowance
+    this.allowanceDetail[this.updateid].comment=this.allowanceComment
+
+    let allowanceItemId = this.allowancesType.find((item: any) => item.name === this.allowance).id;
+
+    let upadatedAllowance ={
+      updatedallowanceId : allowanceItemId,
+      updatedemployeeid:this.identifier,
+      amount:this.allowanceAmount,
+      comment:  this.allowanceComment,
+      
+    }
+  
+      this.wishPayrollService.updatedAllowance(upadatedAllowance).then(response =>{
+
+      })
+     this.totalEmployeeAllowanceAmount()
+  }
+  selectSample() {
+    this.inputs.toArray().some(myInput =>
+      myInput.focusIf('deductionAmount'));
+  }
+  resetForm(){
+    this.allowanceAmount=' ';
+    this.allowanceComment=' ';
+    this.allowance=' ';
+    this.payrollMonth=' ';
+  }
+  
+}

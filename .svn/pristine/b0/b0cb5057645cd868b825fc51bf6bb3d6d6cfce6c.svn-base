@@ -1,0 +1,110 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { PayrollService } from '../../services/Payroll.service';
+import { ActivatedRoute } from '@angular/router';
+@Component({
+  selector: 'app-employee-personal-details',
+  templateUrl: './employee-personal-details.component.html',
+  styleUrls: ['./employee-personal-details.component.css'],
+  styles: [`
+  @media only screen and (max-width: 768px) {
+      .text-dowwn {
+         color:green;
+         margin-left:10px;
+         margin-top:21px;
+         float:right;
+      }
+  }
+  @media only screen and (min-width: 1020px) {
+    .text-dowwn {
+       color:blue;
+       float:right;
+    }
+}
+ 
+`]
+})
+
+export class EmployeePersonalDetailsComponent implements OnInit {
+  employeeid
+  employeeDetail
+  identifierId
+  FirstName
+  empLastName
+  empNicNumber
+  gender;
+  phonenumber
+  empAddress
+  empPostalCode
+  empCity
+  t
+  totalSalery
+  empEmail
+  empStreet
+  categoryTypeid
+  empDateEmployee
+  empEtfNo
+  empEpfNo
+  empBasicSalery
+  empTotalSalery
+  userForm
+  category = [] = []
+  empIdentifier
+  firstName
+  employeeDate
+  basicSalery
+  empEtf
+  empEpf
+  female
+  jobName
+
+  constructor(
+    private route: ActivatedRoute,
+    private wishPayrollService: PayrollService,
+  ) {
+
+  }
+
+  ngOnInit() {
+    let self = this
+    let desc = this.route.snapshot.paramMap.get('identifierId');
+    this.employeeid = desc;
+    console.log(this.employeeid)
+    let employeeDetail = {
+      id: parseInt(this.employeeid)
+    }
+
+    this.wishPayrollService.getEmployeePersonalDetail(employeeDetail).then(response => {
+
+
+      this.employeeDetail = response.json().data[0]
+
+      this.FirstName = this.employeeDetail.FirstName;
+      this.empLastName = this.employeeDetail.empLastName
+      this.empNicNumber = this.employeeDetail.empNicNumber
+      this.gender = this.employeeDetail.gender
+      this.phonenumber = this.employeeDetail.phonenumber
+      this.empAddress = this.employeeDetail.empAddress
+      this.empPostalCode = this.employeeDetail.empPostalCode
+      this.empCity = this.employeeDetail.empCity
+      this.empStreet = this.employeeDetail.empStreet
+      this.categoryTypeid = this.employeeDetail.categoryTypeid
+      this.empDateEmployee = this.employeeDetail.empDateEmployee
+      this.empEtfNo = this.employeeDetail.empEtfNo
+      this.empEpfNo = this.employeeDetail.empEpfNo
+      this.empBasicSalery = this.employeeDetail.empBasicSalery
+      this.empTotalSalery = this.employeeDetail.empTotalSalery
+      this.identifierId = this.employeeDetail.identifierId
+      this.empEmail = this.employeeDetail.empEmail
+
+      this.wishPayrollService.getEmployeeCategory(this.employeeDetail).then(response => {
+        this.category = response.json().data;
+        self.jobName = this.category.find((item: any) => item.id == this.categoryTypeid).name;
+      })
+
+    })
+
+  }
+
+
+}

@@ -1,0 +1,11 @@
+.heading{
+
+    font: italic bold 20px/30px Georgia, serif;
+}
+.profile{
+    margin-right: 20px;
+}
+.header{
+}
+.body{
+}

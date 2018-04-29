@@ -1,0 +1,290 @@
+import {ViewChildren, Component, Directive, ElementRef, Renderer, OnInit} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import 'rxjs/add/operator/switchMap';
+import { EmployeeDetailComponent } from '../employee-detail/employee-detail.component';
+import { PayrollService } from '../../services/Payroll.service';
+import _ from "lodash";
+import * as moment from 'moment';
+import alertify from 'alertify.js';
+import * as $ from 'jquery';
+import { DecimalPipe } from '@angular/common';
+import {MyInput} from '../../directive/autoFocus';
+import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-deduction-alowances',
+  templateUrl: './deduction-alowances.component.html',
+  styleUrls: ['./deduction-alowances.component.css'],
+  styles: [`
+  @media only screen and (max-width: 1300px) {
+      .pencil-button{
+      margin-right:-25px;
+      margin-top:-13px;
+      
+      
+      }
+  }
+
+
+
+ 
+`]
+})
+
+export class DeductionAlowancesComponent implements OnInit {
+   @ViewChildren(MyInput) inputs;
+  employeeid;
+  deduction
+  name
+  value = 1;
+  deductionDetail;
+  activateDeduction = true;
+  activateAllowance;
+  deductionType;
+  showStyle: false;
+  selectedDeduction: null;
+  deductionAmount;
+  values = '';
+  deductionComment
+  username
+  createdate
+  total
+  updatebtnVisibility=false;
+  updateid;
+  hiddenType=false;
+  autoFocus=true;
+  activateMonthlyDeduction;
+  activateMonthlyAllowance
+  deductionDetaill = [];
+  userForm: any;
+  identifierId;
+  deductAmount;
+  deductComment;
+  constructor(
+    private route: ActivatedRoute,
+    private employeedetail: EmployeeDetailComponent,
+    private wishPayrollService: PayrollService,
+    private formBuilder: FormBuilder
+  ) { 
+    this.userForm =true;
+    this.userForm = this.formBuilder.group({
+      'deductionAmount': ['', Validators.required],
+      'deduction': ['', [Validators.required]],
+      'deductionComment': ['', [Validators.required, Validators.minLength(5)]]
+    });
+    
+
+
+  }
+
+  ngOnInit() {
+
+
+    let userinfo = JSON.parse(localStorage.getItem('userInfo'));
+    this.username = userinfo.username;
+    this.createdate = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+
+
+    let desc = this.route.snapshot.paramMap.get('identifierId');
+    this.identifierId = desc;
+    let employeeDetail = {
+      id: parseInt(this.identifierId)
+
+    }
+    this.wishPayrollService.getEmployeeName(employeeDetail).then(response => {
+      this.name = response.json().data
+
+    })
+    this.wishPayrollService.getDeductionDetails(employeeDetail).then(response => {
+      this.deductionDetail = response.json().data
+    
+      this.totalEmployeeDeduction()
+  
+
+    })
+    this.wishPayrollService.getDeductionType().then(response => {
+      this.deductionType = response.json().data
+    })
+ 
+  }
+
+  //changing deduction tab-----------------------------------------------------------------------------
+  activatedDeduction() {
+    this.activateDeduction = true;
+    this.activateAllowance = false;
+    this.activateMonthlyDeduction = false;
+    this.activateMonthlyAllowance = false;
+
+  }
+  //changing alowances tab-----------------------------------------------------------------------------
+  activatedAllowance() {
+    this.activateAllowance = true;
+    this.activateDeduction = false;
+    this.activateMonthlyDeduction = false;
+    this.activateMonthlyAllowance = false;
+  }
+
+  //changing Monthly deduction tab-----------------------------------------------------------------------------
+  activatedMonthlyDeduction() {
+    this.activateDeduction = false;
+    this.activateAllowance = false;
+    this.activateMonthlyDeduction = true;
+    this.activateMonthlyAllowance = false;
+
+  }
+
+  //changing Monthly alowances tab-----------------------------------------------------------------------------
+  activatedMonthlyAllowance() {
+    this.activateAllowance = false;
+    this.activateDeduction = false;
+    this.activateMonthlyDeduction = false;
+    this.activateMonthlyAllowance = true;
+  }
+  // diduction drop downlist..........................................................................
+
+  addDeduction(id): void {
+    console.log(id.deduction,'aaa') 
+    
+    
+      console.log(this.deductionType)
+      console.log( this.deductionType,'bh')
+      const did = this.deductionType.find((item: any) => item.name == id.deduction).id;
+      var values = {
+        id: did,
+        name: id.deduction,
+        amount: id.deductionAmount,
+        comment: id.deductionComment,
+        createdUserid: this.username,
+        createdDate: this.createdate,
+        employeeid: this.identifierId
+  
+      }
+    
+      console.log('wwww', values)
+      let avalable = false;
+      for (let deduction = 0; deduction < this.deductionDetail.length; deduction++) {
+        if (this.deduction == this.deductionDetail[deduction].name) {
+          avalable = true;
+        break;
+        }
+      }
+  
+      if (avalable) {
+     //   alertify.danger('All ready added');
+     alertify.error('Already added');
+      } else {
+        let all=this;
+        this.wishPayrollService.deductionDropDown(values).then(response => {
+          all.deductionDetail.push(values)
+          all.totalEmployeeDeduction();
+          all.resetForm()
+        })
+      }
+    
+      // add deduction to db//
+  
+       
+    
+     }
+
+  
+
+  getStyle() {
+    if (this.showStyle) {
+      return "lightgreen";
+    } else {
+      return "";
+    }
+  }
+ 
+
+  // delete employee deduction item
+  deleteDeductionRow(id, index) {
+   
+    let deducId=this.deductionType.find(data=>data.name===id.name).id;
+    console.log('eeee',deducId)
+    let data={
+      deductid:deducId,
+      id: parseInt(this.identifierId)
+    }
+    let self = this;
+    alertify.confirm("", function () {
+      self.wishPayrollService.deleteEmployeeDeductionItem(data).then(response => {
+        self.deductionDetail.splice(index, 1);
+        alertify.logPosition("bottom right");
+        alertify.delay(500);
+        alertify.success('Delete Succesful');
+        self.totalEmployeeDeduction();
+      });
+
+    }, function () {
+      alertify.error('Declined');
+    })
+    
+
+  }
+  // total employee deduction................
+
+  totalEmployeeDeduction(){
+    let total=0;
+    for(let a=0;a<this.deductionDetail.length;a++){
+      total=total+parseInt(this.deductionDetail[a].amount)
+    }
+    this.total=total
+    console.log('ssssss',total)
+  }
+
+  updateDeductionRow(id,index){
+    console.log('update',id)
+    this.deduction=id.name
+    this.deductAmount=id.amount
+    this.deductComment=id.comment
+    this.updatebtnVisibility=true;
+    this.updateid=index;
+    this.hiddenType=true;
+    this.autoFocus=true;
+  }
+
+  updateDeductions(){
+    this.updatebtnVisibility=false;
+    this.deductionDetail[this.updateid].comment=this.deductComment
+    this.deductionDetail[this.updateid].amount=this.deductAmount
+    this.deductionDetail[this.updateid].name=this.deduction
+
+    const did = this.deductionType.find((item: any) => item.name === this.deduction).id;
+    let updatedata={
+      empId:parseInt(this.identifierId),
+      deductionId:did,
+      amount:this.deductAmount,
+      comment:this.deductComment
+    }
+    this.wishPayrollService.updatedDeduction(updatedata).then(response => {
+     
+  
+
+    })
+
+    console.log(updatedata)
+
+
+    this.resetForm()
+    this.totalEmployeeDeduction();
+    this.hiddenType=false
+
+  }
+
+  resetForm(){
+   this.deductAmount=' ';
+   this.deductComment=' ';
+   this.deduction=' '
+   
+  }
+  selectSample() {
+    this.inputs.toArray().some(myInput =>
+      myInput.focusIf('deductionAmount'));
+  }
+
+  
+
+}

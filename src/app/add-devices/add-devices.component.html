@@ -1,0 +1,22 @@
+<div class="row frame-padding">
+  <div class="col-md-4 container">
+      <label><h4>Component Name</h4></label>
+      <input type="text" name="deviceName" id="deviceName" class="form-control" onfocus="this.value=''" [(ngModel)]="deviceName">
+      <!-- <dropdown id="deviceName">
+          <li (click)="action('item 1')">Item 1</li>
+          <li (click)="action('item 2')">Item 2</li>
+      </dropdown> -->
+    </div>
+    <div class="col-md-4">
+         <label><h4>Mac Address</h4></label>
+          <input type="text" name="macAddress" id="macAddress" class="form-control" onfocus="this.value=''" [(ngModel)]="macAddress">
+        </div>
+    <div class="col-md-4">
+      <button type="button" class="btn btn-info btn-sm buttion-save" (click)="addNewDevice()" >
+        <b><h5>Save</h5></b><br>
+      </button>
+      <button type="button" class="btn btn-info btn-sm back-buttion-save" (click)="backHome()" >
+              <b><h5>Back</h5></b>
+            </button>
+    </div>
+</div>

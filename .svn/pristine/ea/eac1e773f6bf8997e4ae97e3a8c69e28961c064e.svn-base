@@ -1,0 +1,89 @@
+
+import { Injectable } from '@angular/core';
+import { Http, Headers, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import { Router } from '@angular/router';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
+import { ConfigService } from '../config/index';
+import { CommonService } from './common.service';
+
+@Injectable()
+export class AuthenticationService {
+  isLoggedIn = false;
+  reDirectURL: string;
+  userAccessLevel:string="";
+  isScreenLoggedIn=false;
+
+  constructor(private http:Http,private config:ConfigService,private commonsService:CommonService,private router:Router) { }
+
+  logout() {
+      // remove user from local storage to log user out
+      localStorage.removeItem('userInfo');
+      this.isLoggedIn = false;
+  }
+
+  login(username,loggedTime,token,userAcess){
+    //remove user from local storage
+    localStorage.setItem('userInfo', '{"username": "' + username + '", "loggedTimestamp": "' + loggedTime + '", "loginId": "' + token + '"}');
+    this.isLoggedIn = true;
+    //set user Access
+    if(userAcess==8)
+    this.userAccessLevel = "Admin";
+    if(userAcess==12)
+    this.userAccessLevel = "operator";
+    if(userAcess==11)
+    this.userAccessLevel = "clerk";
+
+    this.router.navigate(['/dashboard']);
+
+ }
+
+  getToken() {
+        let body = {"email": "admin@serp.org", "password": "admin"};
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Accept', 'application/json');
+        
+        return this.http.post(this.config.getAPIBasePath() + 'public/token', body, {headers: headers})
+            .map((response: Response) => {
+                return response.json();
+            });
+    }
+
+    getTokenWithPromise(): Promise<any> {
+        let body = {"email": "admin@serp.org", "password": "admin"};
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Accept', 'application/json');
+
+        return this.http.post(this.config.getAPIBasePath() + 'public/token', body, {headers: headers})
+            .map((response: Response) => {
+                return response.json();
+            })
+            .toPromise();
+    }
+
+    getLoginStatus(loginDetails: any, token: string): Observable<boolean> {
+        let requestHeaders = new Headers();
+        requestHeaders.append('Content-Type', 'application/json');
+        requestHeaders.append('Authorization', 'Bearer ' + token);
+        
+        return this.http.post(this.config.getAPIBasePath() + 'public/acclab/v1/login', loginDetails, {headers: requestHeaders})
+            .map((response: Response) => {
+                let result = response.json();
+                console.log("RES", result);
+
+                if (result.status == 1) {
+                    this.isLoggedIn = true;
+                    localStorage.setItem('userInfo', '{"username": "' + result.username + '", "loggedTimestamp": "' + result.loggedTime + '", "loginId": "' + token + '"}');
+                    //localStorage.setItem('invoicedetail', '{"branchcode": "' + result.branchcode + '", "defaultlocation": "' + result.defaultlocation + '", "customerid": "' + result.customerid + '"}');
+                }
+
+                return this.isLoggedIn;
+            });
+    }
+
+
+    
+}

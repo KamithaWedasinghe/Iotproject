@@ -1,0 +1,21 @@
+.div-main{
+    margin-top: 1%;
+}
+.btn-get-details{
+    margin-top: 2%;
+}
+.attendance-td-css{
+    padding-top: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-bottom: 2px;
+}
+.excell-table-view{
+    margin-top: 1%;
+}
+.input-text-month-id{
+    height: 35px;
+}
+.card-main{
+    margin-top: 1%;
+}

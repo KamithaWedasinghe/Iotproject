@@ -1,0 +1,949 @@
+<div class="container">
+  <div class="row">
+    <div class="btn col-md-2">
+      <button *ngIf="clicked1" type="button" class="btn btn-success btn-circle">
+        <span class="payroll-run-number">1</span>
+      </button>
+      <button *ngIf="default1" type="button" class="btn btn-primary btn-circle">
+        <span class="payroll-run-number">1</span>
+      </button>
+
+      <div *ngIf="clicked1" class="heading-clicked" style="margin-left: 4%;">Create Payroll-run</div>
+      <div *ngIf="default1" class="heading-default">Create Payroll-run</div>
+    </div>
+    <div class="btn col-md-2">
+      <button *ngIf="clicked2" type="button" class="btn btn-success btn-circle">
+        <span class="payroll-run-number">2</span>
+      </button>
+      <button *ngIf="default2" type="button" class="btn btn-primary btn-circle">
+        <span class="payroll-run-number">2</span>
+      </button>
+
+      <div *ngIf="clicked2" style="margin-left: 4%;" class="heading-clicked">Check-List</div>
+      <div *ngIf="default2" class="heading-default">Check-List</div>
+    </div>
+    <div class="btn col-md-2">
+      <button *ngIf="clicked3" type="button" class="btn btn-success btn-circle">
+        <span class="payroll-run-number">3</span>
+      </button>
+      <button *ngIf="default3" type="button" class="btn btn-primary btn-circle">
+        <span class="payroll-run-number">3</span>
+      </button>
+      <button *ngIf="dryRunMoreDetailsForView" type="button" class="btn btn-success btn-circle">
+        <span class="payroll-run-number">3</span>
+      </button>
+      <button *ngIf="dryRunerrorDetailsForView" type="button" class="btn btn-success btn-circle">
+        <span class="payroll-run-number">3</span>
+      </button>
+      <button *ngIf="viewOneEmployeeDeatils" type="button" class="btn btn-success btn-circle">
+        <span class="payroll-run-number">3</span>
+      </button>
+      <button *ngIf="viewOneEmployeeErrorDeatils" type="button" class="btn btn-success btn-circle">
+        <span class="payroll-run-number">3</span>
+      </button>
+
+
+
+      <div *ngIf="clicked3" style="margin-left: 4%;" class="heading-clicked">Payroll Dry-Run</div>
+      <div *ngIf="default3" class="heading-default">Payroll Dry-Run</div>
+      <div *ngIf="dryRunMoreDetailsForView" class="heading-clicked">Payroll Dry-Run</div>
+      <div *ngIf="dryRunerrorDetailsForView" class="heading-clicked">Payroll Dry-Run</div>
+      <div *ngIf="viewOneEmployeeDeatils" class="heading-clicked">Payroll Dry-Run</div>
+      <div *ngIf="viewOneEmployeeErrorDeatils" class="heading-clicked">Payroll Dry-Run</div>
+
+    </div>
+    <div class="btn col-md-2">
+      <button *ngIf="clicked4" type="button" class="btn btn-success btn-circle">
+        <span class="payroll-run-number">4</span>
+      </button>
+      <button *ngIf="default4" type="button" class="btn btn-primary btn-circle">
+        <span class="payroll-run-number">4</span>
+      </button>
+      <button *ngIf="completedPayrollRunDetailsForView" type="button" class="btn btn-success btn-circle">
+        <span class="payroll-run-number">4</span>
+      </button>
+      <button *ngIf="errorPayrollRunMoreDetailForView" type="button" class="btn btn-success btn-circle">
+        <span class="payroll-run-number">4</span>
+      </button>
+      <button *ngIf="viewOneEmployeeOfFinalDeatils" type="button" class="btn btn-success btn-circle">
+        <span class="payroll-run-number">4</span>
+      </button>
+      <button *ngIf="viewOneEmployeeErrorOfFinalDeatils" type="button" class="btn btn-success btn-circle">
+        <span class="payroll-run-number">4</span>
+      </button>
+
+      <div *ngIf="clicked4" style="margin-left: 4%;" class="heading-clicked">Payroll-Run</div>
+      <div *ngIf="default4" class="heading-default">Payroll-Run</div>
+      <div *ngIf="completedPayrollRunDetailsForView" class="heading-clicked">Payroll-Run</div>
+      <div *ngIf="errorPayrollRunMoreDetailForView" class="heading-clicked">Payroll-Run</div>
+      <div *ngIf="viewOneEmployeeOfFinalDeatils" class="heading-clicked">Payroll-Run</div>
+      <div *ngIf="viewOneEmployeeErrorOfFinalDeatils" class="heading-clicked">Payroll-Run</div>
+    </div>
+    <div class="btn col-md-2">
+      <button *ngIf="clicked5" type="button" class="btn btn-success btn-circle">
+        <span class="payroll-run-number">5</span>
+      </button>
+      <button *ngIf="default5" type="button" class="btn btn-primary btn-circle">
+        <span class="payroll-run-number">5</span>
+      </button>
+      <!-- <svg height="120" width="120">
+          <circle cx="80" cy="60" r="40" stroke="black" stroke-width="0" fill="#336699" />
+        </svg> -->
+      <div *ngIf="clicked5" style="margin-left: 4%;" class="heading-clicked">Post-Run</div>
+      <div *ngIf="default5" class="heading-default">Post-Run</div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <!-- <div class="col-md-2"></div> -->
+    <div *ngIf="clicked1" class="col-md-8 detail-body">
+      <form #form="ngForm" (ngSubmit)="createPayrollRun(form)">
+        <div class="form-group row">
+          <div class="col-md-2">
+            <p class="title-label"> Select Month</p>
+          </div>
+          <div class="col-md-5">
+            <select id="select" class="form-control input-lg" size="1" name="payrollrunmonth" ngModel required>
+              <option *ngFor="let displayMonthArray of displayMonthArray">{{displayMonthArray.name}}</option>
+            </select>
+          </div>
+          <div class="col-md-5"></div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-2">
+            <p class="title-label"> Start Date</p>
+          </div>
+          <div class="col-md-5">
+            <my-date-picker name="currentDateTime" (dateChanged)="onDateChanged($event)" [options]="myDatePickerOptions" [(ngModel)]="currentDateTime"
+              ngModel required></my-date-picker>
+          </div>
+          <div class="col-md-5"></div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-2">
+          </div>
+          <div class="col-md-5">
+            <button type="submit" class="btn btn-success label-OneStyle" [disabled]="checkDateStatus == 1">Create payroll-run</button>
+          </div>
+          <div class="col-md-5"></div>
+
+        </div>
+      </form>
+    </div>
+    <div *ngIf="clicked2" class="col-md-8 checklist">
+      <div class="row">
+        <div class="col-md-12">
+          <div *ngFor="let checkList of checkList" class="checkbox">
+            <label class="payroll-run-checkList">
+              <input type="checkbox" [disabled]="checkList.isSelect" (change)="updatePayRollChecklist(checkList)" [(ngModel)]="checkList.isSelect"
+                value="checkList.name"> {{checkList.name}}</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-6">
+        </div>
+        <div class="btn-sublit-checklist col-md-6">
+          <button type="submit" (click)="checkFinised()" class="btn btn-success">Check Finished</button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="clicked3" class="col-md-12 dryrun">
+      <div class="form-group row frame-padding">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <div class="card main-border">
+            <div class="card-block">
+              <button type="submit" (click)="startDryRun()" class="btn btn-success Startbuttion-align" [disabled]="disableStatusForStart == 0">Start Dry-Run</button>
+              <button type="submit" (click)="finishDryRun()" class="btn btn-success Finishbuttion-align" [disabled]="disableStatusForEnd == 0">Finish Dry-Run</button>
+              <div class="padding-colu">
+                <div class="row">
+                  <div class="col-md-9">
+                    <label class="label-internal" name="createdDryRunCount">Created Dry Run Count :&nbsp;&nbsp;&nbsp;
+                      <b class="label-ready">{{createdDryRunCount}}</b>
+                    </label>
+                  </div>
+                  <div class="col-md-3">
+                    <button *ngIf="createdDryRunCount != 0" type="submit" (click)="completedMoreDetails()" class="btn btn-success align-button">More Details</button>
+                    <button *ngIf="createdDryRunCount == 0" type="submit" (click)="completedMoreDetails()" class="btn btn-primary align-button"
+                      [disabled]="createdDryRunCount == 0">More Details</button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-9">
+                    <label class="label-internal" name="errorDryRunCount">Error Dry Run Count &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;
+                      <b class="label-error">{{errorDryRunCount}}</b>
+
+                    </label>
+                  </div>
+                  <div class="col-md-3">
+                    <button *ngIf="errorDryRunCount != 0" type="submit" (click)="errorMoreDetails()" class="btn btn-success align-button">More Details</button>
+                    <button *ngIf="errorDryRunCount == 0" type="submit" (click)="errorMoreDetails()" class="btn btn-primary align-button" [disabled]="errorDryRunCount == 0">More Details</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+
+    <div *ngIf="clicked4" class="col-md-12 dryrun">
+      <div class="row frame-padding">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <div class="card main-border">
+            <div class="card-block">
+              <button type="submit" (click)="startRun()" class="btn btn-success Startbuttion-align" [disabled]="disableStatusForStart == 0">Start Run</button>
+              <button type="submit" (click)="finishRun()" class="btn btn-success Finishbuttion-align" [disabled]="disableStatusForEnd == 0">Finish Run</button>
+              <div class="padding-colu">
+                <div class="row">
+                  <div class="col-md-9">
+                    <label class="label-internal" name="createdPayrollRunCount">Created Payroll Run Count :&nbsp;&nbsp;&nbsp;
+                      <b class="label-ready">{{createdPayrollRunCount}}</b>
+                    </label>
+                  </div>
+                  <div class="col-md-3">
+                    <button *ngIf="createdPayrollRunCount != 0" type="submit" (click)="completedPayrollRunMoreDetails()" class="btn btn-success align-button">More Details</button>
+                    <button *ngIf="createdPayrollRunCount == 0" type="submit" (click)="completedPayrollRunMoreDetails()" class="btn btn-primary align-button"
+                      [disabled]="createdPayrollRunCount == 0">More Details</button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-9">
+                    <label class="label-internal" name="errorPayrollRunCount">Error Payroll Run Count &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;
+                      <b class="label-error">{{errorPayrollRunCount}}</b>
+                    </label>
+                  </div>
+                  <div class="col-md-3">
+                    <button *ngIf="errorPayrollRunCount != 0" type="submit" (click)="errorPayrollRunMoreDetails()" class="btn btn-success align-button">More Details</button>
+                    <button *ngIf="errorPayrollRunCount == 0" type="submit" (click)="errorPayrollRunMoreDetails()" class="btn btn-primary align-button"
+                      [disabled]="errorPayrollRunCount == 0">More Details</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-1"></div>
+    </div>
+  </div>
+  <!-- post run start -->
+  <div *ngIf="clicked5">
+    <app-payroll-post-run></app-payroll-post-run>
+    <div class="row">
+      <div class="col-sm-6">
+      </div>
+      <div class="col-sm-6">
+
+        <button type="button" (click)="finishPayrollRun()" style="float:right;background-color:#5cb85c;color:whitesmoke" class="btn btn-secondary finish-btn">Finish</button>
+
+      </div>
+    </div>
+  </div>
+  <!-- post run end -->
+  <div *ngIf="dryRunMoreDetailsForView">
+
+    <div class="card main-border">
+      <div class="card-block">
+        <div class="row">
+          <button type="button" (click)="BacktoDryRun()" class="btn btn-primary btn-sm moreDetails-backButtion">Back</button>
+          <label class="label-MoreDetails">Payroll More Details</label>
+        </div>
+        <hr class="hr1">
+
+        <table class="table table-striped" [mfData]="completeDryRundetailsArry | dataFilter : filterQuery" #mf="mfDataTable" [mfRowsOnPage]="5">
+          <thead>
+            <tr>
+              <p>
+                <label class="">Filter by name:</label>
+                <input class="form-control" [(ngModel)]="filterQuery" />
+              </p>
+            </tr>
+
+            <tr>
+              <th style="width: 80%">
+                <mfDefaultSorter by="name">Name</mfDefaultSorter>
+              </th>
+              <th style="width: 20%">
+                <mfDefaultSorter by=""></mfDefaultSorter>
+              </th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of mf.data;let i=index">
+              <td>{{item.fullName}}</td>
+              <td>
+                <button type="button" data-container="body" data-toggle="popover" data-placement="left" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                  class="btn btn-success btn-sm button-sizes" (click)="viewReadyDetails(i)">Details</button>
+              </td>
+
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4">
+                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="dryRunerrorDetailsForView">
+
+    <div class="card main-border">
+      <div class="card-block">
+        <div class="row">
+          <button type="button" (click)="BacktoDryRun()" class="btn btn-primary btn-sm moreDetails-backButtion">Back</button>
+          <label class="label-MoreDetails">Error Payroll Details</label>
+        </div>
+
+
+
+        <table class="table table-striped" [mfData]="errorDryRundetailsArry | dataFilter : filterQuery" #mf="mfDataTable" [mfRowsOnPage]="5">
+          <thead>
+            <tr>
+              <p>
+                <label class="">Filter by name:</label>
+                <input class="form-control" [(ngModel)]="filterQuery" />
+              </p>
+            </tr>
+            <tr>
+              <th style="width: 80%">
+                <mfDefaultSorter by="name">Name</mfDefaultSorter>
+              </th>
+              <th style="width: 20%">
+                <mfDefaultSorter by=""></mfDefaultSorter>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of mf.data;let i=index">
+              <td>{{item.fullName}}</td>
+              <td>
+                <button type="button" data-container="body" data-toggle="popover" data-placement="left" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                  class="btn btn-success btn-sm button-sizes" (click)="viewErrorDetails(i)">Details</button>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4">
+                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="viewOneEmployeeDeatils">
+
+    <div class="card main-border">
+      <div class="card-block">
+
+        <div class="row">
+          <button type="button" (click)="BackToNames()" class="btn btn-primary btn-sm moreDetails-backButtion">Back</button>
+          <label class="label-MoreDetails">{{employeeName}}</label>
+        </div>
+        <hr class="hr1">
+
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">1.Basic Salary :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeBasicSalary | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">2.Pre Allowance :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeTotalAllowance | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2">
+            <button type="button" (click)="viewCollectionsData(empId,1)" class="btn btn-success btn-sm button-sizes" data-toggle="modal"
+              data-target="#exampleModalLong" [disabled]="employeeTotalAllowance == 0 ">Collection</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">3.Pre Deduction :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeTotalDeduction | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2">
+            <button type="button" (click)="viewCollectionsData(empId,2)" class="btn btn-success btn-sm button-sizes" data-toggle="modal"
+              data-target="#exampleModalLong" [disabled]="employeeTotalDeduction == 0 ">Collection</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">4.EPF :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeEpf | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">5.Monthly Total Allowance :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeMonthlyTotalAllowance | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2">
+            <button type="button" (click)="viewCollectionsData(empId,3)" data-toggle="modal" data-target="#exampleModalLong" class="btn btn-success btn-sm button-sizes"
+              [disabled]="employeeMonthlyTotalAllowance == 0 ">Collection</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">6.Monthly Total Deduction :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeMonthlyTotalDeduction | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2">
+            <button type="button" (click)="viewCollectionsData(empId,4)" data-toggle="modal" data-target="#exampleModalLong" class="btn btn-success btn-sm button-sizes"
+              [disabled]="employeeMonthlyTotalDeduction == 0 ">Collection</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">7.NetSalary :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeNetSalary | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">8.Created Date :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">{{employeeCreatedDate}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="viewOneEmployeeErrorDeatils">
+
+    <div class="card main-border">
+      <div class="card-block">
+
+        <div class="row">
+          <button type="button" (click)="BackToErorNames()" class="btn btn-primary btn-sm moreDetails-backButtion">Back</button>
+          <label class="label-MoreDetails">{{employeeName}}</label>
+        </div>
+        <hr class="hr1">
+
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">1.Basic Salary :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeBasicSalary | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">2.Pre Allowance :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeTotalAllowance | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2">
+            <button type="button" (click)="viewCollectionsData(empId,1)" class="btn btn-success btn-sm button-sizes" data-toggle="modal"
+              data-target="#exampleModalLong" [disabled]="employeeTotalAllowance == 0 ">Collection</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">3.Pre Deduction :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeTotalDeduction | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2">
+            <button type="button" (click)="viewCollectionsData(empId,2)" class="btn btn-success btn-sm button-sizes" data-toggle="modal"
+              data-target="#exampleModalLong" [disabled]="employeeTotalDeduction == 0 ">Collection</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">4.EPF :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeEpf | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">5.Monthly Total Allowance :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeMonthlyTotalAllowance | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2">
+            <button type="button" (click)="viewCollectionsData(empId,3)" data-toggle="modal" data-target="#exampleModalLong" class="btn btn-success btn-sm button-sizes"
+              [disabled]="employeeMonthlyTotalAllowance == 0 ">Collection</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">6.Monthly Total Deduction :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeMonthlyTotalDeduction | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2">
+            <button type="button" (click)="viewCollectionsData(empId,4)" data-toggle="modal" data-target="#exampleModalLong" class="btn btn-success btn-sm button-sizes"
+              [disabled]="employeeMonthlyTotalDeduction == 0 ">Collection</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">7.NetSalary :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeNetSalary | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">8.Created Date :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">{{employeeCreatedDate}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">9.Description:</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">{{errorDescription}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="completedPayrollRunDetailsForView">
+
+    <div class="card main-border">
+      <div class="card-block">
+        <div class="row">
+          <button type="button" (click)="BackPayrollRun()" class="btn btn-primary btn-sm moreDetails-backButtion">Back</button>
+          <label class="label-MoreDetails">Created Payroll More Details</label>
+        </div>
+        <hr class="hr1">
+
+        <table class="table table-striped" [mfData]="completePayrollRundetailsArry | dataFilter : filterQuery" #mf="mfDataTable"
+          [mfRowsOnPage]="5">
+          <thead>
+            <tr>
+              <p>
+                <label class="">Filter by name:</label>
+                <input class="form-control" [(ngModel)]="filterQuery" />
+              </p>
+            </tr>
+
+            <tr>
+              <th style="width: 80%">
+                <mfDefaultSorter by="name">Name</mfDefaultSorter>
+              </th>
+              <th style="width: 20%">
+                <mfDefaultSorter by=""></mfDefaultSorter>
+              </th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of mf.data;let i=index">
+              <td>{{item.fullName}}</td>
+              <td>
+                <button type="button" data-container="body" data-toggle="popover" data-placement="left" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                  class="btn btn-success btn-sm button-sizes" (click)="viewCreatedDetails(i)">Details</button>
+              </td>
+
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4">
+                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="errorPayrollRunMoreDetailForView">
+
+    <div class="card main-border">
+      <div class="card-block">
+        <div class="row">
+          <button type="button" (click)="BackPayrollRun()" class="btn btn-primary btn-sm moreDetails-backButtion">Back</button>
+          <label class="label-MoreDetails">Error Payroll Details</label>
+        </div>
+        <hr class="hr1">
+        <table class="table table-striped" [mfData]="errorPayrollRundetailsArry | dataFilter : filterQuery" #mf="mfDataTable" [mfRowsOnPage]="5">
+          <thead>
+            <tr>
+              <p>
+                <label class="">Filter by name:</label>
+                <input class="form-control" [(ngModel)]="filterQuery" />
+              </p>
+            </tr>
+            <tr>
+              <th style="width: 80%">
+                <mfDefaultSorter by="name">Name</mfDefaultSorter>
+              </th>
+              <th style="width: 20%">
+                <mfDefaultSorter by=""></mfDefaultSorter>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of mf.data;let i=index">
+              <td>{{item.fullName}}</td>
+              <td>
+                <button type="button" data-container="body" data-toggle="popover" data-placement="left" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                  class="btn btn-success btn-sm button-sizes" (click)="viewErrorCreatedDetails(i)">Details</button>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="4">
+                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="viewOneEmployeeOfFinalDeatils">
+
+    <div class="card main-border">
+      <div class="card-block">
+
+        <div class="row">
+          <button type="button" (click)="BackToNamesOfCreated()" class="btn btn-primary btn-sm moreDetails-backButtion">Back</button>
+          <label class="label-MoreDetails">{{employeeName}}</label>
+        </div>
+        <hr class="hr1">
+
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">1.Basic Salary :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeBasicSalary | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">2.Pre Allowance :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeTotalAllowance | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2">
+            <button type="button" (click)="viewCollectionsData(empId,1)" class="btn btn-success btn-sm button-sizes" data-toggle="modal"
+              data-target="#exampleModalLong" [disabled]="employeeTotalAllowance == 0 ">Collection</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">3.Pre Deduction :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeTotalDeduction | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2">
+            <button type="button" (click)="viewCollectionsData(empId,2)" class="btn btn-success btn-sm button-sizes" data-toggle="modal"
+              data-target="#exampleModalLong" [disabled]="employeeTotalDeduction == 0 ">Collection</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">4.EPF :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeEpf | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">5.Monthly Total Allowance :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeMonthlyTotalAllowance | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2">
+            <button type="button" (click)="viewCollectionsData(empId,3)" data-toggle="modal" data-target="#exampleModalLong" class="btn btn-success btn-sm button-sizes"
+              [disabled]="employeeMonthlyTotalAllowance == 0 ">Collection</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">6.Monthly Total Deduction :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeMonthlyTotalDeduction | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2">
+            <button type="button" (click)="viewCollectionsData(empId,4)" data-toggle="modal" data-target="#exampleModalLong" class="btn btn-success btn-sm button-sizes"
+              [disabled]="employeeMonthlyTotalDeduction == 0 ">Collection</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">7.NetSalary :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeNetSalary | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">8.Created Date :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">{{employeeCreatedDate}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="viewOneEmployeeErrorOfFinalDeatils">
+
+    <div class="card main-border">
+      <div class="card-block">
+
+        <div class="row">
+          <button type="button" (click)="BackToNamesOfErrorCreated()" class="btn btn-primary btn-sm moreDetails-backButtion">Back</button>
+          <label class="label-MoreDetails">{{employeeName}}</label>
+        </div>
+        <hr class="hr1">
+
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">1.Basic Salary :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeBasicSalary | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">2.Pre Allowance :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeTotalAllowance | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2">
+            <button type="button" (click)="viewCollectionsData(empId,1)" class="btn btn-success btn-sm button-sizes" data-toggle="modal"
+              data-target="#exampleModalLong" [disabled]="employeeTotalAllowance == 0 ">Collection</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">3.Pre Deduction :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeTotalDeduction | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2">
+            <button type="button" (click)="viewCollectionsData(empId,2)" class="btn btn-success btn-sm button-sizes" data-toggle="modal"
+              data-target="#exampleModalLong" [disabled]="employeeTotalDeduction == 0 ">Collection</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">4.EPF :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeEpf | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">5.Monthly Total Allowance :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeMonthlyTotalAllowance | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2">
+            <button type="button" (click)="viewCollectionsData(empId,3)" data-toggle="modal" data-target="#exampleModalLong" class="btn btn-success btn-sm button-sizes"
+              [disabled]="employeeMonthlyTotalAllowance == 0 ">Collection</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">6.Monthly Total Deduction :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeMonthlyTotalDeduction | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2">
+            <button type="button" (click)="viewCollectionsData(empId,4)" data-toggle="modal" data-target="#exampleModalLong" class="btn btn-success btn-sm button-sizes"
+              [disabled]="employeeMonthlyTotalDeduction == 0 ">Collection</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">7.NetSalary :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">Rs. {{employeeNetSalary | number:'.2-2'}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">8.Created Date :</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">{{employeeCreatedDate}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="bc-colr">9.Description:</label>
+          </div>
+          <div class="col-md-4">
+            <label class="bc-colr">{{errorDescription}}</label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal window -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true"
+  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body" *ngIf='allowanceModal'>
+        <table class="table table-striped">
+          <tbody>
+            <tr *ngFor='let moreDataAllownce of moreDataAllownceArry; let i=index'>
+              <td>
+                <label class=" main-font ">Allowance Type :</label>
+              </td>
+              <td>
+                <label name="">{{moreDataAllownce.allowanceName}}</label>
+              </td>
+              <td>
+                <label class=" main-font ">Amount :</label>
+              </td>
+              <td>
+                <label name="">{{moreDataAllownce.allowanceAmount}}</label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="button" (click)="closeArryFromModal()" data-dismiss="modal" class="btn btn-success btn-sm button-modal">Close</button>
+      </div>
+      <div class="modal-body" *ngIf='deductionModal'>
+        <table class="table table-striped">
+          <tbody>
+            <tr *ngFor='let moreDataDeduction of moreDataDeductionArry; let i=index'>
+              <td>
+                <label class=" main-font ">Deduction Type :</label>
+              </td>
+              <td>
+                <label name="">{{moreDataDeduction.deductionName}}</label>
+              </td>
+              <td>
+                <label class=" main-font ">Amount :</label>
+              </td>
+              <td>
+                <label name="">{{moreDataDeduction.deductionAmount}}</label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="button" (click)="closeArryFromModal()" data-dismiss="modal" class="btn btn-success btn-sm button-modal">Close</button>
+      </div>
+      <div class="modal-body" *ngIf='monthlyAllowanceModal'>
+        <table class="table table-striped">
+          <tbody>
+            <tr *ngFor='let moreDataMonthlyAllowance of moreDataMonthlyAllowanceArry; let i=index'>
+              <td>
+                <label class=" main-font ">Allowance Type :</label>
+              </td>
+              <td>
+                <label name="">{{moreDataMonthlyAllowance.allowanceName}}</label>
+              </td>
+              <td>
+                <label class=" main-font ">Amount :</label>
+              </td>
+              <td>
+                <label name="">{{moreDataMonthlyAllowance.allowanceAmount}}</label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="button" (click)="closeArryFromModal()" data-dismiss="modal" class="btn btn-success btn-sm button-modal">Close</button>
+      </div>
+      <div class="modal-body" *ngIf='monthlyDeductionModal'>
+        <table class="table table-striped">
+          <tbody>
+            <tr *ngFor='let moreDataMonthlyDeduction of moreDataMonthlyDeductionArry; let i=index'>
+              <td>
+                <label class=" main-font ">Deduction Type :</label>
+              </td>
+              <td>
+                <label name="">{{moreDataMonthlyDeduction.deductionName}}</label>
+              </td>
+              <td>
+                <label class=" main-font ">Amount :</label>
+              </td>
+              <td>
+                <label name="">{{moreDataMonthlyDeduction.deductionAmount}}</label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button type="button" (click)="closeArryFromModal()" data-dismiss="modal" class="btn btn-success btn-sm button-modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

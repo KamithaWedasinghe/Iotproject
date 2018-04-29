@@ -1,0 +1,23 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SettingRouter } from './setting.routing.module';
+import { SettingComponent } from '../setting/setting.component';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { ImageUploadModule } from "angular2-image-upload";
+import { SharedModule } from "../shared/shared.module";
+
+
+
+@NgModule({
+  imports: [
+    CommonModule,
+    SettingRouter,
+    FormsModule,
+    ReactiveFormsModule,
+    ImageUploadModule.forRoot(),
+    SharedModule
+  ],
+  declarations: [  SettingComponent ]
+ 
+})
+export class SettingModule { }

@@ -1,0 +1,25 @@
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { AddAttendanceMappingComponent } from './add-attendance-mapping.component';
+
+describe('AddAttendanceMappingComponent', () => {
+  let component: AddAttendanceMappingComponent;
+  let fixture: ComponentFixture<AddAttendanceMappingComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ AddAttendanceMappingComponent ]
+    })
+    .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AddAttendanceMappingComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

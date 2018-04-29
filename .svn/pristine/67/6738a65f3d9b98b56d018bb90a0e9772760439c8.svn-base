@@ -1,0 +1,299 @@
+import { ViewChildren, Component, Directive, ElementRef, Renderer, OnInit } from '@angular/core';
+import {AllowancesComponent } from '../allowances/allowances.component';
+import { PayrollService } from '../../../services/Payroll.service';
+import alertify from 'alertify.js';
+import { MyInput } from '../../../directive/autoFocus';
+import _ from "lodash";
+import * as moment from 'moment';
+import { DeductionAlowancesComponent } from '../deduction-alowances.component'
+import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute,Router } from '@angular/router';
+@Component({
+  selector: 'app-monthly-allowance',
+
+  templateUrl: './monthly-allowance.component.html',
+  providers:[AllowancesComponent],
+  styleUrls: ['./monthly-allowance.component.css'],
+  styles: [`
+  @media only screen and (max-width: 1300px) {
+      .pencil-button{
+      margin-right:-25px;
+      margin-top:-12px;
+      
+      
+      }
+  }
+
+ 
+`]
+})
+
+
+
+export class MonthlyAllowanceComponent implements OnInit {
+
+  @ViewChildren(MyInput) inputs;
+  payrollRunMonth;
+  allowancesType;
+  allowanceType;
+  allowance
+  amount
+  comment
+  employeeId
+  runMonth
+  loginUserName
+  createdDate
+  monthlyAllowanceDetail= [];
+  totalAllowanceAmount
+  updatebtnVisibility
+  hiddenType
+  allowanceId
+  autoFocus = true
+  updateid;
+  
+  lastPayRollRunMonth;
+  selectedMonthArray = new Array();
+  MonthDifferentYear;
+  selectedMonth = new Array();
+  lastPayRollRunYear;
+  displayMonthArray = []=[];
+  payrollid
+  payRollMonth
+  monthlyAllowanceDetails
+  dueMonth
+  userForm
+  constructor(
+    private wishPayrollService: PayrollService,
+    private Allowance:AllowancesComponent,
+    private DeductionAllowance:DeductionAlowancesComponent,
+    private formBuilder: FormBuilder,
+    private router: Router
+  ) {
+    
+    
+    this.userForm =true;
+    this.userForm = this.formBuilder.group({
+      'amount': ['', Validators.required],
+      'payrollMonth': ['', Validators.required],
+      'allowance': ['', [Validators.required]],
+      'comment': ['', [Validators.required, Validators.minLength(5)]]
+    });
+   }
+
+  ngOnInit() {
+
+
+    this.employeeId = this.DeductionAllowance.identifierId,
+    this.loginUserName = this.DeductionAllowance.username
+    this.createdDate = this.DeductionAllowance.createdate
+ 
+
+    this.wishPayrollService.getAllowancesType().then(response => {
+      this.allowancesType = response.json().data;
+    
+    });
+
+  
+    let empId = {
+      id: parseInt(this.employeeId),
+    }
+  
+
+    this.wishPayrollService.getMonthlyAllowanceDetail(empId).then(res => {
+      this.monthlyAllowanceDetail = res.json().data;
+      this.totalEmployeeMonthlyAllowanceAmount()
+    })
+
+
+    let selectedStartMonth;
+    let countMonth;
+    let self = this;
+    let MonthDifferentYear;
+    let start;
+    let isNextYear;
+    this.wishPayrollService.getLastMonth().then(res => {
+      this.payrollid = res.json().data[0];
+      this.lastPayRollRunMonth = parseInt(res.json().data[0].month.split('-')[1]);
+      // this.lastPayRollRunYear = parseInt(res.json().data[0].month.split('-')[0]);
+      let selectedStartMonth = this.lastPayRollRunMonth;
+
+      _.forEach(_.range(selectedStartMonth, selectedStartMonth + 5), function (month) {
+        if (month < 13) {
+          // countMonth++;
+          self.selectedMonth.push(_.padStart(month, 2, '0'));
+          self.selectedMonthArray.push(moment(_.padStart(month, 2, '0'), 'MM').format('MMMM'));
+        }
+        else {
+          MonthDifferentYear = 5 - countMonth;
+          start = 1;
+          isNextYear = true;
+        }
+        if (isNextYear) {
+          self.lastPayRollRunYear = self.lastPayRollRunYear + 1;
+          _.forEach(_.range(start, MonthDifferentYear + 1), function (month) {
+            self.selectedMonth.push(_.padStart(month, 2, '0'));
+            self.selectedMonthArray.push(moment(_.padStart(month, 2, '0'), 'MM').format('MMMM'));
+          });
+        }
+
+
+
+      });
+      for (let i = 0; i < self.selectedMonth.length; i++) {
+        let orderMonth = {
+          id: self.selectedMonth[i],
+          name: self.selectedMonthArray[i],
+          Id: self.payrollid.id,
+
+        }
+        this.displayMonthArray.push(orderMonth);
+      }
+
+    });
+
+
+
+
+
+
+  }
+
+
+  // add monthly allowance.........................................
+
+
+  addMonthlyAllowance(id,payRollMonth) {
+
+
+    const aid = this.allowancesType.find((item: any) => item.name === id).id;
+    const monthlystatusId = this.displayMonthArray.find((item: any) => item.name == this.payRollMonth).Id;
+    const duemonth = this.displayMonthArray.find((item: any) => item.id == this.lastPayRollRunMonth).name;
+    var monthlyAllowanceDetails = {
+      allowanceTypeID: aid,
+      amount: parseInt(this.amount),
+      comment: this.comment,
+      name: this.allowance,
+      runId: monthlystatusId,
+      employeeid: parseInt(this.employeeId),
+      createDate: this.createdDate,
+      username: this.loginUserName,
+      dueMonth: monthlystatusId
+    }
+
+    let allowanceAvailable = false;
+
+    for (let allowance = 0; allowance< this.monthlyAllowanceDetail.length; allowance++) {
+      if (this.monthlyAllowanceDetail[allowance].name == this.allowance) {
+        allowanceAvailable = true;
+        break;
+      }
+    }
+
+    if (allowanceAvailable) {
+      alertify.error('Already added');
+    } else {
+
+
+      this.wishPayrollService.addMonthlyEmployeeAllowance(monthlyAllowanceDetails).then(response => {
+
+        this.monthlyAllowanceDetail.push(monthlyAllowanceDetails);
+        this.totalEmployeeMonthlyAllowanceAmount()
+        this.resetForm()
+      })
+    } 
+
+  }
+
+  // delete monthly deduction item
+
+  deleteAllowanceRow(name, index) {
+    console.log(name, index)
+    let monthlyallowanceDeletedRowId = this.allowancesType.find(data => data.name == name.name).id
+    let deleteAllowanceId = {
+      allowanceTypeid: parseInt(monthlyallowanceDeletedRowId),
+      id: parseInt(this.employeeId)
+    }
+    let self = this;
+    alertify.confirm("", function () {
+      self.wishPayrollService.deleteMonthlyEmployeeAllowanceItem(deleteAllowanceId).then(response => {
+        self.monthlyAllowanceDetail.splice(index, 1);
+        alertify.logPosition("bottom right");
+        alertify.delay(500);
+        alertify.success('Delete Succesful');
+        self.totalEmployeeMonthlyAllowanceAmount();
+      });
+
+    }, function () {
+      alertify.error('Declined');
+    })
+  }
+
+  // calculate the total allowances amount
+
+  totalEmployeeMonthlyAllowanceAmount() {
+    let grossAmount = 0;
+    for (let a = 0; a < this.monthlyAllowanceDetail.length; a++) {
+      grossAmount = grossAmount + parseInt(this.monthlyAllowanceDetail[a].amount);
+    }
+    this.totalAllowanceAmount = grossAmount;
+
+  }
+  // update dedcution 
+  updateMonthlyAllowanceRow(id, index) {
+    console.log('ddddaada', id)
+      this.updatebtnVisibility = true;
+      this.hiddenType = true,
+      this.payRollMonth = id.dueMonth,
+      this.allowance = id.name,
+      this.allowanceId = id.allowanceTypeid,
+      this.comment = id.comment,
+      this.amount = id.amount
+    //this.allowanceId = id.id
+      this.updateid = index;
+      this.autoFocus = true;
+
+  }
+  updatedAllowance() {
+  
+    this.updatebtnVisibility = false;
+     this.monthlyAllowanceDetail[this.updateid].amount =this.amount;
+    this.monthlyAllowanceDetail[this.updateid].name = this.allowance;
+    this.monthlyAllowanceDetail[this.updateid].comment = this.comment
+
+    
+    let allowanceItemId = this.allowancesType.find((item: any) => item.name === this.allowance).id;
+
+    let upadatedAllowance = {
+      updatedallowanceId:allowanceItemId,
+      updatedemployeeid:this.employeeId,
+       upamount:this.amount,
+       upcomment:this.comment,
+
+    }
+    console.log('bbb', upadatedAllowance)
+     this.wishPayrollService.updatedMonthlyAllowance(upadatedAllowance).then(response =>{
+      alertify.success('Update Succesful');
+     })
+    this.totalEmployeeMonthlyAllowanceAmount()
+    this.resetForm()
+    this.hiddenType=false
+  }
+
+
+resetForm(){
+  this.amount=' ';
+  this.comment=' ';
+  this.allowance=' ';
+  this.dueMonth=' ';
+}
+  selectSample() {
+    this.inputs.toArray().some(myInput =>
+      myInput.focusIf('amount'));
+  }
+  routerNavigate(){
+    this.router.navigate(['/employee-detail/detail'])
+  }
+
+ 
+}

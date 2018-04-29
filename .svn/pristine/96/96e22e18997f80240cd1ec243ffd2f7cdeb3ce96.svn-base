@@ -1,0 +1,19 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { SettingRouter } from './setting.routing.module';
+import { SettingComponent } from '../setting/setting.component';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+
+
+
+@NgModule({
+  imports: [
+    CommonModule,
+    SettingRouter,
+    FormsModule,
+    ReactiveFormsModule
+  ],
+  declarations: [  SettingComponent, ]
+ 
+})
+export class SettingModule { }

@@ -1,0 +1,14 @@
+.button1{
+    padding: 0px;
+    margin:0px;
+    display:inline-block;
+}
+
+
+.nav-link{
+    padding:0px;
+}
+.form-control{
+    padding-top: 5px;
+    color:red
+}

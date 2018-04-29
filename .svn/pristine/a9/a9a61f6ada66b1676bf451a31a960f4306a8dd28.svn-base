@@ -1,0 +1,213 @@
+<div class="row">
+  <div class="col-sm-4">
+
+  </div>
+  <div class="col-sm-4">
+    <div class="input-group" style="margin-top:60px">
+      <input type="text" class="form-control" (keyup)='searchEmp(id.value)' (keyup.enter)="getSalaryDetail(id.value)"  #id placeholder="Employee Id" aria-describedby="basic-addon2">
+      <span class="input-group-addon employee-search" (click)="getSalaryDetail(id.value)" id="basic-addon2">Search</span>
+    </div>
+  </div>
+  <div class="col-sm-4">
+
+  </div>
+
+</div>
+
+
+
+
+
+<div class="card card-inverse" style="margin-top:30px;background-color: rgba(7, 84, 107, 0.808); border-color: rgba(244, 246, 247, 0.87); width:100% !important">
+  <div class="card-block">
+    <div class="row" style="padding:10px">
+      <div class="col-sm-6">
+
+        <button type="button" [disabled]="visibleEmpSalary" class="btn btn-secondary" (click)="bank()" style="width:100% ;background-color:rgb(226, 239, 250)">Bank Payment</button>
+      </div>
+      <div class="col-sm-6">
+
+        <button type="button" [disabled]="visibleEmpSalary" class="btn btn-secondary" (click)="deposit()" style="width:100%;background-color:rgb(226, 239, 250)">Deposit Payment</button>
+      </div>
+
+
+
+    </div>
+    <div class="row" style="padding:10px">
+      <div class="col-sm-6">
+
+        <button type="button" class="btn btn-secondary" [disabled]="visibleEmpSalary" style="width:100%;background-color:rgb(226, 239, 250)">Priview Pay Slip</button>
+      </div>
+
+
+      <div class="col-sm-6">
+
+        <button type="button" class="btn btn-secondary"  [disabled]="visibleEmpSalary" (click)="open(content)" style="width:100% ;background-color:rgb(226, 239, 250)">Print Pay Slip</button>
+      </div>
+
+
+
+    </div>
+    <div class="row" style="padding:10px">
+      <div class="col-sm-3">
+
+
+      </div>
+      <div class="col-sm-6">
+
+        <button type="button" (click)="finishPayrollRun()" class="btn btn-secondary" style="width:100% ;background-color:#5cb85c">Finish Payroll Run</button>
+      </div>
+      <div class="col-sm-3">
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template class="modal-content" #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Priview Pay Slip</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <h5 style="text-align:center">Wish Fertility & IVF Clinic</h5>
+    <p style="text-align:center;margin-top:-8px">393/6, Kasagahawatta Road,Udahamulla,Nugegoda</p>
+    <p style="text-align:center;margin-top:-14px">0112-836788</p>
+    <p>Pay Slip For The Month :- January</p>
+
+    <div class="row">
+      <div class="col-sm-4">
+        <p style="margin-top:-10px">Employee Id :- {{employeeid}} </p>
+      </div>
+      <div class="col-sm-8">
+        <p style="margin-top:-10px">Employee Name :- {{empFristName}} {{empLastName}} </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4">
+        <p style="margin-top:-10px">
+          <b> Gross Salary:-{{ total | number : '1.2-2'}}</b>
+        </p>
+      </div>
+      <div class="col-sm-8">
+        <p style="margin-top:-10px">
+          <b> Net Salary :- {{ netSalary | number : '1.2-2'}}</b>
+        </p>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-sm-7">
+        <p style="margin-top:-10px">
+          <b> Basic Salary:-{{ basicSalary | number : '1.2-2'}}</b>
+        </p>
+      </div>
+      <div class="col-sm-5">
+        <p style="margin-top:-10px">
+         
+        </p>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <p style="float:right;margin-top:-2px">
+          <b> Earning </b>
+        </p>
+      </div>
+      <div class="col-sm-6">
+        <p style="text-align:right;margin-top:-2px">
+          <b> Deduction</b>
+        </p>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3">
+        <p style="text-align:center;margin-top:-12px">
+          Description
+        </p>
+      </div>
+      <div class="col-sm-3">
+        <p style="text-align:center;margin-top:-12px">
+          Amount
+        </p>
+      </div>
+      <div class="col-sm-3">
+        <p style="text-align:center;margin-top:-12px">
+          Description
+        </p>
+      </div>
+      <div class="col-sm-3">
+        <p style="text-align:center;margin-top:-12px">
+          Amount
+        </p>
+      </div>
+
+
+    </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <p style="margin-top:-13px">Allowance </p>
+      </div>
+      <div class="col-sm-3">
+        <p style="margin-left:26px;margin-top:-13px"> {{allowance | number : '1.2-2'}}</p>
+      </div>
+      <div class="col-sm-3">
+        <p style="margin-top:-13px">Deduction </p>
+      </div>
+      <div class="col-sm-3">
+        <p style="margin-left:26px;margin-top:-13px"> {{deduction | number : '1.2-2'}} </p>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <p style="margin-top:-13px"> Monthly Allowance </p>
+      </div>
+      <div class="col-sm-2">
+        <p style="margin-left:-15px;margin-top:-15px"> {{monthlyAllowance | number : '1.2-2'}} </p>
+      </div>
+      <div class="col-sm-4">
+        <p style="margin-top:-13px">Monthly Deduction</p>
+      </div>
+      <div class="col-sm-2">
+        <p style="margin-left:-15px;margin-top:-15px"> {{monthlyDeduction | number : '1.2-2'}}</p>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4">
+        <p style="margin-top:-13px">
+          <b>Total Earning</b>
+        </p>
+      </div>
+      <div class="col-sm-2">
+        <p style="margin-left:-15px;margin-top:-15px"> {{totalEarning | number : '1.2-2'}} </p>
+      </div>
+      <div class="col-sm-4">
+        <p style="margin-top:-13px">
+          <b>Total Deduction</b>
+        </p>
+      </div>
+      <div class="col-sm-2">
+        <p style="margin-left:-15px;margin-top:-15px"> {{ totalDeduction | number : '1.2-2'}} </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" style="background-color:#20a8d8" class="btn btn-outline-dark" (click)="printPaySlip()">Print</button>
+  </div>
+</ng-template>

@@ -1,0 +1,356 @@
+import { Component, OnInit } from '@angular/core';
+import { IMyDpOptions } from 'mydatepicker';
+import { PayrollMasterService } from '../services/payrollMaster.service';
+import * as _ from 'lodash';
+import alertify from 'alertify.js';
+import * as moment from 'moment';
+
+
+@Component({
+  selector: 'app-payroll-run',
+  templateUrl: './payroll-run.component.html',
+  styleUrls: ['./payroll-run.component.css'],
+  //  providers:[PayrollService]
+})
+export class PayrollRunComponent implements OnInit {
+  public myDatePickerOptions: IMyDpOptions = {
+    // other options...
+    dateFormat: 'dd-mm-yyyy',
+  };
+  lastPayRollRunStstus;
+  lastPayRollRunMonth;
+  lastPayRollRunStstusId;
+  month = new Array();
+  selectedMonth = new Array();
+  selectedMonthArray = new Array();
+  displayMonthArray = new Array();
+  clicked1 = false;
+  clicked2 = false;
+  clicked3 = false;
+  clicked4 = false;
+  clicked5 = false;
+  default1 = true;
+  default2 = true;
+  default3 = true;
+  default4 = true;
+  default5 = true;
+ // run1 = false;
+  // run2 = false;
+  // run3 = false;
+  // run4 = false;
+  // run5 = false;
+  checkList;
+  logedPerson;
+  userAccess;
+  startedDryRun;
+  startedRun;
+  currentDate;
+  constructor(
+    private payrollservice: PayrollMasterService
+  ) { }
+getMonthToDisplay(){
+
+}
+  ngOnInit() {
+  //  console.log('rrrrrrrrrrr');
+   // let self = this;
+    let self=this;
+    this.payrollservice.getLastPayRollRunMonth().then(res => {
+      this.lastPayRollRunMonth = parseInt(res.json().data[0].month.split('-')[1]);
+      //  console.log('month',this.lastPayRollRunMonth);
+      let selectedStartMonth = this.lastPayRollRunMonth + 1;
+      _.forEach(_.range(selectedStartMonth, 13), function (month) {
+        //console.log('month',_.padStart(month, 2, '0'));
+        self.selectedMonth.push(_.padStart(month, 2, '0'));
+  
+        self.selectedMonthArray.push(moment(_.padStart(month, 2, '0'), 'MM').format('MMMM'));
+      });
+      // console.log(self.selectedMonth);
+      // console.log(this.selectedMonthArray);
+      for (let i = 0; i < self.selectedMonth.length; i++) {
+        let orderMonth = {
+          id: self.selectedMonth[i],
+          name: self.selectedMonthArray[i]
+        }
+  
+        this.displayMonthArray.push(orderMonth);
+      }
+      console.log(this.displayMonthArray);
+    });
+    let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    this.logedPerson = userInfo.username;
+    this.userAccess = userInfo.useraccess;
+
+
+    this.payrollservice.getLastPayRollStatus().then(res => {
+      this.lastPayRollRunStstus = res.json().data[0].name;
+      this.lastPayRollRunStstusId = res.json().data[0].id
+     // console.log(this.lastPayRollRunStstus);
+      if (this.lastPayRollRunStstus == null) {
+        this.lastPayRollRunStstus = 1;
+        this.updatePayrollRunStatus(1);
+      }
+
+      if (this.lastPayRollRunStstus == '1') {
+       // this.getMonthToDisplay();
+        // this.payrollservice.getLastPayRollRunMonth().then(res => {
+        //   this.lastPayRollRunMonth = parseInt(res.json().data[0].month.split('-')[1]);
+        //   //  console.log('month',this.lastPayRollRunMonth);
+        //   let selectedStartMonth = this.lastPayRollRunMonth + 1;
+        //   _.forEach(_.range(selectedStartMonth, 13), function (month) {
+        //     //console.log('month',_.padStart(month, 2, '0'));
+        //     self.selectedMonth.push(_.padStart(month, 2, '0'));
+
+        //     self.selectedMonthArray.push(moment(_.padStart(month, 2, '0'), 'MM').format('MMMM'));
+        //   });
+        //   // console.log(self.selectedMonth);
+        //   // console.log(this.selectedMonthArray);
+        //   for (let i = 0; i < self.selectedMonth.length; i++) {
+        //     let orderMonth = {
+        //       id: self.selectedMonth[i],
+        //       name: self.selectedMonthArray[i]
+        //     }
+
+        //     this.displayMonthArray.push(orderMonth);
+        //   }
+        //   console.log(this.displayMonthArray);
+        // });
+        this.clicked1 = true;
+        this.default1 = false;
+       // this.run1 = true;
+
+
+        // this.updatePayrollRunStatus(this.lastPayRollRunStstus);
+      }
+      if (this.lastPayRollRunStstus == '2') {
+        this.clicked2 = true;
+        this.default2 = false;
+       // this.run2 = true;
+        // this.updatePayrollRunStatus(this.lastPayRollRunStstus);
+      }
+      if (this.lastPayRollRunStstus == '3') {
+        this.clicked3 = true;
+        this.default3 = false;
+       // this.run3 = true;
+        // this.updatePayrollRunStatus(this.lastPayRollRunStstus);
+      }
+      if (this.lastPayRollRunStstus == '4') {
+        this.clicked4 = true;
+        this.default4 = false;
+      //  this.run4 = true;
+        // this.updatePayrollRunStatus(this.lastPayRollRunStstus);
+      }
+      if (this.lastPayRollRunStstus == '5') {
+        this.clicked5 = true;
+        this.default5 = false;
+      //  this.run5 = true;
+        // this.updatePayrollRunStatus(this.lastPayRollRunStstus);
+      }
+    });
+  }
+  getFormattedDate(currentDate: any): string {
+    return currentDate.year + '-' + currentDate.month + '-' + currentDate.day;
+  }
+  createPayrollRun(value) {
+    let date = new Date();
+    if (value.payrollrunmonth != "" && value.mydate != "") {
+    //  console.log('rrrttttr', value);
+      this.currentDate = {
+        year: date.getFullYear().toString(),
+        month: _.find(this.displayMonthArray, { 'name': value.payrollrunmonth }).id,
+        day: '01'
+      }
+
+      console.log(this.getFormattedDate(this.currentDate));
+      this.payrollservice.getLastPayRollStatus().then(res => {
+        // this.lastPayRollRunStstus = res.json().data[0].name;
+        this.lastPayRollRunStstusId = res.json().data[0].id
+        let sendValue = {
+          payrollrunmonth: this.getFormattedDate(this.currentDate),
+          startDate: value.mydate.formatted,
+          statusId: this.lastPayRollRunStstusId,
+          user: this.logedPerson
+        }
+        this.payrollservice.createPayaroll(sendValue).then(res => {
+         // this.getMonthToDisplay();
+          //   console.log(res.json());
+          if (res.json().error == false) {
+            alertify.delay(1000);
+            alertify.logPosition("bottom right");
+            alertify.success('Created Payroll Run');
+            this.updatePayrollRunStatus(2);
+          }
+        });
+        //  console.log('value', sendValue);
+      });
+    }
+    else{
+      alertify.delay(1000);
+      alertify.logPosition("bottom right");
+      alertify.error("Select Month and Start Date");
+    }
+  }
+  updatePayrollRunStatus(value) {
+    let self = this;
+    // console.log(value);
+    this.payrollservice.getLastPayRollStatus().then(res => {
+      this.lastPayRollRunStstus = res.json().data[0].name;
+      // console.log('value',value);
+      // console.log('db',this.lastPayRollRunStstus);
+      if (this.lastPayRollRunStstus == '1') {
+        this.clicked1 = false;
+        this.default1 = true;
+
+      }
+      if (this.lastPayRollRunStstus == '2') {
+        this.clicked2 = false;
+        this.default2 = true;
+      }
+      if (this.lastPayRollRunStstus == '3') {
+        this.clicked3 = false;
+        this.default3 = true;
+      }
+      if (this.lastPayRollRunStstus == '4') {
+        this.clicked4 = false;
+        this.default4 = true;
+      }
+      if (this.lastPayRollRunStstus == '5') {
+        this.clicked5 = false;
+        this.default5 = true;
+      }
+      if (value == '1') {
+
+        console.log('111111');
+      //  this.run2 = false;
+      //  this.run3 = false;
+      //  this.run1 = true;
+      //  this.run4 = false;
+      //  this.run5 = false;
+        this.clicked1 = true;
+        this.default1 = false;
+        this.clicked2 = false;
+        this.clicked3 = false;
+        this.clicked4 = false;
+        this.clicked5 = false;
+
+
+      }
+      if (value == '2') {
+        // this.run1 = false;
+        // this.run2 = true;
+        // this.run3 = false;
+        // this.run4 = false;
+        // this.run5 = false;
+        this.clicked2 = true;
+        this.default2 = false;
+        this.clicked1 = false;
+        this.clicked3 = false;
+        this.clicked4 = false;
+        this.clicked5 = false;
+
+        this.payrollservice.getCheckList().then(res => {
+          this.checkList = res.json().data;
+          _.map(this.checkList, function (list) {
+            list.isSelect = false;
+            return list;
+          });
+          //  console.log(this.checkList);
+        });
+      }
+      if (value == '3') {
+      //  this.run1 = false;
+        // this.run2 = false;
+        // this.run3 = true;
+        // this.run4 = false;
+        // this.run5 = false;
+        this.clicked3 = true;
+        this.default3 = false;
+        this.clicked2 = false;
+        this.clicked1 = false;
+        this.clicked4 = false;
+        this.clicked5 = false;
+      }
+      if (value == '4') {
+       // this.run1 = false;
+        // this.run2 = false;
+        // this.run3 = false;
+        // this.run4 = true;
+        // this.run5 = false;
+        this.clicked4 = true;
+        this.default4 = false;
+        this.clicked2 = false;
+        this.clicked3 = false;
+        this.clicked1 = false;
+        this.clicked5 = false;
+      }
+      if (value == '5') {
+       // this.run1 = false;
+        // this.run2 = false;
+        // this.run3 = false;
+        // this.run4 = false;
+        // this.run5 = true;
+        this.clicked5 = true;
+        this.default5 = false;
+        this.clicked4 = false;
+        this.clicked2 = false;
+        this.clicked3 = false;
+        this.clicked1 = false;
+      }
+      let sendValue = {
+        name: value
+      }
+      this.payrollservice.createPayRollRunStatus(sendValue);
+    });
+
+  }
+  updatePayRollChecklist(value) {
+    // console.log(value.id);
+    let sendValue = {
+      checklistid: value.id,
+      createdby: this.logedPerson,
+      date: '2017-09-08'
+    }
+    this.payrollservice.createPayRollRunCheckList(sendValue).then(res => {
+      // console.log('ss', res.json().error);
+      if (res.json().error == false) {
+        alertify.delay(1000);
+        alertify.logPosition("bottom right");
+        alertify.success('Added Payroll Run Checklist');
+      }
+    });
+  }
+  checkFinised() {
+  //  this.run1 = false;
+    // this.run2 = false;
+    // this.run3 = true;
+    this.updatePayrollRunStatus(3);
+  }
+  startDryRun() {
+    this.payrollservice.checkPayRollDryRun().then(res => {
+      //  console.log('eeeeeeeeee',res.json());
+      if (res.json().error == false) {
+        this.startedDryRun = res.json().message;
+      }
+    });
+  }
+  finishDryRun() {
+    this.updatePayrollRunStatus(4);
+  }
+  startRun() {
+    this.payrollservice.checkPayRollRun().then(res => {
+      if (res.json().error == false) {
+        this.startedRun = res.json().message;
+      }
+    });
+  }
+  finishRun() {
+    this.updatePayrollRunStatus(5);
+  }
+  finishPayrollRun() {
+    this.selectedMonth = new Array();
+    this.selectedMonthArray = new Array();
+    this.displayMonthArray = new Array();
+    this.ngOnInit();
+    this.updatePayrollRunStatus(1);
+  }
+}

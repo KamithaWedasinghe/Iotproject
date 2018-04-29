@@ -1,0 +1,357 @@
+import { Component, OnInit } from '@angular/core';
+import { IMyDpOptions } from 'mydatepicker';
+import { PayrollMasterService } from '../../../services/payrollMaster.service';
+import { PayrollDryRunService } from '../../../services/payrollDryRun.service';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import * as _ from 'lodash';
+import alertify from 'alertify.js';
+import * as moment from 'moment';
+import { PaySlipService } from '../../../services/payslip-print.service'
+import { MonthlyPaySlipService } from '../../../services/monthlyPayslip-print.service'
+import {PreRequirementsService} from '../../../services/preRequirements.service'
+import { Angular2Txt } from 'angular2-txt/Angular2-txt';
+import { Angular2Csv } from 'angular2-csv/Angular2-csv';
+import { Http, Response, Headers, RequestOptions } from '@angular/http'
+@Component({
+  selector: 'app-payroll-post-run',
+  templateUrl: './payroll-post-run.component.html',
+  styleUrls: ['./payroll-post-run.component.css'],
+  //   styles: [`
+  //   .modal-content{
+  //     background-color: #292b2c;
+  //     color: red;
+
+  //   }
+  //   .dark-modal .close {
+  //     color: red;   
+  //   }
+  // `]
+})
+export class PayrollPostRunComponent implements OnInit {
+  closeResult: string;
+  id;
+  employeeId;
+  empFristName;
+  empLastName;
+  netSalary;
+  deduction;
+  allowance;
+  monthlyDeduction;
+  monthlyAllowance;
+  basicSalary;
+  createdDate;
+  employeeid;
+  totalEarning;
+  totalDeduction
+  visibleEmpSalary = true
+  salaryDetail
+  firstName
+  lastName
+  allowanceTotal
+  MonthlyallowanceTotal
+  deductionTotal
+  MonthlydeductionTotal
+  activateIndivtualSalaryy = true
+  activatedAllEmployyeSalaryy
+  acivateCard = false
+  companyDetail
+  companyName
+  companyAdress
+  phoneNumber
+  phonenumber
+  bankName
+  getEmployeeSalaryDetailsForBank;
+  fields;
+  employeeDeatilsOfBank = false;
+  arryOfBnakDeatils = [];
+  viewOneEmpBnakDeatils = false;
+  employeeNameForBank;
+  accountNumber;
+  companyAccountNumber;
+  paymentType;
+  amount;
+  description;
+  arryOfBnakDeatilsForExport = [];
+  currentDateTime;
+  bankingDate;
+  reportName;
+  idLengthForId;
+  paddingStatusForId;
+  nameLength;
+  companyBankLength;
+  paddingStatusForBank;
+  paddingLengthForCoAccount;
+  paddingStatusForCoAccount;
+  paddingStatusForEmpAccount;
+  paddingLengthForEmpAccount;
+  paymentLength;
+  paddingStatusForEmpPayment;
+  descriptionLength;
+  paddingStatusForDescription;
+  companyBankName;
+  empBankName;
+  runMonth;
+  constructor(private payrollservice: PayrollMasterService,
+    private PayrollDryRunService: PayrollDryRunService,
+    private modalService: NgbModal,
+    private payslipservice: PaySlipService,
+    private MonthlyPaySlipService: MonthlyPaySlipService,
+    private PreRequirementsService:PreRequirementsService,
+    private http: Http
+  ) 
+  { this.currentDateTime = {
+    "date": {
+      year: moment().year(),
+      month: (moment().month() + 1),
+      day: moment().date(),
+      hour: moment().hours(),
+      minutes: moment().minutes(),
+      seconds: moment().seconds()
+    }
+  } }
+
+  ngOnInit() {
+    this.PayrollDryRunService.getAllSalaryDetail().then(response => {
+      this.salaryDetail = response.json().data;
+      console.log('vvvvvvv', this.salaryDetail)
+    })
+    this.PreRequirementsService.getCompanyDetails().then(response =>{
+      let companyDetail = response.json().data;
+      console.log('company',companyDetail)
+      this.companyName = companyDetail[0].companyName;
+      this.companyAdress = companyDetail[0].addressLineOne;
+      this.phoneNumber = companyDetail[0].phoneNumber   
+    })
+    this.PayrollDryRunService.getEmployeeSalaryDetailsForBank().then(response => {
+      if (response.json().error == false) {
+        this.getEmployeeSalaryDetailsForBank = response.json().data;
+        this.runMonth=this.getEmployeeSalaryDetailsForBank[0].runMonth;
+       // console.log("Banking Details",this.getEmployeeSalaryDetailsForBank);
+
+      }
+    });
+    this.bankingDate = (this.currentDateTime.date.year + '-' + this.currentDateTime.date.month + '-' + this.currentDateTime.date.day + ' ' + '00' + ':' + '00' + ':' + '00');
+  }
+
+
+  open(content) {
+    this.modalService.open(content).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
+
+  getSalaryDetail(id) {
+
+    let data = {
+      id: id
+    }
+    this.PayrollDryRunService.getSalaryDetail(data).then(response => {
+      if (response.json().data.details.length < 1) {
+        alertify.logPosition("bottom right");
+        alertify.error('Enter the valid id');
+        this.visibleEmpSalary = true;
+      } else {
+        //show employee data
+        let empData = response.json().data.details;
+        let empSalary = response.json().data.salary
+     
+        this.phonenumber = empData[0].phonenumber;
+        this.bankName = empData[0].bankName;
+        this.empFristName = empData[0].firstName;
+        this.empFristName = empData[0].firstName;
+        this.empLastName = empData[0].lastName;
+        this.deduction = empSalary[0].deductionTotal;
+        this.monthlyDeduction = empSalary[0].MonthlydeductionTotal;
+        this.allowance = empSalary[0].allowanceTotal;
+        this.monthlyAllowance = empSalary[0].MonthlyallowanceTotal;
+        this.basicSalary = empSalary[0].basicSalary;
+        this.netSalary = empSalary[0].netSalary;
+        this.createdDate = empSalary[0].createdDate;
+        this.employeeid = empData[0].id;
+        this.totalEarning = this.allowance + this.monthlyAllowance;
+        this.totalDeduction = this.deduction + this.monthlyDeduction;
+
+        if (empSalary.length < 1) {
+          this.visibleEmpSalary = true;
+        } else {
+          this.visibleEmpSalary = false;
+          this.acivateCard = true
+        }
+        console.log('kkkkk',this.netSalary)
+      }
+    })
+  }
+
+  searchEmp(id) {
+    if (!id) {
+      this.visibleEmpSalary = true;
+    }
+  }
+
+  printPaySlip() {
+   
+    let printSalaryDetail = {
+      
+      firstName: this.empFristName,
+      lastName: this.empLastName,
+      deductin: this.deduction,
+      monthlyDeduction: this.monthlyDeduction,
+      allowance: this.allowance,
+      monthlyAllowance: this.monthlyAllowance,
+      basicSalary: this.basicSalary,
+      netSalary: this.netSalary,
+      createdDate: moment(new Date(this.createdDate)).format("MMMM YYYY"),
+      employeeid: this.employeeid,
+      totalEarning: this.totalEarning,
+      totalDeduction: this.totalDeduction,
+      companyName:this.companyName,
+      companyAdress:this.companyAdress,
+      phoneNumber:this.phoneNumber
+      
+    }
+    this.payslipservice.printPayslip(printSalaryDetail);
+    console.log(printSalaryDetail)
+  }
+  printMonthlyPaySlip(salaryDetail) {
+    this.MonthlyPaySlipService.printAllMonthlyPayslip(salaryDetail);
+
+  }
+
+  activatedIndivtualSalary() {
+    this.activateIndivtualSalaryy = true;
+    this.activatedAllEmployyeSalaryy = false;
+    this.employeeDeatilsOfBank=false;
+    
+
+  }
+  //changing alowances tab-----------------------------------------------------------------------------
+  activatedAllEmployyeSalary() {
+    this.activatedAllEmployyeSalaryy = true;
+    this.activateIndivtualSalaryy = false;
+    this.visibleEmpSalary = true
+    
+  }
+  bank() {
+    this.employeeDeatilsOfBank = true;
+
+    this.http.get("./assets/banking.json")
+      .subscribe((data) => {
+
+        this.fields = data.json().fields;
+        for (var count = 0; count < this.getEmployeeSalaryDetailsForBank.length; count++) {
+          this.paddingStatusForId = this.fields[0].paddingStatusForId;
+          this.idLengthForId = this.fields[0].idLength;
+          this.nameLength = this.fields[1].NameLength;
+          this.companyBankLength = this.fields[2].bankLength;
+          this.paddingStatusForBank = this.fields[2].paddingStatusForBank;
+          this.paddingLengthForCoAccount = this.fields[3].comanyLength;
+          this.paddingStatusForCoAccount = this.fields[3].paddingStatusForCoAccount;
+          this.paddingLengthForEmpAccount = this.fields[4].empLength;
+          this.paddingStatusForEmpAccount = this.fields[4].paddingStatusForempAccount;
+          this.paymentLength = this.fields[5].paymentLength;
+          this.paddingStatusForEmpPayment = this.fields[5].paddingStatusForemppayment;
+          this.descriptionLength = this.fields[6].descriptionLength;
+          this.paddingStatusForDescription = this.fields[6].paddingStatusForDescription;
+
+
+
+          this.arryOfBnakDeatils.push({
+            id: this.getEmployeeSalaryDetailsForBank[count].id,
+            fullName: this.getEmployeeSalaryDetailsForBank[count].firstName + ' ' + this.getEmployeeSalaryDetailsForBank[count].lastName,
+            companyBankName: this.fields[2].companyBankName,
+            empBankName:this.getEmployeeSalaryDetailsForBank[count].bankName,
+            accountNumber: this.getEmployeeSalaryDetailsForBank[count].accountNumber,
+            companyAccountNumber: this.fields[3].companyAccountNumber,
+            paymentType: this.fields[5].paymentType,
+            amount: this.getEmployeeSalaryDetailsForBank[count].netSalary,
+            description: this.fields[6].description
+          });
+
+        }
+
+
+      });
+
+  }
+
+  backFromBankList() {
+    this.employeeDeatilsOfBank = false;
+  }
+  viewEmpBankDetails(index) {
+    this.employeeDeatilsOfBank = false;
+    this.viewOneEmpBnakDeatils = true;
+
+    this.employeeNameForBank = this.arryOfBnakDeatils[index].fullName;
+    this.companyBankName = this.arryOfBnakDeatils[index].companyBankName;
+    this.empBankName=this.arryOfBnakDeatils[index].empBankName;
+    this.accountNumber = this.arryOfBnakDeatils[index].accountNumber;
+    this.companyAccountNumber = this.arryOfBnakDeatils[index].companyAccountNumber;
+    this.paymentType = this.arryOfBnakDeatils[index].paymentType;
+    this.amount = this.arryOfBnakDeatils[index].amount;
+    this.description = this.arryOfBnakDeatils[index].description;
+
+
+  }
+  BackToEmpBankList() {
+    this.employeeDeatilsOfBank = true;
+    this.viewOneEmpBnakDeatils = false;
+  }
+  CreateTextToFile() {
+    this.reportName = "Banking at" + " " + this.bankingDate;
+    for (var count = 0; count < this.arryOfBnakDeatils.length; count++) {
+
+      this.arryOfBnakDeatilsForExport.push({
+        id: _.padStart(this.arryOfBnakDeatils[count].id, this.idLengthForId, this.paddingStatusForId),
+        fullName: _.padEnd(this.arryOfBnakDeatils[count].fullName, this.nameLength),
+        bankName: _.padEnd(this.arryOfBnakDeatils[count].bankName, this.companyBankLength, this.paddingStatusForBank),
+        companyAccountNumber: _.padStart(this.arryOfBnakDeatils[count].companyAccountNumber, this.paddingLengthForCoAccount, this.paddingStatusForCoAccount),
+        accountNumber: _.padStart(this.arryOfBnakDeatils[count].accountNumber, this.paddingLengthForEmpAccount, this.paddingStatusForEmpAccount),
+        paymentType: _.padEnd(this.arryOfBnakDeatils[count].paymentType, this.paymentLength, this.paddingStatusForEmpPayment),
+        amount: this.arryOfBnakDeatils[count].amount,
+        description: _.padEnd(this.arryOfBnakDeatils[count].description, this.descriptionLength, this.paddingStatusForDescription)
+      });
+    }
+    var options = {
+      fieldSeparator: ' ',
+      quoteStrings: '',
+      decimalseparator: '.',
+      useBom: true,
+
+    };
+    new Angular2Txt(this.arryOfBnakDeatilsForExport, this.reportName, options);
+    this.arryOfBnakDeatilsForExport=[];
+  }
+  CreatExcelToFile() {
+    this.reportName = "Banking at" + " " + this.bankingDate;
+    for (var count = 0; count < this.arryOfBnakDeatils.length; count++) {
+
+      this.arryOfBnakDeatilsForExport.push({
+        id: _.padStart(this.arryOfBnakDeatils[count].id, this.idLengthForId, this.paddingStatusForId),
+        fullName: _.padEnd(this.arryOfBnakDeatils[count].fullName, this.nameLength),
+        bankName: _.padEnd(this.arryOfBnakDeatils[count].bankName, this.companyBankLength, this.paddingStatusForBank),
+        companyAccountNumber: _.padStart(this.arryOfBnakDeatils[count].companyAccountNumber, this.paddingLengthForCoAccount, this.paddingStatusForCoAccount),
+        accountNumber: _.padStart(this.arryOfBnakDeatils[count].accountNumber, this.paddingLengthForEmpAccount, this.paddingStatusForEmpAccount),
+        paymentType: _.padEnd(this.arryOfBnakDeatils[count].paymentType, this.paymentLength, this.paddingStatusForEmpPayment),
+        amount: this.arryOfBnakDeatils[count].amount,
+        description: _.padEnd(this.arryOfBnakDeatils[count].description, this.descriptionLength, this.paddingStatusForDescription)
+      });
+    }
+    new Angular2Csv(this.arryOfBnakDeatilsForExport, this.reportName);
+    this.arryOfBnakDeatilsForExport=[];
+  }
+
+}
+
+

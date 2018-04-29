@@ -1,0 +1,21 @@
+.kamith{
+    background: url('iot.jpg') center fixed ;
+    background-size: contain;
+}
+
+.welcome{
+    padding-top: 30px;
+    background-color: 	#00bfff;
+    /*background-image: url('5.jpg');*/
+    
+    color: black;
+}
+.welcomedetails{
+    margin-top: 30px;
+    color: black;
+    background-color: 	#00bfff;
+    /*background-image: url('5.jpg');*/
+}
+/*.body{
+	background-image: url('5.jpg');
+}*/

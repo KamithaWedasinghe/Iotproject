@@ -1,0 +1,60 @@
+.label-MoreDetails[_ngcontent-c1] {
+    font-size: 30px;
+    color: black;
+    font-weight: normal;
+    top: 22px;
+    position: relative;
+    left: 15px;
+    }
+.main-border{
+        border-color: rgb(35, 134, 35);
+        }
+.fram-table{
+    position: relative;
+    top: 40px;
+    right: 10%;
+}
+.main-label{
+    position: relative;
+    top: 7px;
+    right: 1px;
+  }
+  .buttion-save1{
+    width: 150px;
+    height: 34px;
+    margin-left: 0px;
+    cursor: pointer;
+    top: -6px;
+    position: relative;
+    top: 7px;
+    left: 152%;
+  }
+  .buttion-save2{
+    width: 150px;
+    height: 34px;
+    margin-left: 0px;
+    cursor: pointer;
+    top: -6px;
+    position: relative;
+    top: 7px;
+    left: 152%;
+  }
+  .frameForIndividual{
+    position: relative;
+    top: 50px;
+    right: 10%;
+  }
+  .button-sizes{
+    
+  position: relative;
+  left: 90px;
+    
+    }
+  
+.img-logo {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 5px;
+      width: 150px;
+      float: left;
+  }

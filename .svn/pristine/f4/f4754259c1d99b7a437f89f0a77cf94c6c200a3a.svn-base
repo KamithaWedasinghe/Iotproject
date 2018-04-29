@@ -1,0 +1,87 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { HttpModule } from '@angular/http';
+import { FormsModule }from '@angular/forms';
+import { NgForm } from '@angular/forms';
+import {  ReactiveFormsModule }   from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import * as _ from "lodash";
+import { NgxBarcodeModule } from 'ngx-barcode';
+import { MyDatePickerModule } from 'mydatepicker';
+//import { OnlyNumber } from './directive/numberValidation';
+
+
+import { AppComponent } from './app.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { NAV_DROPDOWN_DIRECTIVES } from './shared/nav-dropdown.directive';
+
+import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { SIDEBAR_TOGGLE_DIRECTIVES } from './shared/sidebar.directive';
+import { AsideToggleDirective } from './shared/aside.directive';
+import { BreadcrumbsComponent } from './shared/breadcrumb.component';
+
+// Routing Module
+import { AppRoutingModule } from './app.routing';
+
+//services
+import { CommonService } from './services/common/common.service';
+import { ConfigService } from './services/config/config.service';
+import { AuthenticationService } from './services/common/authentication.service';
+import { PayrollService } from './services/Payroll.service';
+import { FullLayoutComponent } from './layouts/full-layout.component';
+import { SimpleLayoutComponent } from './layouts/simple-layout.component';
+import { LoginComponent } from './login/login.component';
+import { AuthGuard }  from './services/common/auth-guard.service';
+import {DataTableModule} from "angular2-datatable";
+import { CommonModule } from '@angular/common';
+import { EmployeeRegistationComponent } from './payroll/employee-registation/employee-registation.component';
+import {PayrollMasterService} from './services/payrollMaster.service';
+import { PayrollRunComponent } from './payroll-run/payroll-run.component';
+
+@NgModule({
+  imports: [
+    FormsModule,
+    BrowserModule,
+    AppRoutingModule,
+    BsDropdownModule.forRoot(),
+    TabsModule.forRoot(),
+    ChartsModule,
+    HttpModule,
+    NgxBarcodeModule,
+    DataTableModule,
+    CommonModule,
+    MyDatePickerModule
+   
+  ],
+  declarations: [
+    AppComponent,
+    FullLayoutComponent,
+    SimpleLayoutComponent,
+    NAV_DROPDOWN_DIRECTIVES,
+    BreadcrumbsComponent,
+    SIDEBAR_TOGGLE_DIRECTIVES,
+    AsideToggleDirective,
+    LoginComponent,
+    PayrollRunComponent,
+    //OnlyNumber
+   
+  ],
+  providers: [
+    {
+    provide: LocationStrategy,
+    useClass: HashLocationStrategy
+    
+  },
+    DatePipe,
+    CommonService,
+    ConfigService,
+    PayrollService,
+    PayrollMasterService,
+    AuthenticationService,
+    AuthGuard
+  ],
+  bootstrap: [ AppComponent ]
+})
+export class AppModule { }

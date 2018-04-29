@@ -1,0 +1,552 @@
+<div class="row">
+  <div class="col-sm-12" style="height:40px">
+
+
+
+
+  </div>
+</div>
+
+<!-- tabs -->
+
+<ul class="nav nav-tabs" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" href="" (click)="activatedIndivtualSalary()" role="tab" data-toggle="tab">Indivitual salary detail</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="" (click)="activatedAllEmployyeSalary()" role="tab" data-toggle="tab">Common Salary Detail</a>
+  </li>
+</ul>
+
+<div class="card" style="border-top-color:transparent;" *ngIf="activateIndivtualSalaryy">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="input-group">
+          <input type="text" class="form-control" (keyup)='searchEmp(id.value)' (keyup.enter)="getSalaryDetail(id.value)" #id placeholder="Employee Id"
+            aria-describedby="basic-addon2">
+          <span class="input-group-addon employee-search" (click)="getSalaryDetail(id.value)" id="basic-addon2">Search</span>
+        </div>
+
+      </div>
+      <div class="col-sm-6">
+        <button type="button" class="btn btn-secondary" [disabled]="visibleEmpSalary" (click)="open(content)" style="width:100%;background-color:rgb(226, 239, 250)">Priview Pay Slip</button>
+
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="card" *ngIf="!visibleEmpSalary" style="background-color:transparent;border-color:transparent">
+          <div class="card-block" style="padding:0px">
+            <div class="row">
+              <div class="col-sm-4">
+                <b>Name</b>
+              </div>
+              <div class="col-sm-8">
+                <b> {{empFristName}} {{empLastName}}</b>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <b>Bank Name</b>
+              </div>
+              <div class="col-sm-4">
+                <b>{{bankName}}</b>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <b>Telephone Number</b>
+              </div>
+              <div class="col-sm-4">
+                <b>{{phonenumber}}</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-sm-6">
+        <button type="button" [disabled]="visibleEmpSalary" class="btn btn-secondary" (click)="bank()" style="width:100% ;background-color:rgb(226, 239, 250)">Bank Payment</button>
+      </div> -->
+    </div>
+
+
+  </div>
+</div>
+
+
+<div class="card" style="border-top-color:transparent;" *ngIf="activatedAllEmployyeSalaryy">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-6">
+       <b>Pay slip for the month of {{createdDate | date: 'MMMM yyyy'}}</b>
+      </div>
+
+      <div class="col-sm-6">
+     
+
+      </div>
+
+
+    </div>
+    <br>
+    
+    <div class="row">
+        <div class="col-sm-6">
+          <button type="button" [disabled]="" class="btn btn-secondary" (click)="bank()" style="width:100% ;background-color:rgb(226, 239, 250)">Bank Payment</button>
+        </div>
+  
+        <div class="col-sm-6">
+          <button type="button" class="btn btn-secondary" (click)="open(conten)" style="width:100%;background-color:rgb(226, 239, 250)">Deposit Payment</button>
+  
+        </div>
+  
+  
+      </div>
+
+
+  </div>
+</div>
+
+
+
+<ng-template class="modal-content" #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Priview Pay Slip</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+
+    <h5 style="text-align:center">{{companyName}}</h5>
+    <p style="text-align:center;margin-top:-8px">{{companyAdress}}</p>
+    <p style="text-align:center;margin-top:-14px">{{phoneNumber}}</p>
+    <p>Pay slip for the month of {{createdDate | date: 'MMMM yyyy'}}</p>
+
+    <div class="row">
+      <div class="col-sm-4">
+        <p style="margin-top:-10px">Employee Id :- {{employeeid}} </p>
+      </div>
+      <div class="col-sm-8">
+        <p style="margin-top:-10px">Employee Name :- {{empFristName}} {{empLastName}} </p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4">
+        <p style="margin-top:-10px">
+          <b> Gross Salary:-Rs {{ total | number : '1.2-2'}}</b>
+        </p>
+      </div>
+      <div class="col-sm-8">
+        <p style="margin-top:-10px">
+          <b> Net Salary :-Rs {{ netSalary | number : '1.2-2'}}</b>
+        </p>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-sm-7">
+        <p style="margin-top:-10px">
+          <b> Basic Salary:-Rs {{ basicSalary | number : '1.2-2'}}</b>
+        </p>
+      </div>
+      <div class="col-sm-5">
+        <p style="margin-top:-10px">
+
+        </p>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <p style="float:right;margin-top:-2px">
+          <b> Earning </b>
+        </p>
+      </div>
+      <div class="col-sm-6">
+        <p style="text-align:right;margin-top:-2px">
+          <b> Deduction</b>
+        </p>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3">
+        <p style="text-align:center;margin-top:-12px">
+          Description
+        </p>
+      </div>
+      <div class="col-sm-3">
+        <p style="text-align:center;margin-top:-12px">
+          Amount (Rs)
+        </p>
+      </div>
+      <div class="col-sm-3">
+        <p style="text-align:center;margin-top:-12px">
+          Description
+        </p>
+      </div>
+      <div class="col-sm-3">
+        <p style="text-align:center;margin-top:-12px">
+          Amount (Rs)
+        </p>
+      </div>
+
+
+    </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <p style="margin-top:-13px">Allowance </p>
+      </div>
+      <div class="col-sm-3">
+        <p style="margin-left:26px;margin-top:-13px"> {{allowance | number : '1.2-2'}}</p>
+      </div>
+      <div class="col-sm-3">
+        <p style="margin-top:-13px">Deduction </p>
+      </div>
+      <div class="col-sm-3">
+        <p style="margin-left:26px;margin-top:-13px"> {{deduction | number : '1.2-2'}} </p>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <p style="margin-top:-13px"> Monthly Allowance </p>
+      </div>
+      <div class="col-sm-2">
+        <p style="margin-left:-15px;margin-top:-15px"> {{monthlyAllowance | number : '1.2-2'}} </p>
+      </div>
+      <div class="col-sm-4">
+        <p style="margin-top:-13px">Monthly Deduction</p>
+      </div>
+      <div class="col-sm-2">
+        <p style="margin-left:-15px;margin-top:-15px"> {{monthlyDeduction | number : '1.2-2'}}</p>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4">
+        <p style="margin-top:-13px">
+          <b>Total Earning</b>
+        </p>
+      </div>
+      <div class="col-sm-2">
+        <p style="margin-left:-15px;margin-top:-15px"> {{totalEarning | number : '1.2-2'}} </p>
+      </div>
+      <div class="col-sm-4">
+        <p style="margin-top:-13px">
+          <b>Total Deduction</b>
+        </p>
+      </div>
+      <div class="col-sm-2">
+        <p style="margin-left:-15px;margin-top:-15px"> {{ totalDeduction | number : '1.2-2'}} </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" style="background-color:#20a8d8" class="btn btn-outline-dark" (click)="printPaySlip()">Print</button>
+  </div>
+</ng-template>
+
+
+
+
+<!-- all paySlip modal -->
+
+<ng-template class="modal-content" #conten let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Priview Pay Slip</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div *ngFor='let salaryDetail of salaryDetail'>
+    <div class="modal-body" style="height:500px">
+
+      <h5 style="text-align:center">{{companyName}}</h5>
+      <p style="text-align:center;margin-top:-8px">{{companyAdress}}</p>
+      <p style="text-align:center;margin-top:-14px">{{phoneNumber}}</p>
+
+      <p>Pay Slip For The Month :- {{salaryDetail.createdDate | date: 'MMMM yyyy'}}</p>
+      <br>
+      <div class="row">
+        <div class="col-sm-4">
+          <p style="margin-top:-10px">Employee Id :- {{salaryDetail.employeeid}} </p>
+        </div>
+        <div class="col-sm-8">
+          <p style="margin-top:-10px">Employee Name :- {{salaryDetail.firstName}} {{salaryDetail.lastName}} </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-4">
+          <p style="margin-top:-10px">
+            <b> Gross Salary:-Rs {{ total | number : '1.2-2'}}</b>
+          </p>
+        </div>
+        <div class="col-sm-8">
+          <p style="margin-top:-10px">
+            <b> Net Salary :-Rs {{ salaryDetail.netSalary | number : '1.2-2'}}</b>
+          </p>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-sm-7">
+          <p style="margin-top:-10px">
+            <b> Basic Salary:- Rs {{ salaryDetail.basicSalary | number : '1.2-2'}}</b>
+          </p>
+        </div>
+        <div class="col-sm-5">
+          <p style="margin-top:-10px">
+
+          </p>
+        </div>
+
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-sm-4">
+          <p style="float:right;margin-top:-2px">
+            <b> Earning </b>
+          </p>
+        </div>
+        <div class="col-sm-6">
+          <p style="text-align:right;margin-top:-2px">
+            <b> Deduction</b>
+          </p>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-sm-3">
+          <p style="text-align:center;margin-top:-12px">
+            Description
+          </p>
+        </div>
+        <div class="col-sm-3">
+          <p style="text-align:center;margin-top:-12px">
+            Amount (Rs)
+          </p>
+        </div>
+        <div class="col-sm-3">
+          <p style="text-align:center;margin-top:-12px">
+            Description
+          </p>
+        </div>
+        <div class="col-sm-3">
+          <p style="text-align:center;margin-top:-12px">
+            Amount (Rs)
+          </p>
+        </div>
+
+
+      </div>
+      <div class="row">
+        <div class="col-sm-3">
+          <p style="margin-top:-13px">Allowance </p>
+        </div>
+        <div class="col-sm-3">
+          <p style="margin-left:26px;margin-top:-13px"> {{salaryDetail.allowanceTotal | number : '1.2-2'}}</p>
+        </div>
+        <div class="col-sm-3">
+          <p style="margin-top:-13px">Deduction </p>
+        </div>
+        <div class="col-sm-3">
+          <p style="margin-left:26px;margin-top:-13px"> {{salaryDetail.deductionTotal | number : '1.2-2'}} </p>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <p style="margin-top:-13px"> Monthly Allowance </p>
+        </div>
+        <div class="col-sm-2">
+          <p style="margin-left:-15px;margin-top:-15px"> {{salaryDetail.MonthlyallowanceTotal | number : '1.2-2'}} </p>
+        </div>
+        <div class="col-sm-4">
+          <p style="margin-top:-13px">Monthly Deduction</p>
+        </div>
+        <div class="col-sm-2">
+          <p style="margin-left:-15px;margin-top:-15px"> {{salaryDetail.MonthlydeductionTotal | number : '1.2-2'}}</p>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-sm-4">
+          <p style="margin-top:-13px">
+            <b>Total Earning</b>
+          </p>
+        </div>
+        <div class="col-sm-2">
+          <p style="margin-left:-15px;margin-top:-15px"> {{ salaryDetail.MonthlyallowanceTotal+salaryDetail.allowanceTotal | number : '1.2-2'}} </p>
+        </div>
+        <div class="col-sm-4">
+          <p style="margin-top:-13px">
+            <b>Total Deduction</b>
+          </p>
+        </div>
+        <div class="col-sm-2">
+          <p style="margin-left:-15px;margin-top:-15px"> {{ salaryDetail.MonthlydeductionTotal+salaryDetail.deductionTotal | number : '1.2-2'}} </p>
+        </div>
+
+      </div>
+      <hr style="background-color:rgb(206, 211, 206);margin-top:100px">
+    </div>
+  </div>
+
+  <div class="modal-footer" style="border-color:transparent">
+    <button type="button" style="background-color:#20a8d8" class="btn btn-outline-dark" (click)="printMonthlyPaySlip(salaryDetail)">Print</button>
+  </div>
+</ng-template>
+
+
+<!-- Banking Payment -->
+
+
+<div *ngIf="employeeDeatilsOfBank">
+  
+      <div class="card main-border">
+        <div class="card-block">
+          <div class="row">&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="button" (click)="backFromBankList()" class="btn btn-primary btn-sm ">Back</button>
+            <button type="button" (click)="CreateTextToFile()" class="btn btn-primary btn-sm export-backButtion">Export Text File</button>
+            <button type="button" (click)="CreatExcelToFile()" class="btn btn-primary btn-sm export-backButtion">Export Excel File</button>
+            <label class="label-MoreDetails">&nbsp;&nbsp;&nbsp;Banking List</label>
+          </div>
+  
+  
+  
+          <table class="table table-striped" [mfData]="arryOfBnakDeatils | dataFilter : filterQuery" #mf="mfDataTable" [mfRowsOnPage]="5">
+            <thead>
+              <tr>
+                <p>
+                  <label class="">Filter by name:</label>
+                  <input class="form-control" [(ngModel)]="filterQuery" />
+                </p>
+              </tr>
+              <tr>
+                <th style="width: 80%">
+                  <mfDefaultSorter by="name">Name</mfDefaultSorter>
+                </th>
+                <th style="width: 20%">
+                  <mfDefaultSorter by=""></mfDefaultSorter>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of mf.data;let i=index">
+                <td>{{item.fullName}}</td>
+                <td>
+                  <button type="button" data-container="body" data-toggle="popover" data-placement="left" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                    class="btn btn-success btn-sm button-sizes" (click)="viewEmpBankDetails(i)">Details</button>
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4">
+                  <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="viewOneEmpBnakDeatils">
+      
+          <div class="card main-border">
+            <div class="card-block">
+      
+              <div class="row">
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" (click)="BackToEmpBankList()" class="btn btn-primary btn-sm moreDetails-backButtion">Back</button>
+                <label class="label-MoreDetails">&nbsp;&nbsp;&nbsp;{{employeeNameForBank}}</label>
+              </div>
+              <hr class="hr1">
+      
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="bc-colr">1.Company Bank :</label>
+                </div>
+                <div class="col-md-4">
+                  <label class="bc-colr">{{companyBankName}}</label>
+                </div>
+                <div class="col-md-2"></div>
+              </div>
+              
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="bc-colr">2.Account Number :</label>
+                </div>
+                <div class="col-md-4">
+                  <label class="bc-colr">{{accountNumber}}</label>
+                </div>
+                <div class="col-md-2"></div>
+              </div>
+              <div class="row">
+                  <div class="col-md-6">
+                    <label class="bc-colr">3.Employee Bank :</label>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="bc-colr">{{empBankName}}</label>
+                  </div>
+                  <div class="col-md-2"></div>
+                </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="bc-colr">4.Company AccountNumber :</label>
+                </div>
+                <div class="col-md-4">
+                  <label class="bc-colr">{{companyAccountNumber}}</label>
+                </div>
+                <div class="col-md-2"></div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="bc-colr">5.Payment Type:</label>
+                </div>
+                <div class="col-md-4">
+                  <label class="bc-colr">{{paymentType}}</label>
+                </div>
+                <div class="col-md-2"></div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="bc-colr">6.Amount:</label>
+                </div>
+                <div class="col-md-4">
+                  <label class="bc-colr">Rs. {{amount | number:'.2-2'}}</label>
+                </div>
+                <div class="col-md-2"></div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label class="bc-colr">7.Descriptions:</label>
+                </div>
+                <div class="col-md-4">
+                  <label class="bc-colr">{{description}}</label>
+                </div>
+                <div class="col-md-2"></div>
+              </div>
+              
+         
+              
+            </div>
+          </div>
+        </div>

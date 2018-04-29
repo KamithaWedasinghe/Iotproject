@@ -1,0 +1,33 @@
+.button1{
+    padding: 0px;
+    margin:0px;
+    display:inline-block;
+}
+
+
+.nav-link{
+    padding:0px;
+}
+.form-control{
+    padding-top: 5px;
+}
+
+
+  @media only screen and (max-width: 1024px) {
+    .information-button{
+        margin-right: 56px;     
+    }
+  }
+  @media only screen and (max-width: 768px) {
+    .information-button{
+       float: center;   
+    }
+  }
+  /* @media only screen and (max-width: 768px) {
+    .update-button{
+        margin-right: 80px;     
+    }
+  }
+  */
+
+

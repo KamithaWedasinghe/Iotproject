@@ -1,0 +1,54 @@
+.attendance-td-css{
+    padding-top: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-bottom: 2px;
+}
+.add-excell{
+    margin-top: 1%;
+}
+.excell-table-view{
+    margin-top: 1%;
+}
+.input-excell{
+    /* color: #B3B3DA; */
+}
+/* .btn-next{
+    padding-top: 4px;
+    padding-bottom: 4px;
+} */
+
+.div-btn-next{
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+.div-next-mapping{
+    margin-top: 1%;
+}
+.td-table-heading{
+    /* text-align: center; */
+}
+
+.form-group input[type="checkbox"] {
+    display: none;
+}
+
+.td-clicked{
+color: red;
+}
+.active td {
+    background-color:#DF1010 !important;
+    color: white;
+  }
+
+.delete-icon{
+    color: red;
+    float: right;
+}
+.btn-save{
+    margin-top: 1%;
+    margin-bottom: 3%;
+}
+.card-main{
+    margin-top: 1%;
+}

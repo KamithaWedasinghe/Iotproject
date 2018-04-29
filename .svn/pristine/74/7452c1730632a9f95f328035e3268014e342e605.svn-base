@@ -1,0 +1,22 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { PreRequirementsRouter } from './preRequirements.routing.module';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { PreRequirementsComponent } from '../preRequirements/preRequirements.component';
+import { ImageUploadModule } from "angular2-image-upload";
+import { SharedModule } from "../shared/shared.module";
+
+
+@NgModule({
+  imports: [
+    CommonModule,
+    PreRequirementsRouter,
+    FormsModule,
+    ReactiveFormsModule, 
+    ImageUploadModule.forRoot(),
+    SharedModule
+  ],
+  declarations: [  PreRequirementsComponent ]
+ 
+})
+export class PreRequirementsModule { }

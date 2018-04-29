@@ -1,0 +1,182 @@
+<div class="row frame-padding">
+  <div class="col-md-6">
+    <label class="label-main">Allowances</label>
+    <div class="card main-border">
+      <div class="card-block">
+        <button type="button" class="btn btn-primary btn-sm buttion-align" (click)="showBlockAllowance()">
+          <i class="fa fa-plus fa-lg"></i>
+        </button>
+        <!-- <div class="row"> -->
+        <label class="label-internal">Type</label>
+        <hr class="hr1">
+        <!-- allowance add block -->
+        <div class="newType-input" id="allowanceText" style="display:none">
+          <div class="row">
+            <div class="col-md-8">
+              <input type="text" name="allowanceInputText" id="allowanceInputText" class="form-control" onfocus="this.value=''" [(ngModel)]="allowanceInputText">
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="btn btn-primary btn-sm buttion-save" (click)="addAllowanceType()">
+                <b>Save</b>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- allowance edit block -->
+        <div class="newType-input" id="editAllowInput" style="display:none">
+            <div class="row">
+              <div class="col-md-8">
+                <input type="text"  name="editAllowanceText" id="editAllowanceText" class="form-control" onfocus="this.value=''" [(ngModel)]="editAllowanceText">
+              </div>
+              <div class="col-md-4">
+                <button type="button" class="btn btn-primary btn-sm buttion-save" (click)="editAllowanceType()">
+                  <b>Save</b>
+                </button>
+              </div>
+            </div>
+          </div>
+     <!-- all allowances and edit and delete buttons -->
+        <div class="row">
+          <div class="col-md-8">
+            <label class="bc-colr" *ngFor='let allAllowance of allAllowances'><b>{{allAllowance.name}}</b></label>
+          </div>
+          <div class="col-md-4">
+            <div *ngFor='let allAllowance of allAllowances' class="btton-groupEditAndDelete">
+              <button type="button" class="btn btn-primary edit-button" (click)="showBlockEditAllowance(allAllowance.id,allAllowance.name)"> 
+                <i class="fa fa-pencil" aria-hidden=""></i>
+              </button>
+              <button class="btn btn-primary delete-button" (click)="deleteAllowanceType(allAllowance.id)">
+                <i class="fa fa-trash-o" aria-hidden=""></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <label class="label-main">Deductions</label>
+    <div class="card main-border">
+      <div class="card-block">
+        <button type="button" class="btn btn-primary btn-sm buttion-align" (click)="showBlockDeduction()">
+          <i class="fa fa-plus fa-lg"></i>
+        </button>
+        <label class="label-internal">Type</label>
+        <hr class="hr1">
+        <!--deduction add block -->
+        <div class="newType-input" id="deductionText" style="display:none">
+          <div class="row">
+            <div class="col-md-8">
+              <input type="text" name="deductionInputText" id="deductionInputText" class="form-control" onfocus="this.value=''" [(ngModel)]="deductionInputText">
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="btn btn-primary btn-sm buttion-save" (click)="addDeductionType()">
+                <b>Save</b>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!--deduction edit block -->
+        <div class="newType-input" id="editDeducInput" style="display:none">
+          <div class="row">
+            <div class="col-md-8">
+              <input type="text" name="editDeductionText" id="editDeductionText" class="form-control" onfocus="this.value=''" [(ngModel)]="editDeductionText">
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="btn btn-primary btn-sm buttion-save" (click)="editDeductionType()">
+                <b>Save</b>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- decution edit and delete buttion-->
+        <div class="row">
+          <div class="col-md-8">
+            <label class="bc-colr" *ngFor='let allDeduction of allDeductions'><b>{{allDeduction.name}}</b></label>
+          </div>
+          <div class="col-md-4">
+            <div *ngFor='let allDeduction of allDeductions' class="btton-groupEditAndDelete">
+              <button class="btn btn-primary edit-button" (click)="showBlockEditDeduction(allDeduction.id,allDeduction.name)">
+                <i class="fa fa-pencil" aria-hidden=""></i>
+              </button>
+              <button class="btn btn-primary delete-button" (click)="deleteDeductionType(allDeduction.id)">
+                <i class="fa fa-trash-o" aria-hidden=""></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row frame-padding">
+  <div class="col-md-6">
+    <label class="label-main">Category</label>
+    <div class="card main-border">
+      <div class="card-block">
+        <button type="button" class="btn btn-primary btn-sm buttion-align" (click)="showBlockAllowance()">
+          <i class="fa fa-plus fa-lg"></i>
+        </button>
+        <!-- <div class="row"> -->
+        <label class="label-internal">Type</label>
+        <hr class="hr1">
+        <!-- allowance add block -->
+        <div class="newType-input" id="allowanceText" style="display:none">
+          <div class="row">
+            <div class="col-md-8">
+              <input type="text" name="allowanceInputText" id="allowanceInputText" class="form-control" onfocus="this.value=''" [(ngModel)]="allowanceInputText">
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="btn btn-primary btn-sm buttion-save" (click)="addAllowanceType()">
+                <b>Save</b>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- allowance edit block -->
+        <div class="newType-input" id="editAllowInput" style="display:none">
+            <div class="row">
+              <div class="col-md-8">
+                <input type="text"  name="editAllowanceText" id="editAllowanceText" class="form-control" onfocus="this.value=''" [(ngModel)]="editAllowanceText">
+              </div>
+              <div class="col-md-4">
+                <button type="button" class="btn btn-primary btn-sm buttion-save" (click)="editAllowanceType()">
+                  <b>Save</b>
+                </button>
+              </div>
+            </div>
+          </div>
+     <!-- all allowances and edit and delete buttons -->
+        <div class="row">
+          <div class="col-md-8">
+            <label class="bc-colr" *ngFor='let allAllowance of allAllowances'><b>{{allAllowance.name}}</b></label>
+          </div>
+          <div class="col-md-4">
+            <div *ngFor='let allAllowance of allAllowances' class="btton-groupEditAndDelete">
+              <button type="button" class="btn btn-primary edit-button" (click)="showBlockEditAllowance(allAllowance.id,allAllowance.name)"> 
+                <i class="fa fa-pencil" aria-hidden=""></i>
+              </button>
+              <button class="btn btn-primary delete-button" (click)="deleteAllowanceType(allAllowance.id)">
+                <i class="fa fa-trash-o" aria-hidden=""></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <label class="label-main">Deductions</label>
+    <div class="card main-border">
+      <div class="card-block">
+        This is some text within a card block.
+
+      </div>
+    </div>
+  </div>
+</div>

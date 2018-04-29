@@ -1,0 +1,98 @@
+<div class="fram-table" *ngIf="userTable">
+<div class="card main-border">
+          <div class="card-block">
+            <div class="row">
+              <label class="label-MoreDetails"><b><h5>Users</h5></b></label>
+            </div>
+            
+            <hr class="hr1">
+    
+            <table class="table table-striped" [mfData]="allUsersNames | dataFilter : filterQuery" #mf="mfDataTable" [mfRowsOnPage]="5">
+              <thead>
+                <tr>
+                  <p>
+                    <label class=""><h6>Filter by name:</h6></label>
+                    <input class="form-control" [(ngModel)]="filterQuery" />
+                  </p>
+                </tr>
+    
+                <tr>
+                  <th style="width: 80%">
+                    <mfDefaultSorter by="name"><h5>Name</h5></mfDefaultSorter>
+                  </th>
+                  <th style="width: 20%">
+                    <mfDefaultSorter by=""></mfDefaultSorter>
+                  </th>
+    
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of mf.data;">
+                  <td><h4>{{item.fullName}}</h4></td>
+                  <td>
+                    <button type="button" data-container="body" data-toggle="popover" data-placement="left" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+                      class="btn btn-success btn-sm button-sizes" (click)="viewReadyDetails(item)">View Details</button>
+                  </td>
+    
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="4">
+                    <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        </div>
+        <div *ngIf="oneUserDetails" class="frameForIndividual">
+            <div class="row">
+               
+              <div class="col-md-6">
+                  <img src="{{photo}}" class="img-logo" alt="User Photo">
+                <label class="main-label"><h4>{{userFullName}}</h4></label>
+              </div>
+   
+                <div class="col-md-3"><button type="button" class="btn btn-primary btn-sm buttion-save2" (click)="backtoNameList()">
+                    <b>Back</b>
+                  </button></div>
+              </div>
+              <table class="table table-striped maincontainerfluid">
+                  
+            
+                          <tbody>
+                           <tr>
+                              <td>
+                                <label class=" main-font "><h4>Email</h4></label>
+                              </td>
+                              <td>
+                                <label name="forModalcashAmount"><h4>{{userEmail}}</h4></label>
+                              </td>
+                
+                            </tr>
+                            <tr>
+                              <td>
+                                <label class=" main-font "><h4>Password</h4></label>
+                              </td>
+                              <td>
+                                <label name="forModalBankChequeAmount"><h4>{{userPassword}}</h4></label>
+                              </td>
+                
+                            </tr>
+                            <tr>
+                              <td>
+                                <label class=" main-font "><h4>Role</h4></label>
+                              </td>
+                              <td>
+                                <label name="forModaltotalAmount"><h4>{{userRole}}</h4></label>
+                              </td>
+                
+                            </tr>
+                       
+                        </tbody>
+                        </table>
+                        
+                       
+            </div>

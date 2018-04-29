@@ -1,0 +1,66 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import 'rxjs/add/operator/switchMap';
+import { EmployeeDetailComponent } from '../employee-detail/employee-detail.component';
+import { PayrollService } from '../../services/Payroll.service';
+
+@Component({
+  selector: 'app-deduction-alowances',
+  templateUrl: './deduction-alowances.component.html',
+  styleUrls: ['./deduction-alowances.component.css']
+})
+
+export class DeductionAlowancesComponent implements OnInit {
+  private id;
+  name
+  value=1;
+  deductionName = []=[];
+  activateDeduction=true;
+  activateAllowance
+  deductionType
+  selectedDeduction:null
+  constructor( 
+     private route: ActivatedRoute,
+     private employeedetail: EmployeeDetailComponent,
+     private wishPayrollService: PayrollService,
+  ) { }
+
+  ngOnInit() {
+     
+    let desc = this.route.snapshot.paramMap.get('id');
+    this.id = desc;
+    let employeeDetail ={
+      id:this.id
+    }
+    this.wishPayrollService. getEmployeeName(employeeDetail).then(response => {
+       this.name = response.json().data
+    })
+
+    this.wishPayrollService.getDeductionType().then(response =>{
+      this.deductionType = response.json().data
+    })
+}
+
+ //changing deduction tab-----------------------------------------------------------------------------
+  activatedDeduction() {
+    this.activateDeduction = true;
+    this.activateAllowance = false;
+    
+  }
+  //changing alowances tab-----------------------------------------------------------------------------
+  activatedAllowance() {
+    this.activateAllowance = true;
+    this.activateDeduction = false;
+  
+  }
+  logDropdown(id: number): void {
+    const NAME =   this.deductionType.find((item: any) => item.id === +id).name;
+    var values={
+      id:this.value,
+      name:NAME
+    }
+    this.deductionName.push(values)
+    this.value++;
+  }
+  
+}

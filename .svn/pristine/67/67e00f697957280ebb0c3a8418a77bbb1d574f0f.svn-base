@@ -1,0 +1,290 @@
+import { ViewChildren, Component, Directive, ElementRef, Renderer, OnInit } from '@angular/core';
+import { DeductionAlowancesComponent } from '../deduction-alowances.component'
+import { PayrollService } from '../../../services/Payroll.service';
+import alertify from 'alertify.js';
+import {MyInput} from '../../../directive/autoFocus';
+import _ from "lodash";
+import * as moment from 'moment';
+import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-monthly-deduction',
+  templateUrl: './monthly-deduction.component.html',
+  styleUrls: ['./monthly-deduction.component.css'],
+  
+  styles: [`
+  @media only screen and (max-width: 1300px) {
+      .pencil-button{
+      margin-right:-25px;
+      margin-top:-12px;
+      
+      
+      }
+  }
+
+
+
+ 
+
+
+
+ 
+`]
+})
+export class MonthlyDeductionComponent implements OnInit {
+  @ViewChildren(MyInput) inputs;
+  payrollRunMonth;
+  deductionType;
+  deduction
+  amount
+  comment
+  employeeId
+  runMonth
+  loginUserName
+  createdDate
+  monthlyDeductionDetail =[];
+  totalAllowanceAmount
+  updatebtnVisibility
+  hiddenType
+  deductionId 
+  deductionComment
+  deductionAmount
+  autoFocus = true
+  updateid;
+  dedcutionItemId;
+  lastPayRollRunMonth;
+  selectedMonthArray=new Array();
+  MonthDifferentYear;
+  selectedMonth=new Array();
+  lastPayRollRunYear;
+  displayMonthArray=new Array();
+  payrollid
+  payRollMonth
+  monthlyDeductionDetails
+  dueMonth
+  userForm
+  payrollMonth
+  constructor(
+    private wishPayrollService: PayrollService,
+    private DeductionAllowance: DeductionAlowancesComponent,
+    private formBuilder: FormBuilder
+  ) {
+    this.userForm =true;
+    this.userForm = this.formBuilder.group({
+      'amount': ['', Validators.required],
+      'deduction': ['', [Validators.required]],
+      'payrollMonth': ['', Validators.required],
+      'comment': ['', [Validators.required, Validators.minLength(5)]]
+    });
+
+
+   }
+
+  ngOnInit() {
+
+   
+    this.deductionType = this.DeductionAllowance.deductionType
+    this.employeeId = this.DeductionAllowance.identifierId
+    this.loginUserName = this.DeductionAllowance.username
+    this.createdDate = this.DeductionAllowance.createdate
+
+    let empId ={
+      id : parseInt(this.employeeId),
+    }
+
+     this.wishPayrollService.getMonthlyDeductionDetail(empId).then(res =>{
+       this.monthlyDeductionDetail = res.json().data;
+       this.totalEmployeeMonthlyDeductionAmount()
+     })
+
+
+
+    let selectedStartMonth;
+    let countMonth;
+    let self=this;
+    let MonthDifferentYear;
+    let start;
+    let isNextYear;
+    this.wishPayrollService.getLastMonth().then(res=>{
+    this.payrollid=res.json().data[0];
+    this.lastPayRollRunMonth = parseInt(res.json().data[0].month.split('-')[1]);
+ // this.lastPayRollRunYear = parseInt(res.json().data[0].month.split('-')[0]);
+    let selectedStartMonth = this.lastPayRollRunMonth ;
+
+    _.forEach(_.range(selectedStartMonth, selectedStartMonth + 5), function (month) {
+      if (month < 13) {
+      // countMonth++;
+        self.selectedMonth.push(_.padStart(month, 2, '0'));
+        self.selectedMonthArray.push(moment(_.padStart(month, 2, '0'), 'MM').format('MMMM'));
+      } 
+      else {
+        MonthDifferentYear = 5 - countMonth;
+        start = 1;
+        isNextYear = true;
+      }
+      if (isNextYear) {
+        self.lastPayRollRunYear = self.lastPayRollRunYear + 1;
+        _.forEach(_.range(start, MonthDifferentYear + 1), function (month) {
+          self.selectedMonth.push(_.padStart(month, 2, '0'));
+          self.selectedMonthArray.push(moment(_.padStart(month, 2, '0'), 'MM').format('MMMM'));
+        });
+      }
+
+
+
+    });
+    for (let i = 0; i < self.selectedMonth.length; i++) {
+      let orderMonth = {
+        id: self.selectedMonth[i],
+        name: self.selectedMonthArray[i],
+        Id :  self.payrollid.id,
+      
+      }
+      this.displayMonthArray.push(orderMonth);
+    }
+  
+    });
+
+
+
+   
+
+
+      }
+
+    
+
+// add monthly deduction.........................................
+
+
+  addMonthlyDeduction(id, monthly) {
+
+    const did = this.deductionType.find((item: any) => item.name === id).id;
+    const monthlystatusId = this.displayMonthArray.find((item: any) => item.name === this.payrollMonth).Id;
+   const duemonth = this.displayMonthArray.find((item: any) => item.id == this.lastPayRollRunMonth).name;
+    var monthlyDeductiondetail = {
+      deductionTypeID: did,
+      amount: parseInt(this.amount),
+      comment: this.comment,
+      name: this.deduction,
+      runId: monthlystatusId,
+      employeeid: parseInt(this.employeeId),
+      createDate: this.createdDate,
+      username: this.loginUserName,
+      dueMonth:monthlystatusId,
+     
+    }
+   
+console.log(monthlyDeductiondetail)
+    let deductionAvailable = false;
+   
+    for (let deduction = 0; deduction < this.monthlyDeductionDetail.length; deduction++) {
+      if (this.monthlyDeductionDetail[deduction].name==this.deduction) {
+        deductionAvailable = true;
+        break;
+      }
+    }
+
+    if (deductionAvailable) {
+console.log('already added')
+    } else {
+   
+
+      this.wishPayrollService.addMonthlyEmployeeDeduction(monthlyDeductiondetail).then(response => {
+
+        this.monthlyDeductionDetail.push(monthlyDeductiondetail);
+       this.totalEmployeeMonthlyDeductionAmount();
+       this.resetForm()
+       
+      })
+    }
+   
+  }
+ 
+  // delete monthly deduction item
+
+  deleteDeductionRow(name,index){
+    console.log(name , index)
+    let monthlyDeductionDeletedRowId  = this.deductionType.find(data=>data.name== name.name).id
+    let deleteDeductionId ={  
+      deductionTypeid:parseInt(monthlyDeductionDeletedRowId),
+      id : parseInt(this.employeeId)
+    }
+    let self = this;
+    alertify.confirm("", function () {
+      self.wishPayrollService.deleteMonthlyEmployeeDeductionItem(deleteDeductionId).then(response =>{
+        self.monthlyDeductionDetail.splice(index, 1);
+        alertify.logPosition("bottom right");
+        alertify.delay(500);
+        alertify.success('Delete Succesful');
+         self.totalEmployeeMonthlyDeductionAmount();
+      });
+
+    }, function () {
+      alertify.error('Declined');
+    })
+   }
+
+    // calculate the total allowances amount
+
+    totalEmployeeMonthlyDeductionAmount(){
+      let grossAmount = 0;
+         for(let a = 0; a<this.monthlyDeductionDetail.length; a++){
+             grossAmount = grossAmount +parseInt(this.monthlyDeductionDetail[a].amount);
+         }
+       this.totalAllowanceAmount = grossAmount;
+   
+      }
+   // update dedcution 
+   updateMonthlyDeductionRow(id,index){
+    console.log('bbb',id)
+   this.updatebtnVisibility=true;
+   this.hiddenType = true,
+   this.payRollMonth = id.dueMonth,
+   this.deduction = id.name,
+   this.deductionId = id.deductioTypeid,
+   this.comment= id.comment,
+   this.amount =id.amount
+   //this.allowanceId = id.id
+   this.updateid=index;
+   this.autoFocus=true;
+
+ }
+ 
+ updatedDeduction(){
+  this.updatebtnVisibility=false;
+  this.monthlyDeductionDetail[this.updateid].amount=this.amount;
+  this.monthlyDeductionDetail[this.updateid].name=this.deduction
+  this.monthlyDeductionDetail[this.updateid].comment=this.comment
+
+  let dedcutionItemId = this.deductionType.find((item: any) => item.name === this.deduction).id;
+
+  let upadatedDeduction ={
+    updatedallowanceId : dedcutionItemId,
+    updatedemployeeid:this.employeeId,
+     upamount:this.amount,
+     upcomment:  this.comment,
+   
+  }
+  console.log('bbsssssssb',upadatedDeduction)
+  
+     this.wishPayrollService.upadateMonthlyDeduction(upadatedDeduction).then(response =>{
+
+     })
+    this.totalEmployeeMonthlyDeductionAmount()
+   
+    this.hiddenType=false
+}
+
+resetForm(){
+  this.amount=' ';
+  this.comment=' ';
+  this.deduction=' ';
+  this.payrollMonth=' '
+}
+selectSample() {
+  this.inputs.toArray().some(myInput =>
+    myInput.focusIf('deductionAmount'));
+}
+}

@@ -1,0 +1,14 @@
+.degduction{
+    background-color:whitesmoke;
+    height: 1000px;
+}
+
+
+.card-boder{
+ border: 1px solid orange;
+ 
+}
+.table-head{
+    background-color: rgba(73, 203, 243, 0.952);
+    color: white
+}

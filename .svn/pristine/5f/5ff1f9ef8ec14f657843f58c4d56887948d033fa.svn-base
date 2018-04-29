@@ -1,0 +1,131 @@
+import { Component, OnInit } from '@angular/core';
+import { IMyDpOptions } from 'mydatepicker';
+import { PayrollMasterService } from '../../../services/payrollMaster.service';
+import { PayrollDryRunService } from '../../../services/payrollDryRun.service';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import * as _ from 'lodash';
+import alertify from 'alertify.js';
+import * as moment from 'moment';
+import {PaySlipService} from '../../../services/payslip-print.service'
+
+@Component({
+  selector: 'app-payroll-post-run',
+  templateUrl: './payroll-post-run.component.html',
+  styleUrls: ['./payroll-post-run.component.css'],
+//   styles: [`
+//   .modal-content{
+//     background-color: #292b2c;
+//     color: red;
+    
+//   }
+//   .dark-modal .close {
+//     color: red;   
+//   }
+// `]
+})
+export class PayrollPostRunComponent implements OnInit {
+  closeResult: string;
+  id;
+  employeeId;
+  empFristName;
+  empLastName;
+  netSalary;
+  deduction;
+  allowance;
+  monthlyDeduction;
+  monthlyAllowance;
+  basicSalary;
+  createdDate;
+  employeeid;
+  totalEarning;
+  totalDeduction
+  visibleEmpSalary=true
+  constructor(private payrollservice: PayrollMasterService,
+    private PayrollDryRunService: PayrollDryRunService,
+    private modalService: NgbModal,
+    private payslipservice:PaySlipService) { }
+
+  ngOnInit() {
+  }
+
+
+  open(content) {
+    this.modalService.open(content).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
+  }
+
+  getSalaryDetail(id){
+  
+   let data={
+     id:id
+   }
+   this.PayrollDryRunService.getSalaryDetail(data).then(response =>{
+      if(response.json().data.details.length<1){
+        console.log('invalid')
+        this.visibleEmpSalary=true;
+      }else{
+        //show employee data
+        let empData=response.json().data.details;
+        let empSalary=response.json().data.salary
+    
+        this.empFristName=empData[0].firstName;
+        this.empLastName=empData[0].lastName;
+        this.deduction = empSalary[0].deductionTotal;
+        this.monthlyDeduction = empSalary[0].MonthlydeductionTotal;
+        this.allowance = empSalary[0].allowanceTotal;
+        this.monthlyAllowance = empSalary[0].MonthlyallowanceTotal;
+        this.basicSalary = empSalary[0].basicSalary;
+        this.netSalary = empSalary[0].netSalary;
+        this.createdDate = empSalary[0].createdDate;
+        this.employeeid = empData[0].id;
+        this.totalEarning = this.allowance+this.monthlyAllowance;
+        this.totalDeduction = this.deduction+this.monthlyDeduction;
+        if(empSalary.length<1){
+          this.visibleEmpSalary=true;
+        }else{
+          this.visibleEmpSalary=false;
+        }
+      }
+   })
+  }
+
+  searchEmp(id){
+    if(!id){
+      this.visibleEmpSalary=true;
+    }
+  }
+  
+  printPaySlip(){
+   
+    let printSalaryDetail = {
+           firstName: this.empFristName,
+           lastName:this.empLastName,
+           deductin:this.deduction ,
+           monthlyDeduction :this.monthlyDeduction,
+           allowance :this.allowance,
+           monthlyAllowance:this.monthlyAllowance, 
+           basicSalary:this.basicSalary, 
+           netSalary:this.netSalary, 
+           createdDate:moment(new Date(this.createdDate)).format("MMMM"),
+           employeeid:this.employeeid, 
+           totalEarning:this.totalEarning, 
+           totalDeduction:this.totalDeduction, 
+       
+    }
+    this.payslipservice.printPayslip(printSalaryDetail);
+    console.log(printSalaryDetail)
+  }
+
+}

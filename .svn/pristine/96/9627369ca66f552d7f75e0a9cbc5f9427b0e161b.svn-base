@@ -1,0 +1,159 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import 'rxjs/add/operator/switchMap';
+import { EmployeeDetailComponent } from '../employee-detail/employee-detail.component';
+import { PayrollService } from '../../services/Payroll.service';
+import _ from "lodash";
+import * as moment from 'moment';
+import alertify from 'alertify.js';
+import * as $ from 'jquery';
+@Component({
+  selector: 'app-deduction-alowances',
+  templateUrl: './deduction-alowances.component.html',
+  styleUrls: ['./deduction-alowances.component.css']
+})
+
+export class DeductionAlowancesComponent implements OnInit {
+  private employeeid;
+  deduction
+  name
+  value = 1;
+  deductionDetail;
+  activateDeduction = true;
+  activateAllowance;
+  deductionType;
+  showStyle: false;
+  selectedDeduction: null;
+  deductionAmount;
+  values = '';
+  deductionComment
+  username
+  createdate
+
+  constructor(
+    private route: ActivatedRoute,
+    private employeedetail: EmployeeDetailComponent,
+    private wishPayrollService: PayrollService,
+  ) { }
+
+  ngOnInit() {
+
+
+    let userinfo = JSON.parse(localStorage.getItem('userInfo'));
+    this.username = userinfo.username;
+    this.createdate = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+
+
+    let desc = this.route.snapshot.paramMap.get('id');
+    this.employeeid = desc;
+    let employeeDetail = {
+      id: parseInt(this.employeeid)
+
+    }
+    this.wishPayrollService.getEmployeeName(employeeDetail).then(response => {
+      this.name = response.json().data
+
+    })
+    this.wishPayrollService.getDeductionDetails(employeeDetail).then(response => {
+      this.deductionDetail = response.json().data
+
+    })
+    this.wishPayrollService.getDeductionType().then(response => {
+      this.deductionType = response.json().data
+    })
+ 
+  }
+
+  //changing deduction tab-----------------------------------------------------------------------------
+  activatedDeduction() {
+    this.activateDeduction = true;
+    this.activateAllowance = false;
+
+  }
+  //changing alowances tab-----------------------------------------------------------------------------
+  activatedAllowance() {
+    this.activateAllowance = true;
+    this.activateDeduction = false;
+
+  }
+  // diduction drop downlist..........................................................................
+
+  deductionDropDowan(id: number): void {
+    let avalable = false;
+    const NAME = this.deductionType.find((item: any) => item.id === +id).name;
+    var values = {
+      id: id,
+      name: NAME,
+      amount: this.deductionAmount,
+      comment: this.deductionComment,
+      createdUserid: this.username,
+      createdDate: this.createdate,
+      employeeid: parseInt(this.employeeid)
+
+    }
+    console.log('wwww', values)
+    for (let deduction = 0; deduction < this.deductionDetail.length; deduction++) {
+      if (id == this.deductionDetail[deduction].id) {
+        avalable = true;
+        break;
+      }
+    }
+
+    if (avalable) {
+      console.log('already added')
+    } else {
+      this.deductionDetail.push(values)
+    }
+
+    // add deduction to db//
+
+    this.wishPayrollService.deductionDropDown(values).then(response => {
+
+
+    })
+
+  }
+
+  getStyle() {
+    if (this.showStyle) {
+      return "lightgreen";
+    } else {
+      return "";
+    }
+  }
+  changeDeducAmount(value) {
+    console.log(this.deductionDetail)
+
+    let cc = _.findIndex(this.deductionDetail, { 'id': this.deduction });
+    console.log('dddddd', this.deduction)
+    console.log('ssssss', value)
+    console.log('index', cc)
+
+  }
+
+  // delete employee deduction item
+  deleteDeductionRow(id, index) {
+    console.log('ddddd',id)
+    let deducId=this.deductionType.find(data=>data.name===id.name).id;
+    console.log('eeee',deducId)
+    let data={
+      deductid:deducId,
+      id: parseInt(this.employeeid)
+    }
+    let self = this;
+    alertify.confirm("", function () {
+      self.wishPayrollService.deleteEmployeeDeductionItem(data).then(response => {
+        self.deductionDetail.splice(index, 1);
+        alertify.logPosition("bottom right");
+        alertify.delay(500);
+        alertify.success('Delete Succesful');
+      });
+
+    }, function () {
+      alertify.error('Declined');
+    })
+
+
+  }
+
+}

@@ -1,0 +1,188 @@
+<div class="container">
+  <div class="row">
+    <div class="btn col-md-2">
+      <button *ngIf="clicked1" type="button" class="btn btn-success btn-circle"><span class="payroll-run-number">1</span></button>
+      <button *ngIf="default1" type="button"  class="btn btn-primary btn-circle"><span class="payroll-run-number">1</span></button>
+      <!-- <svg height="120" width="120">
+        <circle cx="80" cy="60" r="40" stroke="black" stroke-width="0" fill="#77b300" />
+      </svg> -->
+      <div *ngIf="clicked1" class="heading-clicked" style="margin-left: 4%;">Create Payroll-run</div>
+      <div *ngIf="default1" class="heading-default">Create Payroll-run</div>
+    </div>
+    <div class="btn col-md-2">
+      <button *ngIf="clicked2" type="button" class="btn btn-success btn-circle"><span class="payroll-run-number">2</span></button>
+      <button *ngIf="default2" type="button"  class="btn btn-primary btn-circle"><span class="payroll-run-number">2</span></button>
+      <!-- <svg height="120" width="120">
+        <circle cx="80" cy="60" r="40" stroke="black" stroke-width="0" fill="#336699" />
+      </svg> -->
+      <div *ngIf="clicked2" style="margin-left: 4%;" class="heading-clicked">Check-List</div>
+      <div *ngIf="default2" class="heading-default">Check-List</div>
+    </div>
+    <div class="btn col-md-2">
+      <button *ngIf="clicked3" type="button" class="btn btn-success btn-circle"><span class="payroll-run-number">3</span></button>
+      <button *ngIf="default3" type="button"  class="btn btn-primary btn-circle"><span class="payroll-run-number">3</span></button>
+      <!-- <svg height="120" width="120">
+        <circle cx="80" cy="60" r="40" stroke="black" stroke-width="0" fill="#336699" />
+      </svg> -->
+      <div *ngIf="clicked3" style="margin-left: 4%;" class="heading-clicked">Payroll Dry-Run</div>
+      <div *ngIf="default3" class="heading-default">Payroll Dry-Run</div>
+    </div>
+    <div class="btn col-md-2">
+      <button *ngIf="clicked4" type="button" class="btn btn-success btn-circle"><span class="payroll-run-number">4</span></button>
+      <button *ngIf="default4" type="button"  class="btn btn-primary btn-circle"><span class="payroll-run-number">4</span></button>
+      <!-- <svg height="120" width="120">
+        <circle cx="80" cy="60" r="40" stroke="black" stroke-width="0" fill="#336699" />
+      </svg> -->
+      <div *ngIf="clicked4" style="margin-left: 4%;" class="heading-clicked">Payroll-Run</div>
+      <div *ngIf="default4" class="heading-default">Payroll-Run</div>
+    </div>
+    <div class="btn col-md-2">
+      <button *ngIf="clicked5" type="button" class="btn btn-success btn-circle"><span class="payroll-run-number">5</span></button>
+      <button *ngIf="default5" type="button"  class="btn btn-primary btn-circle"><span class="payroll-run-number">5</span></button>
+      <!-- <svg height="120" width="120">
+        <circle cx="80" cy="60" r="40" stroke="black" stroke-width="0" fill="#336699" />
+      </svg> -->
+      <div *ngIf="clicked5" style="margin-left: 4%;" class="heading-clicked">Post-Run</div>
+      <div *ngIf="default5" class="heading-default">Post-Run</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div *ngIf="clicked1" class="col-md-8 detail-body">
+      <form #form="ngForm" (ngSubmit)="createPayrollRun(form.value)">
+        <div class="form-group row">
+          <div class="col-md-5">
+            <p class="title-label"> Select Month</p>
+          </div>
+          <div class="col-md-5">
+            <select  id="select" class="form-control input-lg" size="1" name="payrollrunmonth" ngModel required>
+                <option *ngFor="let displayMonthArray of displayMonthArray">{{displayMonthArray.name}}</option>
+              </select>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-5">
+            <p class="title-label"> Start Date</p>
+          </div>
+          <div class="col-md-5">
+            <my-date-picker name="mydate" [options]="myDatePickerOptions" ngModel required></my-date-picker>
+          </div>
+        </div>
+        <!-- <div class="form-group row">
+            <div class="col-md-6">
+              <p class="title-label"> End Date</p>
+            </div>
+            <div class="col-md-6">
+                <my-date-picker name="mydate" [options]="myDatePickerOptions"
+                [(ngModel)]="model" required></my-date-picker>
+            </div>
+          </div> -->
+        <div class="form-group row">
+          <div class="col-md-5">
+          </div>
+          <div class="col-md-5">
+            <button type="submit" class="btn btn-success">Create payroll-run</button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+    <div *ngIf="clicked2" class="col-md-8 checklist">
+      <div class="row">
+        <div class="col-md-12">
+          <div *ngFor="let checkList of checkList" class="checkbox">
+            <label class="payroll-run-checkList"><input type="checkbox" [disabled]="checkList.isSelect" (change)="updatePayRollChecklist(checkList)" [(ngModel)]="checkList.isSelect" value="checkList.name"> {{checkList.name}}</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-6">
+        </div>
+        <div class="btn-sublit-checklist col-md-6">
+          <button type="submit" (click)="checkFinised()" class="btn btn-success">Check Finished</button>
+        </div>
+
+      </div>
+    </div>
+    <div *ngIf="clicked3" class="col-md-8 dryrun">
+      <div class="form-group row">
+        <div class="col-md-6">
+            <button type="submit" (click)="startDryRun()" class="btn btn-success">Start Dry-Run</button>
+        </div>
+        <div class="col-md-6">
+          
+        </div>
+
+      </div>
+      <div class="form-group row">
+          <div class="col-md-12">
+            <h2>{{startedDryRun}}</h2>
+          </div>
+        </div>
+      <div class="form-group row finish-dry-run">
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
+          <button type="submit" (click)="finishDryRun()" class="btn btn-success">Finish Dry-Run</button>
+        </div>
+
+      </div>
+    </div>
+    <div *ngIf="clicked4" class="col-md-8 dryrun">
+        <div class="form-group row">
+          <div class="col-md-6">
+              <button type="submit" (click)="startRun()" class="btn btn-success">Start Run</button>
+          </div>
+          <div class="col-md-6">
+            
+          </div>
+  
+        </div>
+        <div class="form-group row">
+            <div class="col-md-12">
+              <h2>{{startedRun}}</h2>
+            </div>
+          </div>
+        <div class="form-group row finish-dry-run">
+          <div class="col-md-6">
+          </div>
+          <div class="col-md-6">
+            <button type="submit" (click)="finishRun()" class="btn btn-success">Finish Run</button>
+          </div>
+  
+        </div>
+      </div>
+      <div *ngIf="clicked5" class="col-md-8 dryrun">
+          <div class="form-group row">
+            <div class="col-md-6">
+                <button type="submit" (click)="bank()" class="btn btn-success">Bank</button>
+            </div>
+            <div class="col-md-6">
+                <button type="submit" (click)="deposit()" class="btn btn-success">Deposit</button>
+            </div>
+    
+          </div>
+          <div class="form-group row">
+              <div class="col-md-12">
+                <h2>{{startedRun}}</h2>
+              </div>
+            </div>
+          <div class="form-group row finish-dry-run">
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-6">
+              <button type="submit" (click)="finishPayrollRun()" class="btn btn-success">Finish Run</button>
+            </div>
+    
+          </div>
+        </div>
+  </div>
+
+
+</div>
+<!-- <button type="button" class="btn btn-default btn-circle"><i class="glyphicon glyphicon-ok"></i></button>
+<button type="button" class="btn btn-primary btn-circle"><i class="glyphicon glyphicon-list"></i></button>
+<button type="button" class="btn btn-success btn-circle"><i class="glyphicon glyphicon-link"></i></button>
+<button type="button" class="btn btn-info btn-circle"><i class="glyphicon glyphicon-ok"></i></button>
+<button type="button" class="btn btn-warning btn-circle"><i class="glyphicon glyphicon-remove"></i></button>
+<button type="button" class="btn btn-danger btn-circle"><i class="glyphicon glyphicon-heart"></i></button> -->

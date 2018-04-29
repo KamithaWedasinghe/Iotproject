@@ -1,0 +1,84 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="row">
+
+      <div class="col-sm-6">
+        <form>
+          <div class="form-group">
+            <label for="exampleSelect1">Payroll Month</label>
+            <select class="form-control" [(ngModel)]="payRollMonth"[disabled]='hiddenType'  name="payRollMonth" id="exampleSelect1">
+              <option *ngFor='let displayMonthArray of displayMonthArray' [(ngValue)]="displayMonthArray.name">{{displayMonthArray.name}}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="exampleSelect1">Deductions</label>
+            <select class="form-control" [(ngModel)]="allowance" [disabled]='hiddenType'  name="allowance" id="exampleSelect1">
+              <option *ngFor='let allowanceType of allowancesType' [(ngValue)]="allowanceType.name">{{allowanceType.name}}</option>
+            </select>
+          </div>
+
+         
+          <div class="form-group">
+            <label for="exampleInputEmail1">Amount</label>
+            <input type="email" class="form-control" [(ngModel)]="amount" name="amount" id="exampleInputEmail1" aria-describedby="emailHelp"
+              placeholder="Enter Amount">
+
+          </div>
+
+          <div class="form-group">
+            <label for="exampleTextarea">Example textarea</label>
+            <textarea class="form-control" [(ngModel)]="comment" name="comment" id="exampleTextarea" rows="3"></textarea>
+          </div>
+
+          <button type="submit" *ngIf='!updatebtnVisibility'  (click)="addMonthlyAllowance(allowance,payRollMonth)" class="btn btn-primary">Submit</button>
+          <button type="button"*ngIf='updatebtnVisibility'  (click)="updatedAllowance()" class="btn btn-success">Update</button>
+        </form>
+      </div>
+      <div class="col-sm-6">
+        <div class="card">
+          <div class="card-block">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Allowance Name</th>
+                  <th>Month</th>
+                  <th>Comment</th>
+                  <th>Amount</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor ='let monthlyAllowance of monthlyAllowanceDetail let i = index'>
+                  <td scope="row">{{monthlyAllowance.name}}</td>
+                  <td>{{monthlyAllowance.dueMonth}}</td>
+                  <td>{{monthlyAllowance.comment}}</td>
+                  <td>{{monthlyAllowance.amount}}</td>
+                  <td>
+                    <a class="btn btn-danger action-button" (click)="deleteAllowanceRow(monthlyAllowance, i)" aria-label="Delete" style="background-color:red">
+                      <i class="fa fa-trash-o button-icon " aria-hidden="true"></i>
+                    </a>
+                    <a class="btn btn-success action-button action-button" (click)="selectSample()" (click)="updateMonthlyAllowanceRow(monthlyAllowance, i)"
+                      aria-label="update">
+                      <i class="fa fa-pencil button-icon button-icon" aria-hidden="true"></i>
+                    </a>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">Gross Allowance</th>
+                  <td></td>
+                  <td></td>
+                  <th>{{totalAllowanceAmount| number : '1.2-2'}}</th>
+                  <td></td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

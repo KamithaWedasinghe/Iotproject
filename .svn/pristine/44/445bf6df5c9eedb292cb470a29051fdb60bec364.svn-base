@@ -1,0 +1,62 @@
+import { Component, OnInit } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
+import { PreRequirementsService } from '../services/preRequirements.service';
+
+@Component({
+  selector: 'app-dashboard',
+  templateUrl: './full-layout.component.html',
+  styleUrls: ['./full-layout.component.css']
+})
+export class FullLayoutComponent implements OnInit {
+  companyInfo;
+  companyName;
+  LogoName;
+  companyLogo;
+  companyDetails;
+  companyInfoToView;
+  NameOfCompany;
+  fistLater;
+  secondLater=" ";
+  constructor(
+    private router: Router,
+    private PreRequirementsService: PreRequirementsService
+  ) { }
+  public disabled = false;
+  public status: { isopen: boolean } = { isopen: false };
+
+  public toggled(open: boolean): void {
+    console.log('Dropdown is now: ', open);
+  }
+
+  public toggleDropdown($event: MouseEvent): void {
+    $event.preventDefault();
+    $event.stopPropagation();
+    this.status.isopen = !this.status.isopen;
+  }
+
+  ngOnInit(): void {
+    if (localStorage.getItem('hasPreRequirements') == '1') {
+      this.companyInfo=JSON.parse(localStorage.getItem('companyInfo'));
+      this.companyName=this.companyInfo.companyName;
+      this.LogoName=this.companyInfo.LogoName;
+     // console.log('ssssss', this.companyName);
+    var fullName = this.companyName.split(" ");
+    var firstName=fullName[0];
+    var secondName=fullName[1];
+    this.fistLater=firstName.charAt(0);
+    if(secondName){
+    this.secondLater=secondName.charAt(0);
+    }
+     
+     }
+  }
+
+  loginPage() {
+    console.log('ffffffff');
+
+    this.router.navigate(['/login']);
+
+  }
+
+
+}

@@ -1,0 +1,191 @@
+import { Component, OnInit } from '@angular/core';
+import * as XLSX from 'xlsx';
+import * as _ from 'lodash';
+import { PayrollMasterService } from '../services/payrollMaster.service';
+
+type AOA = Array<Array<any>>;
+
+@Component({
+  selector: 'app-add-attendance',
+  templateUrl: './add-attendance.component.html',
+  styleUrls: ['./add-attendance.component.css']
+})
+export class AddAttendanceComponent implements OnInit {
+  // datasourcelistdata;
+  excellData;
+  haveValue;
+  heading;
+  headingDb = new Array();
+  newHeadingDb = new Array();
+  headingArray = new Array();
+  newHeadingArray = new Array();
+  nextClicked: boolean = false;
+  excellAdded: boolean = true;
+  inSideArray = new Array();
+  elementArray = new Array();
+  mappedArray = new Array();
+  headingCicked: boolean = false;
+  selectedHeadingRow;
+  selectedDbCollumnRow;
+  mappedHeadingIndex;
+  selectedHeadingPosition;
+  selectedDbCollumnActualName;
+  mappedHeadingDbCollumnIndex;
+  selectedHeading = "";
+  selectedheadingDb = "";
+  excellUploaded: boolean = false;
+
+  constructor(
+    private payrollService: PayrollMasterService
+  ) { }
+  ngOnInit() {
+
+  }
+  addValuesHeadingArrayDb() {
+    this.newHeadingDb[0] = { name: "Project", actualCollumnName: "project",dataType:"string" };
+    this.newHeadingDb[1] = { name: "Email", actualCollumnName: "email",dataType:"string" };
+    this.newHeadingDb[2] = { name: "In Date", actualCollumnName: "inDate",dataType:"string" };
+    this.newHeadingDb[3] = { name: "In Time", actualCollumnName: "inTime",dataType:"string" };
+    this.newHeadingDb[4] = { name: "Out Date", actualCollumnName: "outDate",dataType:"datetime" };
+    this.newHeadingDb[5] = { name: "Out Time", actualCollumnName: "outTime",dataType:"time" };
+    this.newHeadingDb[6] = { name: "Duration", actualCollumnName: "duration" ,dataType:"string"};
+    this.newHeadingDb[6] = { name: "Employee ID", actualCollumnName: "employeeId" ,dataType:"int"};
+    // for (let i = 0; i < this.headingDb.length; i++) {
+    //   let headingDb = {
+    //     name: this.headingDb[i],
+    //   }
+    //   this.newHeadingDb.push(headingDb);
+    // }
+    this.newHeadingDb = _.orderBy(this.newHeadingDb, ['name'], ['asc']);
+  }
+
+
+  /* <input type="file" (change)="onFileChange($event)" multiple="false" /> */
+  /* ... (within the component class definition) ... */
+  onFileChange(evt: any) {
+    this.excellUploaded = true;
+    /* wire up file reader */
+    const target: DataTransfer = <DataTransfer>(evt.target);
+    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+    const reader: FileReader = new FileReader();
+    reader.onload = (e: any) => {
+      /* read workbook */
+      const bstr: string = e.target.result;
+      const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
+
+      /* grab first sheet */
+      const wsname: string = wb.SheetNames[0];
+      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+
+      /* save data */
+      this.excellData = <AOA>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
+      // console.log(this.data);
+      for (let i = 0; i < this.excellData.length; i++) {
+        this.headingArray = this.excellData[0];
+      }
+      for (let j = 0; j < this.headingArray.length; j++) {
+        let heading = {
+          name: this.headingArray[j],
+          position: j
+        }
+        this.newHeadingArray.push(heading);
+      }
+      this.newHeadingArray = _.orderBy(this.newHeadingArray, ['name'], ['asc']);
+      // _.map(this.newHeadingArray, function (heading) {
+      //   heading.isSelect = false;
+      //   return heading;
+      // });
+      // console.log('new',this.newHeadingArray);
+    };
+    reader.readAsBinaryString(target.files[0]);
+    this.excellAdded = false;
+  }
+  // selectHeading(heading){
+  //   console.log(heading);
+  // }
+  // selectHeadingDb(headingDb){
+  //   console.log(headingDb);
+  // }
+
+  next() {
+    this.nextClicked = true;
+    this.addValuesHeadingArrayDb();
+  }
+  clickedHeading(heading, index) {
+    this.selectedHeadingRow = index;
+    this.selectedHeading = heading.name;
+    this.selectedHeadingPosition = heading.position;
+    this.mappedHeadingIndex = index;
+    // this.heading.isSelect=true;
+    // console.log(heading,index);
+  }
+  clickedHeadingDb(headingDb, index) {
+    this.selectedDbCollumnRow = index;
+    this.selectedheadingDb = headingDb.name;
+    this.selectedDbCollumnActualName = headingDb.actualCollumnName;
+    this.mappedHeadingDbCollumnIndex = index;
+    // console.log(headingDb);
+  }
+  map() {
+    let selectedMapToAdd = {
+      headingName: this.selectedHeading,
+      position: this.selectedHeadingPosition,
+      headingDbCollumn: this.selectedheadingDb,
+      actualCollumnName: this.selectedDbCollumnActualName
+
+    }
+    this.mappedArray.push(selectedMapToAdd);
+    //  console.log(this.mappedArray);
+    this.newHeadingArray.splice(this.mappedHeadingIndex, 1);
+    this.selectedHeadingRow = null;
+    this.newHeadingDb.splice(this.mappedHeadingDbCollumnIndex, 1);
+    this.selectedDbCollumnRow = null;
+    this.selectedHeading = "";
+    this.selectedheadingDb = "";
+  }
+  deleteMapping(mappedArray, index) {
+    //  console.log(mappedArray)
+    let headingName = {
+      name: mappedArray.headingName,
+      position: mappedArray.position
+    }
+    let headingDbCollumn = {
+      name: mappedArray.headingDbCollumn,
+      actualCollumnName: mappedArray.actualCollumnName
+
+    }
+    this.newHeadingArray.push(headingName);
+    this.newHeadingDb.push(headingDbCollumn);
+    this.mappedArray.splice(index, 1);
+    // console.log('a', this.newHeadingArray);
+    // console.log('b', this.newHeadingDb);
+    this.newHeadingArray = _.orderBy(this.newHeadingArray, ['name'], ['asc']);
+    this.newHeadingDb = _.orderBy(this.newHeadingDb, ['name'], ['asc']);
+    // this.createAscendingDescendingOrder(this.newHeadingArray,'name','asc');
+  }
+  save(mappedArray) {
+    this.excellData.shift();
+    let sendingArray = new Array();
+    sendingArray.push(mappedArray);
+    sendingArray.push(this.excellData);
+    console.log(sendingArray);
+    this.payrollService.addAttendanceByExcell(sendingArray);
+  }
+  // createAscendingDescendingOrder(array, key, ascDsc) {
+  //   _.orderBy(array,[key],[ascDsc]);
+  // }
+
+
+  // export(): void {
+  // 	/* generate worksheet */
+  // 	const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet(this.data);
+
+  // 	/* generate workbook and add the worksheet */
+  // 	const wb: XLSX.WorkBook = XLSX.utils.book_new();
+  // 	XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+  // 	/* save to file */
+  // 	const wbout: ArrayBuffer = XLSX.write(wb, this.wopts);
+  // 	saveAs(new Blob([wbout], { type: 'application/octet-stream' }), this.fileName);
+  // }
+}

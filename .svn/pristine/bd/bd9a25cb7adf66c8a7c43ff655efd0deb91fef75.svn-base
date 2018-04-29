@@ -1,0 +1,22 @@
+import { NgModule } from '@angular/core';
+import { Routes,RouterModule } from '@angular/router';
+
+import { PreRequirementsComponent } from '../preRequirements/preRequirements.component';
+
+
+const routes: Routes = [
+    {
+      path: '',
+      component: PreRequirementsComponent,
+      data: {
+        title: 'preRequirements'
+      }
+    }
+  ];
+@NgModule({
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
+  })
+
+
+export class PreRequirementsRouter{}

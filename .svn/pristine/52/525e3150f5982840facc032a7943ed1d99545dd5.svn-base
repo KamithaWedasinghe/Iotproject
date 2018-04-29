@@ -1,0 +1,803 @@
+import { Component, OnInit } from '@angular/core';
+import { IMyDpOptions } from 'mydatepicker';
+import { PayrollMasterService } from '../services/payrollMaster.service';
+import { PayrollDryRunService } from '../services/payrollDryRun.service';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import * as _ from 'lodash';
+import alertify from 'alertify.js';
+import * as moment from 'moment';
+
+
+@Component({
+  selector: 'app-payroll-run',
+  templateUrl: './payroll-run.component.html',
+  styleUrls: ['./payroll-run.component.css'],
+
+})
+export class PayrollRunComponent implements OnInit {
+  public myDatePickerOptions: IMyDpOptions = {
+    // other options...
+    dateFormat: 'dd-mm-yyyy',
+  };
+  lastPayRollRunStstus;
+  lastPayRollRunMonth;
+  lastPayRollRunStstusId;
+  month = new Array();
+  selectedMonth = new Array();
+  selectedMonthArray = new Array();
+  displayMonthArray = new Array();
+  clicked1 = false;
+  clicked2 = false;
+  clicked3 = false;
+  clicked4 = false;
+  clicked5 = false;
+  default1 = true;
+  default2 = true;
+  default3 = true;
+  default4 = true;
+  default5 = true;
+  checkList;
+  logedPerson;
+  userAccess;
+  startedDryRun;
+  startedRun;
+  currentDate;
+  lastPayRollRunYear;
+  lastPayRollRunId;
+  currentDateTime;
+  startedDate;
+  endDate;
+  dryRunstartedDate;
+  dateTimeForDryRun;
+  calculations;
+  completeDryRundetails;
+  completeDryRundetailsArry = [];
+  errorDryRundetailsArry = [];
+  moreDataAllownceArry = [];
+  moreDataDeductionArry = [];
+  moreDataMonthlyAllowanceArry = [];
+  moreDataMonthlyDeductionArry = [];
+  errorDryRundetails;
+  completeData;
+  viewReadyDetailsArray;
+  createdPayrollRunCount = 0;
+  errorPayrollRunCount = 0;
+  errorDryRunCount = 0;
+  createdDryRunCount = 0;
+  dryRunMoreDetailsForView = false;
+  dryRunerrorDetailsForView = false;
+  employeeName;
+  employeeBasicSalary;
+  employeeTotalAllowance;
+  employeeTotalDeduction;
+  employeeEpf;
+  employeeMonthlyTotalAllowance;
+  employeeMonthlyTotalDeduction;
+  employeeNetSalary;
+  employeeCreatedDate;
+  viewOneEmployeeDeatils = false;
+  ViewOfAllowanceAndDeduction;
+  viewMonthlyAllowances;
+  viewMonthlyDeductions;
+  ViewOfAllowance;
+  ViewOfDeduction;
+  empId;
+  allowanceName;
+  allowanceAmount;
+  allowanceModal = false;
+  deductionModal = false;
+  monthlyAllowanceModal = false;
+  monthlyDeductionModal = false;
+  errorDescription;
+  viewOneEmployeeErrorDeatils = false;
+  public filterQuery = "";
+  payrollCalculations;
+  PayrollCompleteData;
+  errorPayrollRundetails;
+  completePayrollRundetailsArry = [];
+  errorPayrollRundetailsArry = [];
+  completedPayrollRunDetailsForView = false;
+  errorPayrollRunMoreDetailForView = false;
+  viewOneEmployeeErrorOfFinalDeatils = false;
+  viewOneEmployeeOfFinalDeatils = false;
+  closeResult: string;
+  postRunPaySlip = false;
+  disableStatus=1;
+  payrollRunMonth;
+  startedDateForCheck;
+  checkCreatedDate;
+  checkDateStatus;
+  currentDateForCheck;
+  startedDateTimeForCheck;
+  checkRunMonth;
+  
+
+  constructor(
+    private payrollservice: PayrollMasterService,
+    private PayrollDryRunService: PayrollDryRunService,
+    private modalService: NgbModal
+  ) {
+    // this.currentDateTime = {
+    //   "date": {
+    //     year: moment().year(),
+    //     month: (moment().month() + 1),
+    //     day: moment().date(),
+    //     hour: moment().hours(),
+    //     minutes: moment().minutes(),
+    //     seconds: moment().seconds()
+    //   }
+      
+    // }
+    this.dateTimeForDryRun = {
+      "date": {
+        year: moment().year(),
+        month: (moment().month() + 1),
+        day: moment().date(),
+        hour: moment().hours(),
+        minutes: moment().minutes(),
+        seconds: moment().seconds()
+      }
+    }
+  }
+
+  ngOnInit() {
+    this.currentDateTime = {
+      "date": {
+        year: moment().year(),
+        month: (moment().month() + 1),
+        day: moment().date(),
+        hour: moment().hours(),
+        minutes: moment().minutes(),
+        seconds: moment().seconds()
+      }
+      
+    }
+   // this.startedDateTimeForCheck = (this.currentDateTime.date.year + '-' + this.currentDateTime.date.month + '-' + this.currentDateTime.date.day + ' ' + '00' + ':' + '00' + ':' + '00');
+    
+    //this.dryRunstartedDate = (this.dateTimeForDryRun.date.year + '-' + this.dateTimeForDryRun.date.month + '-' + this.dateTimeForDryRun.date.day + ' ' + '00' + ':' + '00' + ':' + '00');
+    let countMonth = 0;
+    let MonthDifferentYear;
+    let start;
+    let self = this;
+    let isNextYear: boolean = false;
+    this.payrollservice.getLastPayRollRunMonth().then(res => {
+      
+      if (res.json().data[0].month != null) {
+        this.lastPayRollRunMonth = parseInt(res.json().data[0].month.split('-')[1]);
+        this.lastPayRollRunYear = parseInt(res.json().data[0].month.split('-')[0]);
+      }
+      else {
+        var TodayDate = new Date();
+        var d = TodayDate.getDay();
+        let m = TodayDate.getMonth();
+        let y = TodayDate.getFullYear();
+        this.lastPayRollRunMonth = m;
+        this.lastPayRollRunYear = y;
+      }
+
+      let selectedStartMonth = this.lastPayRollRunMonth + 1;
+
+
+      _.forEach(_.range(selectedStartMonth, selectedStartMonth + 5), function (month) {
+        if (month < 13) {
+          countMonth++;
+          self.selectedMonth.push(_.padStart(month, 2, '0'));
+          self.selectedMonthArray.push(moment(_.padStart(month, 2, '0'), 'MM').format('MMMM'));
+        } else {
+          MonthDifferentYear = 5 - countMonth;
+          start = 1;
+          isNextYear = true;
+        }
+        
+      });
+      if (isNextYear) {
+        self.lastPayRollRunYear = self.lastPayRollRunYear + 1;
+        _.forEach(_.range(start, MonthDifferentYear + 1), function (month) {
+          self.selectedMonth.push(_.padStart(month, 2, '0'));
+          self.selectedMonthArray.push(moment(_.padStart(month, 2, '0'), 'MM').format('MMMM'));
+        });
+      }
+      for (let i = 0; i < self.selectedMonth.length; i++) {
+        let orderMonth = {
+          id: self.selectedMonth[i],
+          name: self.selectedMonthArray[i]
+        }
+        this.displayMonthArray.push(orderMonth);
+      }
+    });
+    let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    this.logedPerson = userInfo.username;
+    this.userAccess = userInfo.useraccess;
+    
+    this.payrollservice.getLastPayRollStatus().then(res => {
+      
+      this.lastPayRollRunStstus = res.json().data[0].name;
+      this.lastPayRollRunStstusId = res.json().data[0].id;
+      if (this.lastPayRollRunStstus == null) {
+        this.lastPayRollRunStstus = 1;
+        this.updatePayrollRunStatus(1);
+      }
+
+      if (this.lastPayRollRunStstus == '1') {
+        this.clicked1 = true;
+        this.default1 = false;
+      }
+      if (this.lastPayRollRunStstus == '2') {
+        this.clicked2 = true;
+        this.default2 = false;
+      }
+      if (this.lastPayRollRunStstus == '3') {
+        this.clicked3 = true;
+        this.default3 = false;
+      }
+      if (this.lastPayRollRunStstus == '4') {
+        this.clicked4 = true;
+        this.default4 = false;
+      }
+      if (this.lastPayRollRunStstus == '5') {
+        this.clicked5 = true;
+        this.default5 = false;
+      }
+    });
+    this.onDateChanged(this.currentDateTime);
+
+  }
+  getFormattedDate(currentDate: any): string {
+    return currentDate.year + '-' + currentDate.month + '-' + currentDate.day;
+  }
+  createPayrollRun(form) {
+    
+    let value = form.value;
+    let date = new Date();
+    if (value.payrollrunmonth != "" && value.mydate != "") {
+      this.currentDate = {
+        year: this.lastPayRollRunYear,
+        month: _.find(this.displayMonthArray, { 'name': value.payrollrunmonth }).id,
+        day: '01'
+      }
+      this.payrollservice.getLastPayRollStatus().then(res => {
+        this.lastPayRollRunStstusId = res.json().data[0].id
+
+        this.startedDate = (this.currentDateTime.date.year + '-' + this.currentDateTime.date.month + '-' + this.currentDateTime.date.day + ' ' + '00' + ':' + '00' + ':' + '00');
+        this.endDate = ('0000' + '-' + '01' + '-' + '01' + ' ' + '00' + ':' + '00' + ':' + '00');
+        localStorage.setItem('parollRunDate',this.startedDate);
+        let sendValue = {
+          payrollrunmonth: this.getFormattedDate(this.currentDate),
+          startDate: this.startedDate,
+          endDate: this.endDate,
+          statusId: this.lastPayRollRunStstusId,
+          user: this.logedPerson
+        }
+
+
+        this.payrollservice.createPayaroll(sendValue).then(res => {
+          this.lastPayRollRunId = res.json().data;
+          if (res.json().error == false) {
+            form.reset();
+            alertify.delay(1000);
+            alertify.logPosition("bottom right");
+            alertify.success('Created Payroll Run');
+            this.updatePayrollRunStatus(2);
+          }
+        });
+      });
+    }
+    else {
+      alertify.delay(1000);
+      alertify.logPosition("bottom right");
+      alertify.error("Select Month and Start Date");
+    }
+
+    
+  }
+  updatePayrollRunStatus(value) {
+    let self = this;
+    this.payrollservice.getLastPayRollStatus().then(res => {
+      this.lastPayRollRunStstus = res.json().data[0].name;
+      if (this.lastPayRollRunStstus == '1') {
+        this.clicked1 = false;
+        this.default1 = true;
+      }
+      if (this.lastPayRollRunStstus == '2') {
+        this.clicked2 = false;
+        this.default2 = true;
+      }
+      if (this.lastPayRollRunStstus == '3') {
+        this.clicked3 = false;
+        this.default3 = true;
+      }
+      if (this.lastPayRollRunStstus == '4') {
+        this.clicked4 = false;
+        this.default4 = true;
+      }
+      if (this.lastPayRollRunStstus == '5') {
+        this.clicked5 = false;
+        this.default5 = true;
+      }
+      if (value == '1') {
+        this.clicked1 = true;
+        this.default1 = false;
+        this.clicked2 = false;
+        this.clicked3 = false;
+        this.clicked4 = false;
+        this.clicked5 = false;
+      }
+      if (value == '2') {
+        this.clicked2 = true;
+        this.default2 = false;
+        this.clicked1 = false;
+        this.clicked3 = false;
+        this.clicked4 = false;
+        this.clicked5 = false;
+        this.payrollservice.getCheckList().then(res => {
+          this.checkList = res.json().data;
+          _.map(this.checkList, function (list) {
+            list.isSelect = false;
+            return list;
+          });
+        });
+      }
+      if (value == '3') {
+        this.clicked3 = true;
+        this.default3 = false;
+        this.clicked2 = false;
+        this.clicked1 = false;
+        this.clicked4 = false;
+        this.clicked5 = false;
+      }
+      if (value == '4') {
+        this.clicked4 = true;
+        this.default4 = false;
+        this.clicked2 = false;
+        this.clicked3 = false;
+        this.clicked1 = false;
+        this.clicked5 = false;
+      }
+      if (value == '5') {
+        this.clicked5 = true;
+        this.default5 = false;
+        this.clicked4 = false;
+        this.clicked2 = false;
+        this.clicked3 = false;
+        this.clicked1 = false;
+      }
+      let sendValue = {
+        name: value
+      }
+      
+      this.payrollservice.createPayRollRunStatus(sendValue).then(res => {
+        let sendValue = {
+          key: 'statusId',
+          value: res.json().data,
+          id: this.lastPayRollRunId
+        }
+        this.payrollservice.updatePayrollRun(sendValue);
+        
+      });
+    });
+
+  }
+  updatePayRollChecklist(value) {
+    let sendValue = {
+      checklistid: value.id,
+      createdby: this.logedPerson,
+      date: '2017-09-08'
+    }
+    
+    this.payrollservice.createPayRollRunCheckList(sendValue).then(res => {
+      if (res.json().error == false) {
+        alertify.delay(1000);
+        alertify.logPosition("bottom right");
+        alertify.success('Added Payroll Run Checklist');
+      }
+    });
+  }
+  checkFinised() {
+    this.updatePayrollRunStatus(3);
+  }
+  startDryRun() {
+    var runDateFromlocalStorage=localStorage.getItem('parollRunDate');
+    this.disableStatus=0;
+    this.PayrollDryRunService.setDryRunCalculations(runDateFromlocalStorage).then(details => {
+      this.calculations = details.json();
+      if (this.calculations.error == false) {
+        alertify.delay(1000);
+        alertify.logPosition("bottom right");
+        alertify.success('Added Payroll Run ');
+        this.getCompletedCalculation(runDateFromlocalStorage);
+        this.getErrorCalculations(runDateFromlocalStorage);
+
+
+      }
+    });
+  
+
+    this.PayrollDryRunService.getPayrollCreateDate().then(details => {
+      let startDate = details.json().data
+      
+      this.getCollectionOfOthers(startDate);
+    });
+
+
+  }
+  getCompletedCalculation(dryRunstartedDate) {
+    
+    this.PayrollDryRunService.getcalculations(dryRunstartedDate).then(details => {
+      this.completeData = details.json();
+      
+      if (this.completeData.error == false) {
+        this.completedDataView(this.completeData);
+      }
+
+    });
+  }
+  completedDataView(completeDryRundetails) {
+    this.createdDryRunCount = completeDryRundetails.data.length;
+    for (var count = 0; count < completeDryRundetails.data.length; count++) {
+      this.completeDryRundetailsArry.push({
+        employeeId: completeDryRundetails.data[count].id,
+        fullName: completeDryRundetails.data[count].firstName + ' ' + completeDryRundetails.data[count].lastName,
+      });
+    }
+  }
+
+
+  getErrorCalculations(dryRunstartedDate) {
+
+    this.PayrollDryRunService.getErrorCalculations(dryRunstartedDate).then(details => {
+      this.errorDryRundetails = details.json();
+      if (this.errorDryRundetails.error == false) {
+        this.errorDataView(this.errorDryRundetails);
+      }
+    });
+  }
+  errorDataView(errorDryRundetails) {
+    this.errorDryRunCount = errorDryRundetails.data.length;
+    for (var count = 0; count < errorDryRundetails.data.length; count++) {
+      this.errorDryRundetailsArry.push({
+        employeeId: errorDryRundetails.data[count].id,
+        fullName: errorDryRundetails.data[count].firstName + ' ' + errorDryRundetails.data[count].lastName
+      });
+    }
+  }
+  viewReadyDetails(index) {
+
+    this.dryRunMoreDetailsForView = false;
+    this.viewOneEmployeeDeatils = true;
+
+
+    this.employeeName = this.completeData.data[index].firstName + ' ' + this.completeData.data[index].lastName;
+    this.employeeBasicSalary = this.completeData.data[index].basicSalary;
+    this.employeeTotalAllowance = this.completeData.data[index].totalAllowance;
+    this.employeeTotalDeduction = this.completeData.data[index].totalDeduction;
+    this.employeeEpf = this.completeData.data[index].epf;
+    this.employeeMonthlyTotalAllowance = this.completeData.data[index].monthlyTotalAllowance;
+    this.employeeMonthlyTotalDeduction = this.completeData.data[index].monthlyTotalDeduction;
+    this.employeeNetSalary = this.completeData.data[index].netSalary;
+    this.employeeCreatedDate = this.completeData.data[index].createdDate;
+    this.empId = this.completeData.data[index].id;
+    
+
+  }
+
+
+  finishDryRun() {
+    this.disableStatus=1;
+    this.updatePayrollRunStatus(4);
+  }
+  startRun() {
+    var runDateFromlocalStorage=localStorage.getItem('parollRunDate');
+    this.disableStatus=0;
+    this.PayrollDryRunService.setPayrollRunCalculations(runDateFromlocalStorage).then(res => {
+      this.payrollCalculations = res.json();
+      if (this.payrollCalculations.error == false) {
+        alertify.delay(1000);
+        alertify.logPosition("bottom right");
+        alertify.success('Added Payroll Run ');
+        this.getPayrollCompletedCalculation(runDateFromlocalStorage);
+        this.getPayrollErrorCalculations(runDateFromlocalStorage);
+      }
+    });
+  }
+  getPayrollCompletedCalculation(RunstartedDate) {
+    
+    this.PayrollDryRunService.getPayrollCompletedCalculations(RunstartedDate).then(details => {
+      this.PayrollCompleteData = details.json();
+      
+      if (this.PayrollCompleteData.error == false) {
+        this.completedPayrollDataView(this.PayrollCompleteData);
+      }
+
+    });
+  }
+  completedPayrollDataView(PayrollCompleteData) {
+    this.createdPayrollRunCount = PayrollCompleteData.data.length;
+    for (var count = 0; count < PayrollCompleteData.data.length; count++) {
+      this.completePayrollRundetailsArry.push({
+        employeeId: PayrollCompleteData.data[count].id,
+        fullName: PayrollCompleteData.data[count].firstName + ' ' + PayrollCompleteData.data[count].lastName,
+      });
+    }
+  }
+  viewCreatedDetails(index) {
+
+    this.completedPayrollRunDetailsForView = false;
+    this.viewOneEmployeeOfFinalDeatils = true;
+
+
+    this.employeeName = this.PayrollCompleteData.data[index].firstName + ' ' + this.PayrollCompleteData.data[index].lastName;
+    this.employeeBasicSalary = this.PayrollCompleteData.data[index].basicSalary;
+    this.employeeTotalAllowance = this.PayrollCompleteData.data[index].totalAllowance;
+    this.employeeTotalDeduction = this.PayrollCompleteData.data[index].totalDeduction;
+    this.employeeEpf = this.PayrollCompleteData.data[index].epf;
+    this.employeeMonthlyTotalAllowance = this.PayrollCompleteData.data[index].monthlyTotalAllowance;
+    this.employeeMonthlyTotalDeduction = this.PayrollCompleteData.data[index].monthlyTotalDeduction;
+    this.employeeNetSalary = this.PayrollCompleteData.data[index].netSalary;
+    this.employeeCreatedDate = this.PayrollCompleteData.data[index].createdDate;
+    this.empId = this.PayrollCompleteData.data[index].id;
+    
+
+  }
+  viewErrorCreatedDetails(index) {
+
+    this.errorPayrollRunMoreDetailForView = false;
+    this.viewOneEmployeeErrorOfFinalDeatils = true;
+
+
+    this.employeeName = this.errorPayrollRundetails.data[index].firstName + ' ' + this.errorPayrollRundetails.data[index].lastName;
+    this.employeeBasicSalary = this.errorPayrollRundetails.data[index].basicSalary;
+    this.employeeTotalAllowance = this.errorPayrollRundetails.data[index].totalAllowance;
+    this.employeeTotalDeduction = this.errorPayrollRundetails.data[index].totalDeduction;
+    this.employeeEpf = this.errorPayrollRundetails.data[index].epf;
+    this.employeeMonthlyTotalAllowance = this.errorPayrollRundetails.data[index].monthlyTotalAllowance;
+    this.employeeMonthlyTotalDeduction = this.errorPayrollRundetails.data[index].monthlyTotalDeduction;
+    this.employeeNetSalary = this.errorPayrollRundetails.data[index].netSalary;
+    this.employeeCreatedDate = this.errorPayrollRundetails.data[index].createdDate;
+    this.errorDescription = this.errorPayrollRundetails.data[index].description;
+    this.empId = this.errorPayrollRundetails.data[index].id;
+    
+
+  }
+  getPayrollErrorCalculations(RunstartedDate) {
+
+    this.PayrollDryRunService.getPayrollErrorCalculations(RunstartedDate).then(details => {
+      this.errorPayrollRundetails = details.json();
+      console.log(this.errorPayrollRundetails, "eroo details");
+      if (this.errorPayrollRundetails.error == false) {
+        this.payrollRunErrorDataView(this.errorPayrollRundetails);
+      }
+    });
+  }
+  payrollRunErrorDataView(errorPayrollRundetails) {
+    this.errorPayrollRunCount = errorPayrollRundetails.data.length;
+    for (var count = 0; count < errorPayrollRundetails.data.length; count++) {
+      this.errorPayrollRundetailsArry.push({
+        employeeId: errorPayrollRundetails.data[count].id,
+        fullName: errorPayrollRundetails.data[count].firstName + ' ' + errorPayrollRundetails.data[count].lastName
+      });
+    }
+  }
+  finishRun() {
+    this.disableStatus=1;
+    this.updatePayrollRunStatus(5);
+    this.postRunPaySlip = true;
+    this.createdPayrollRunCount = 0;
+    this.errorPayrollRunCount = 0;
+    this.errorDryRunCount = 0;
+    this.createdDryRunCount = 0;
+  }
+  finishPayrollRun() {
+    //console.log("calllllll");
+    this.selectedMonth = new Array();
+    this.selectedMonthArray = new Array();
+    this.displayMonthArray = new Array();
+    this.ngOnInit();
+    this.updatePayrollRunStatus(1);
+    let finishDate = moment(moment().toDate()).format('YYYY-MM-DD');
+    let sendValue = {
+      key: 'endDate',
+      value: finishDate,
+      id: this.lastPayRollRunId
+    }
+    this.payrollservice.updatePayrollRun(sendValue);
+    this.postRunPaySlip = false;
+    //this.clicked5=false;
+    
+    this.completeDryRundetailsArry = [];
+    this.errorDryRundetailsArry = [];
+    this.moreDataAllownceArry = [];
+    this.moreDataDeductionArry = [];
+    this.moreDataMonthlyAllowanceArry = [];
+    this.moreDataMonthlyDeductionArry = [];
+    this.completePayrollRundetailsArry = [];
+    this.errorPayrollRundetailsArry = [];
+    localStorage.removeItem('parollRunDate');
+  }
+
+  completedMoreDetails() {
+    this.dryRunMoreDetailsForView = true;
+    this.clicked3 = false;
+  }
+  errorMoreDetails() {
+    this.dryRunerrorDetailsForView = true;
+    this.clicked3 = false;
+  }
+  completedPayrollRunMoreDetails() {
+    this.completedPayrollRunDetailsForView = true;
+    this.clicked4 = false;
+  }
+  errorPayrollRunMoreDetails() {
+    this.errorPayrollRunMoreDetailForView = true;
+    this.clicked4 = false;
+  }
+  BackPayrollRun() {
+    this.completedPayrollRunDetailsForView = false;
+    this.errorPayrollRunMoreDetailForView = false;
+    this.clicked4 = true;
+  }
+
+
+  BacktoDryRun() {
+    this.dryRunMoreDetailsForView = false;
+    this.dryRunerrorDetailsForView = false;
+    this.clicked3 = true;
+  }
+
+  BackToNames() {
+    this.dryRunMoreDetailsForView = true;
+    this.viewOneEmployeeDeatils = false;
+  }
+  BackToErorNames() {
+    this.dryRunerrorDetailsForView = true;
+    this.viewOneEmployeeErrorDeatils = false;
+
+
+  }
+  BackToNamesOfCreated() {
+    this.completedPayrollRunDetailsForView = true;
+    this.viewOneEmployeeOfFinalDeatils = false;
+  }
+  BackToNamesOfErrorCreated() {
+    this.errorPayrollRunMoreDetailForView = true;
+    this.viewOneEmployeeErrorOfFinalDeatils = false;
+  }
+  getCollectionOfOthers(startDate) {
+
+    this.PayrollDryRunService.getAllowancesForView().then(details => {
+      this.ViewOfAllowance = details.json().data;
+
+
+    });
+    this.PayrollDryRunService.getDeductionForView().then(details => {
+      this.ViewOfDeduction = details.json().data;
+
+
+    });
+    this.PayrollDryRunService.getMonthlyAllowancesForView(startDate).then(details => {
+      this.viewMonthlyAllowances = details.json().data;
+
+
+    });
+    this.PayrollDryRunService.getMonthlyDeductionsForView(startDate).then(details => {
+      this.viewMonthlyDeductions = details.json().data;
+
+    });
+
+  }
+  viewCollectionsData(empId, index) {
+    if (index == 1) {
+      this.allowanceModal = true;
+      this.deductionModal = false;
+      this.monthlyAllowanceModal = false;
+      this.monthlyDeductionModal = false;
+    }
+    if (index == 2) {
+      this.allowanceModal = false;
+      this.deductionModal = true;
+      this.monthlyAllowanceModal = false;
+      this.monthlyDeductionModal = false;
+    }
+    if (index == 3) {
+      this.allowanceModal = false;
+      this.deductionModal = false;
+      this.monthlyAllowanceModal = true;
+      this.monthlyDeductionModal = false;
+    }
+    if (index == 4) {
+      this.allowanceModal = false;
+      this.deductionModal = false;
+      this.monthlyAllowanceModal = false;
+      this.monthlyDeductionModal = true;
+    }
+
+    for (var i = 0; i < this.ViewOfAllowance.length; i++) {
+      if (this.ViewOfAllowance[i].allowanceEmpId == empId) {
+        this.moreDataAllownceArry.push({
+          allowanceName: this.ViewOfAllowance[i].allowanceName,
+          allowanceAmount: this.ViewOfAllowance[i].allowanceAmount
+        });
+      }
+    }
+    for (var i = 0; i < this.ViewOfDeduction.length; i++) {
+      if (this.ViewOfDeduction[i].deductionEmpId == empId) {
+        this.moreDataDeductionArry.push({
+          deductionName: this.ViewOfDeduction[i].deductionName,
+          deductionAmount: this.ViewOfDeduction[i].deductionAmount
+        });
+      }
+    }
+    for (var i = 0; i < this.viewMonthlyAllowances.length; i++) {
+      if (this.viewMonthlyAllowances[i].monthlyAllowanceEmpId == empId) {
+        this.moreDataMonthlyAllowanceArry.push({
+          allowanceName: this.viewMonthlyAllowances[i].monthlyAllowanceName,
+          allowanceAmount: this.viewMonthlyAllowances[i].monthlyAllowanceAmount
+        });
+      }
+    }
+    for (var i = 0; i < this.viewMonthlyDeductions.length; i++) {
+      if (this.viewMonthlyDeductions[i].monthlyDeductionEmpId == empId) {
+        this.moreDataMonthlyDeductionArry.push({
+          deductionName: this.viewMonthlyDeductions[i].monthlyDeductionName,
+          deductionAmount: this.viewMonthlyDeductions[i].monthlyDeductionAmount
+        });
+      }
+    }
+
+
+  }
+  closeArryFromModal() {
+    this.moreDataAllownceArry.length = 0;
+    this.moreDataDeductionArry.length = 0;
+    this.moreDataMonthlyAllowanceArry.length = 0;
+    this.moreDataMonthlyDeductionArry.length = 0;
+  }
+
+  viewErrorDetails(index) {
+
+    this.dryRunerrorDetailsForView = false;
+    this.viewOneEmployeeErrorDeatils = true;
+
+
+    this.employeeName = this.errorDryRundetails.data[index].firstName + ' ' + this.errorDryRundetails.data[index].lastName;
+    this.employeeBasicSalary = this.errorDryRundetails.data[index].basicSalary;
+    this.employeeTotalAllowance = this.errorDryRundetails.data[index].totalAllowance;
+    this.employeeTotalDeduction = this.errorDryRundetails.data[index].totalDeduction;
+    this.employeeEpf = this.errorDryRundetails.data[index].epf;
+    this.employeeMonthlyTotalAllowance = this.errorDryRundetails.data[index].monthlyTotalAllowance;
+    this.employeeMonthlyTotalDeduction = this.errorDryRundetails.data[index].monthlyTotalDeduction;
+    this.employeeNetSalary = this.errorDryRundetails.data[index].netSalary;
+    this.employeeCreatedDate = this.errorDryRundetails.data[index].createdDate;
+    this.errorDescription = this.errorDryRundetails.data[index].description;
+    this.empId = this.errorDryRundetails.data[index].id;
+
+
+  }
+
+  onDateChanged(selectedDateTime){
+
+  // console.log("date=",selectedDateTime)
+    //console.log("date =",selectedDateTime);
+    this.startedDateForCheck = (selectedDateTime.date.year + '-' + selectedDateTime.date.month + '-' +selectedDateTime.date.day + ' ' + '00' + ':' + '00' + ':' + '00');
+    this.PayrollDryRunService.checkDateForRun(this.startedDateForCheck).then(res => {
+      this.payrollRunMonth=res.json().data;
+     // this.onDateChanged();
+      console.log(this.payrollRunMonth);
+         if(this.payrollRunMonth[0].count == 0){
+        //console.log(this.payrollRunMonth[i].createdDate);
+        this.checkDateStatus=0;
+        
+      }else{
+        this.checkDateStatus=1;
+        alertify.delay(1000);
+        alertify.logPosition("bottom right");
+        alertify.success('Already Exist');
+      }
+    });
+    }
+    // onRunMonthChange(){
+      
+    //   this.checkRunMonth=this.getFormattedDate(this.currentDate);
+    //   console.log("selectedMonth=",this.checkRunMonth);
+    // }
+
+}

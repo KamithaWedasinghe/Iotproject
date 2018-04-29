@@ -1,0 +1,73 @@
+import { Injectable } from '@angular/core';
+import { CommonService } from '../services/common/common.service';
+import { Http, Response, Headers, RequestOptions } from '@angular/http'
+
+
+@Injectable()
+export class PayrollMasterService {
+    output;
+    constructor(private commonsService: CommonService) {
+
+    }
+    getAllowances(){
+       
+        return this.commonsService.apiGet('pr', 'getAllAllowances');
+    }
+    setAllowances(newType){
+        let newObj={
+            newAllowance:newType}
+        return this.commonsService.apiPost(newObj,'pr', 'setAllowanceType');
+    }
+    getDeductions(){
+        
+         return this.commonsService.apiGet('pr', 'getAllDeductions');
+     }
+     setDedctions(newType){
+        let newObj={
+            newDeduction:newType}
+        return this.commonsService.apiPost(newObj,'pr', 'setDeductionType');
+    }
+    updateAllowances(editType){
+        
+        return this.commonsService.apiPost(editType,'pr', 'updateAllowanceType');
+    }
+    updateDeduction(editType){
+        return this.commonsService.apiPost(editType,'pr', 'updateDeductionType');
+    }
+    deleteAllowance(id){
+       return this.commonsService.apiGet('pr', 'deleteAllowance/' + id);
+    }
+    deleteDeduction(id){
+       return this.commonsService.apiGet('pr', 'deleteDeduction/' + id);
+     }
+     createPayRollRunStatus(value){
+        return this.commonsService.apiPost(value,'pr','createpayrollstatus');
+     }
+     getLastPayRollStatus(){
+        return this.commonsService.apiGet('pr','getlastpayrollrunstatus');
+    } 
+     getCategories(){
+       return this.commonsService.apiGet('pr', 'getAllCategories');
+     }
+     setCategory(newType){
+        let newObj={
+            newCategoryType:newType}
+        return this.commonsService.apiPost(newObj,'pr', 'setCategoryType');
+    }
+    updateCategories(editType){
+        return this.commonsService.apiPost(editType,'pr', 'updateCategoryType');
+    }
+    deleteCategory(id){
+        
+        return this.commonsService.apiGet('pr', 'deleteCategory/' + id);
+     }
+     
+    getContributions(){
+        return this.commonsService.apiGet('pr', 'getAllContributions');
+      }
+    setContribution(newType){
+         let newObj={
+             newContributionType:newType}
+        return this.commonsService.apiPost(newObj,'pr', 'setContributionType');
+     }
+}

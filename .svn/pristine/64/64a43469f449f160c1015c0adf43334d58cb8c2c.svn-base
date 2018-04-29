@@ -1,0 +1,114 @@
+import { Component, OnInit } from '@angular/core';
+import { PayrollMasterService } from '../../services/payrollMaster.service';
+import * as _ from 'lodash';
+import alertify from 'alertify.js';
+import * as moment from 'moment';
+
+@Component({
+  selector: 'app-attendance-confirmation',
+  templateUrl: './attendance-confirmation.component.html',
+  styleUrls: ['./attendance-confirmation.component.css']
+})
+export class AttendanceConfirmationComponent implements OnInit {
+  payrollRunMonth;
+  employeeID;
+  attendanceDetails = new Array();
+  attendanceDetailsArray = new Array();
+  workDays = 0;
+  leaveDays = 0;
+  allDays = 0;
+  isSuccessGetAttendanceDetails: boolean = false;
+  lastPayRollRunMonth
+  lastPayRollRunYear;
+  lastPayRollRunDate;
+  newHeadingDb;
+  constructor(
+    private payrollMasterService: PayrollMasterService
+  ) { }
+
+  ngOnInit() {
+    this.payrollMasterService.getLastMonth().then(res => {
+      this.payrollRunMonth = res.json().data[0].month;
+      //  console.log(this.payrollRunMonth);
+      this.lastPayRollRunMonth = parseInt(res.json().data[0].month.split('-')[1]);
+      this.lastPayRollRunYear = parseInt(res.json().data[0].month.split('-')[0]);
+      this.lastPayRollRunDate = parseInt(res.json().data[0].month.split('-')[2]);
+
+      this.lastPayRollRunMonth = moment(_.padStart(this.lastPayRollRunMonth, 2, 0), 'MM').format('MMMM');
+      //  console.log(this.lastPayRollRunMonth);
+      // console.log(this.lastPayRollRunYear);
+      // console.log(this.lastPayRollRunDate);
+    });
+  }
+
+
+  getAttendanceDetails() {
+    if (this.employeeID != null) {
+      let count1 = 0;
+      let count2 = 0;
+      this.payrollMasterService.getAttendanceDetails(this.payrollRunMonth, this.employeeID).then(res => {
+        //  console.log(res.json());
+        if (res.json().error == false) {
+          this.isSuccessGetAttendanceDetails = true;
+          this.attendanceDetails = res.json().data;
+
+          // for(let x=0;x<this.attendanceDetails.length;x++){
+          //   let attendanceDetail=_.toArray(this.attendanceDetails[x]);
+          //   console.log('iiiiiiii',attendanceDetail);
+          //   this.attendanceDetailsArray.push(attendanceDetail);
+          // }
+          // console.log(this.attendanceDetailsArray);
+          for (let x = 0; x < this.attendanceDetails.length; x++) {
+            if (this.attendanceDetails[x].duration > 9) {
+              //    console.log('ddd');
+              count1++;
+              // this.workDays = this.workDays + 1;
+            }
+            else {
+              //   console.log('tt');
+              count2++;
+              // this.leaveDays = this.leaveDays + 1;
+            }
+          }
+          //  console.log(count1);
+          this.workDays = count1;
+          this.leaveDays = count2;
+          this.allDays = count1 + count2;
+
+          // console.log(this.workDays);
+          // console.log(this.leaveDays);
+          // console.log(this.allDays);
+          //  this.allDays=this.workDays+this.leaveDays;
+          this.newHeadingDb = {
+            project: "Project",
+            email: "Email",
+            inDate: "In Date",
+            inTime: "In Time",
+            outDate: "Out Date",
+            outTime: "Out Time",
+            duration: "Duration",
+            employeeId: "Employee ID",
+            runId: "Run ID"
+          }
+          this.attendanceDetails.unshift(this.newHeadingDb);
+        }
+        else {
+          document.getElementById("employeeID").focus();
+          alertify.delay(1000);
+          alertify.logPosition("bottom right");
+          alertify.error("Enter valid employeeID");
+        }
+       // console.log(this.attendanceDetails);
+      });
+    }
+    else {
+      document.getElementById("employeeID").focus();
+      alertify.delay(1000);
+      alertify.logPosition("bottom right");
+      alertify.error("Enter employee ID");
+    }
+
+
+  }
+
+}

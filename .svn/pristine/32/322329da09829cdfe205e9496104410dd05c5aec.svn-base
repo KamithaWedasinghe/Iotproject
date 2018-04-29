@@ -1,0 +1,5 @@
+.employee-search{
+    color:white;
+    background-color:#20a8d8;
+    cursor: pointer
+}

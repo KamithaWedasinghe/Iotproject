@@ -1,0 +1,266 @@
+<!-- <div class="row frame-padding" >
+    <button type="button" class="btn btn-info btn-sm buttion-save" (click)="refreshData()" >
+        <b><h5>refresh</h5></b><br>
+      </button>
+    <div class="col-md-6" *ngIf="device01  bg">
+        <label class="label-main"><h4>Device 01</h4></label>
+        <div class="card main-border">
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-md-6">
+                            <label class="bc-colr"><dt>1.Component Name</dt></label>
+                            <label class="bc-colr"><dt>2.MacAddress</dt></label>
+                            <label class="bc-colr"><dt>3.Current_value</dt></label>
+                            <label class="bc-colr"><dt>4.Unit </dt></label>
+                            
+                           
+                    </div>
+                    <div class="col-md-6">
+                            <label class="bc-colr"><dt>{{deviceDetails[0].name}}</dt></label>
+                            <label class="bc-colr"><dt>{{deviceDetails[0].MacAddress}}</dt></label>
+                            <label class="bc-colr"><dt>{{deviceDetails[0].Current_value}}</dt></label>
+                            <label class="bc-colr"><dt>{{deviceDetails[0].Unit}}</dt></label>
+                         
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6" *ngIf="device02  bg">
+        <label class="label-main"><h4>Device 02</h4></label>
+        <div class="card main-border">
+            <div class="card-block">
+                <div class="row">
+                    <div class="col-md-6">
+                            <label class="bc-colr"><dt>1.Component Name</dt></label>
+                            <label class="bc-colr"><dt>2.MacAddress</dt></label>
+                            <label class="bc-colr"><dt>3.Current_value</dt></label>
+                            <label class="bc-colr"><dt>4.Unit </dt></label>
+                            
+                           
+                    </div>
+                    <div class="col-md-6">
+                        <label class="bc-colr"><dt>{{deviceDetails[1].name}}</dt></label>
+                        <label class="bc-colr"><dt>{{deviceDetails[1].MacAddress}}</dt></label>
+                        <label class="bc-colr"><dt>{{deviceDetails[1].Current_value}}</dt></label>
+                        <label class="bc-colr"><dt>{{deviceDetails[1].Unit}}</dt></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+</div>
+<div class="row frame-padding" >
+        
+            <div class="col-md-6" *ngIf="device03">
+                <label class="label-main"><h4>Device 03</h4></label>
+                <div class="card main-border">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="bc-colr"><dt>1.Component Name</dt></label>
+                                <label class="bc-colr"><dt>2.MacAddress</dt></label>
+                                <label class="bc-colr"><dt>3.Current_value</dt></label>
+                                <label class="bc-colr"><dt>4.Unit </dt></label>
+                                
+                               
+                               
+                            </div>
+                            <div class="col-md-6">
+                                <label class="bc-colr"><dt>{{deviceDetails[2].name}}</dt></label>
+                                <label class="bc-colr"><dt>{{deviceDetails[2].MacAddress}}</dt></label>
+                                <label class="bc-colr"><dt>{{deviceDetails[2].Current_value}}</dt></label>
+                                <label class="bc-colr"><dt>{{deviceDetails[2].Unit}}</dt></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="col-md-6" *ngIf="device04">
+                <label class="label-main"><h4>Device 04</h4></label>
+                <div class="card main-border">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="bc-colr"><dt>1.Component Name</dt></label>
+                                <label class="bc-colr"><dt>2.MacAddress</dt></label>
+                                <label class="bc-colr"><dt>3.Current_value</dt></label>
+                                <label class="bc-colr"><dt>4.Unit </dt></label>
+                                
+                               
+                            </div>
+                            <div class="col-md-6">
+                                <label class="bc-colr"><dt>{{deviceDetails[3].name}}</dt></label>
+                                <label class="bc-colr"><dt>{{deviceDetails[3].MacAddress}}</dt></label>
+                                <label class="bc-colr"><dt>{{deviceDetails[3].Current_value}}</dt></label>
+                                <label class="bc-colr"><dt>{{deviceDetails[3].Unit}}</dt></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row frame-padding" >
+
+
+                
+                    <div class="col-md-6" *ngIf="device05">
+                        <label class="label-main"><h4>Device 05</h4></label>
+                        <div class="card main-border">
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="bc-colr"><dt>1.Component Name</dt></label>
+                                        <label class="bc-colr"><dt>2.MacAddress</dt></label>
+                                        <label class="bc-colr"><dt>3.Current_value</dt></label>
+                                        <label class="bc-colr"><dt>4.Unit </dt></label>
+                                            
+                                           
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="bc-colr"><dt>{{deviceDetails[4].name}}</dt></label>
+                                        <label class="bc-colr"><dt>{{deviceDetails[4].MacAddress}}</dt></label>
+                                        <label class="bc-colr"><dt>{{deviceDetails[4].Current_value}}</dt></label>
+                                        <label class="bc-colr"><dt>{{deviceDetails[4].Unit}}</dt></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6" *ngIf="device06">
+                        <label class="label-main"><h4>Device 06</h4></label>
+                        <div class="card main-border">
+                            <div class="card-block">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="bc-colr"><dt>1.Component Name</dt></label>
+                                        <label class="bc-colr"><dt>2.MacAddress</dt></label>
+                                        <label class="bc-colr"><dt>3.Current_value</dt></label>
+                                        <label class="bc-colr"><dt>4.Unit </dt></label>
+                                           
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="bc-colr"><dt>{{deviceDetails[5].name}}</dt></label>
+                                        <label class="bc-colr"><dt>{{deviceDetails[5].MacAddress}}</dt></label>
+                                        <label class="bc-colr"><dt>{{deviceDetails[5].Current_value}}</dt></label>
+                                        <label class="bc-colr"><dt>{{deviceDetails[5].Unit}}</dt></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    device01=false;
+  device02=false;
+  device03=false;
+  device04=false;
+  device05=false;
+  device06=false;    
+                
+         -->
+      
+<button type="button" class="btn btn-info btn-sm buttion-save" (click)="refreshData()">
+    <b>
+        <h5>Check Updates</h5>
+    </b>
+    <br>
+</button>
+<button type="button" class="btn btn-info btn-sm buttion-save" (click)="viewDeviceDetils()">
+        <b>
+            <h5>refresh</h5>
+        </b>
+        <br>
+    </button>
+<div [@routerTransition]>
+<div class="row" >
+
+        <div class="col col-sm-6" *ngIf="device01">
+            <div class="card mb-3">
+                <div class="card-header">
+                        <b>   Device 01 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAC Address :&nbsp;&nbsp;&nbsp;{{MacAddress0}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unit :&nbsp;&nbsp;&nbsp;{{unit0}}</b>
+                </div>
+                <div class="card-body">
+                    <canvas baseChart height="130" [datasets]="lineChartData01" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
+                        [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col col-sm-6" *ngIf="device02">
+            <div class="card mb-3">
+                <div class="card-header">
+                        <b>   Device 02 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAC Address :&nbsp;&nbsp;&nbsp;{{MacAddress1}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unit :&nbsp;&nbsp;&nbsp;{{unit1}}</b>
+                </div>
+                <div class="card-body">
+                    <canvas baseChart height="130" [datasets]="lineChartData02" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
+                        [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col col-sm-6" *ngIf="device03">
+            <div class="card mb-3">
+                <div class="card-header">
+                        <b>   Device 03 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAC Address :&nbsp;&nbsp;&nbsp;{{MacAddress2}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unit :&nbsp;&nbsp;&nbsp;{{unit2}}</b>
+                </div>
+                <div class="card-body">
+                    <canvas baseChart height="130" [datasets]="lineChartData03" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
+                        [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col col-sm-6" *ngIf="device04">
+            <div class="card mb-3">
+                <div class="card-header">
+                        <b>   Device 04 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAC Address :&nbsp;&nbsp;&nbsp;{{MacAddress3}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unit :&nbsp;&nbsp;&nbsp;{{unit3}}</b>
+                </div>
+                <div class="card-body">
+                    <canvas baseChart height="130" [datasets]="lineChartData04" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
+                        [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="row" >
+
+            <div class="col col-sm-6" *ngIf="device05">
+                <div class="card mb-3">
+                    <div class="card-header">
+                            <b>   Device 05 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAC Address :&nbsp;&nbsp;&nbsp;{{MacAddress4}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unit :&nbsp;&nbsp;&nbsp;{{unit4}}</b>
+                    </div>
+                    <div class="card-body">
+                        <canvas baseChart height="130" [datasets]="lineChartData05" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
+                            [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-sm-6" *ngIf="device06">
+                <div class="card mb-3">
+                    <div class="card-header">
+                     <b>   Device 06 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MAC Address :&nbsp;&nbsp;&nbsp;{{MacAddress5}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unit :&nbsp;&nbsp;&nbsp;{{unit5}}</b>
+                    </div>
+                    <div class="card-body">
+                        <canvas baseChart height="130" [datasets]="lineChartData06" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors"
+                            [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+      
+</div>
+<div class="row" *ngIf="diviceStatus">
+        <h1>Not Available</h1>
+ 
+            </div>

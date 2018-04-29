@@ -1,0 +1,61 @@
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import {  EmployeeRegistationComponent } from './employee-registation/employee-registation.component';
+import { EmployeeDetailComponent } from './employee-detail/employee-detail.component';
+import { DeductionAlowancesComponent } from './deduction-alowances/deduction-alowances.component';
+import {EmployeePersonalDetailsComponent} from './employee-personal-details/employee-personal-details.component';
+import { UpdateRegistedEmployeeComponent } from './update-registed-employee/update-registed-employee.component';
+const routes: Routes = [
+ 
+  
+  {
+    path: '',
+    component:EmployeeRegistationComponent,
+    data: {
+      title: 'WorkingSpace'
+    },
+  
+
+  },
+  {
+    path: 'detail',
+    component:EmployeeDetailComponent,
+    data: {
+      title: 'WorkingSpace'
+    }
+  },
+    {
+     path: 'deduction-alowances/:identifierId',
+     component:DeductionAlowancesComponent ,
+     data: {
+     title: 'lookup'
+        }
+      
+    
+   },
+   {
+    path: 'employee-personal-details/:identifierId',
+    component:EmployeePersonalDetailsComponent ,
+    data: {
+    title: 'lookup'
+       }
+     
+   
+  },
+{
+  path: 'update-registed-employee/:identifierIdTest',
+  component: UpdateRegistedEmployeeComponent ,
+  data:{
+    title: 'personal'
+  }
+
+},
+  
+   
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class ParollRoutingModule { }

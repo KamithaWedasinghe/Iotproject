@@ -1,0 +1,197 @@
+<div class="container fram-padding">
+  <form class="form-horizontal" role="form" [formGroup]="userForm" (ngSubmit)="registerUser(userForm.value)">
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+        <h2>Register New User</h2>
+        <hr>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 field-label-responsive">
+        <label for="name">
+          <h6>First Name</h6>
+        </label>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+            <div class="input-group-addon" style="width: 2.6rem">
+              <i class="fa fa-user"></i>
+            </div>
+            <input type="text" formControlName="firstname" class="form-control" placeholder="John" required autofocus>
+            <div *ngIf="userForm.get('firstname').touched || submitted" style='color:red'>
+              <div *ngIf="userForm.get('firstname').hasError('required')">First Name required</div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-control-feedback">
+          <span class="text-danger align-middle">
+            <!-- Put name validation error messages here -->
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 field-label-responsive">
+        <label for="name">
+          <h6>Last Name</h6>
+        </label>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+            <div class="input-group-addon" style="width: 2.6rem">
+              <i class="fa fa-user"></i>
+            </div>
+            <input type="text" formControlName="last_name" class="form-control" placeholder="Doe" required autofocus>
+            <div *ngIf="userForm.get('last_name').touched || submitted" style='color:red'>
+              <div *ngIf="userForm.get('last_name').hasError('required')">Last Name required</div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-control-feedback">
+          <span class="text-danger align-middle">
+            <!-- Put name validation error messages here -->
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 field-label-responsive">
+        <label for="name">
+          <h6>Role</h6>
+        </label>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+            <div class="input-group-addon" style="width: 2.6rem">
+              <i class="fa fa-user"></i>
+            </div>
+            <input type="text" formControlName="role" class="form-control" placeholder="Master/Slave" required autofocus>
+            <div *ngIf="userForm.get('role').touched || submitted" style='color:red'>
+              <div *ngIf="userForm.get('role').hasError('required')">Role required</div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-control-feedback">
+          <span class="text-danger align-middle">
+            <!-- Put name validation error messages here -->
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 field-label-responsive">
+        <label for="email">
+          <h6>E-Mail Address</h6>
+        </label>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+            <div class="input-group-addon" style="width: 2.6rem">
+              <i class="fa fa-at"></i>
+            </div>
+            <input type="text" formControlName="email" class="form-control" placeholder="you@example.com" required autofocus>
+
+            <div *ngIf="userForm.get('email').touched || submitted" style='color:red'>
+              <div *ngIf="userForm.get('email').hasError('required')">Email required</div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-control-feedback">
+          <span class="text-danger align-middle">
+
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 field-label-responsive">
+        <label for="password">
+          <h6>Password</h6>
+        </label>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group has-danger">
+          <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+            <div class="input-group-addon" style="width: 2.6rem">
+              <i class="fa fa-key"></i>
+            </div>
+            <input type="password" formControlName="password" class="form-control" placeholder="Password" required>
+            <div *ngIf="userForm.get('password').touched || submitted" style='color:red'>
+              <div *ngIf="userForm.get('password').hasError('required')">Password required</div>
+              <div *ngIf="userForm.get('password').hasError('minLength')">password required Min length than 5</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-control-feedback">
+          <span class="text-danger align-middle">
+
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 field-label-responsive">
+        <label for="password">
+          <h6>Confirm Password</h6>
+        </label>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+            <div class="input-group-addon" style="width: 2.6rem">
+              <i class="fa fa-repeat"></i>
+            </div>
+            <input type="password" formControlName="password_confirmation" class="form-control" placeholder="Password" required>
+            <div *ngIf="userForm.get('password_confirmation').touched || submitted" style='color:red'>
+              <div *ngIf="userForm.get('password_confirmation').hasError('required')">Password Comframation required</div>
+              <div *ngIf="userForm.get('password_confirmation').hasError('minLength')">password required Min length than 5</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 field-label-responsive">
+        <label for="password">
+          <h6>Upload Image</h6>
+        </label>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+            <image-upload #imageUpload [url]="this.imageUploadApiUrl" (uploadFinished)="imageUploaded($event)" (onRemove)="imageRemoved($event)"
+              [max]="1" [extensions]="['jpg','png']" [fileTooLargeMessage]="'Image too large!'" [maxFileSize]="512000"></image-upload>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+        <button [disabled]='!userForm.valid' type="submit" class="btn btn-success">
+          <i class="fa fa-user-plus"></i>
+          <h5>Register</h5>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>

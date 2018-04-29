@@ -1,0 +1,99 @@
+<!-- Alowances input form-->
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="row">
+      <div class="col-sm-12">
+
+        <form [formGroup]="userForm">
+
+          <div class="form-group">
+            <label for="exampleSelect1">Allowances</label>
+            <select [(ngModel)]="allowance" formControlName="allowance" name='allowance' [disabled]='hiddenType' class="form-control"
+              id="exampleSelect1">
+              <option placeholder="" disabled> Add Allowances </option>
+              <option *ngFor='let allowancesType of allowancesType' [ngValue]="allowancesType.name">{{allowancesType.name}} </option>
+            </select>
+          </div>
+
+         
+          <label for="lastName">Amount</label>
+          <input type="text" class="form-control" placeholder="Enter the amount" (keyup.enter)='keytab($event,allowanceAmount.value)'
+            #deductionAmount OnlyNumber="true" [(ngModel)]="allowanceAmount" myCurrencyFormatter (ngModelChange)="changeModel($event)"
+            formControlName="allowanceAmount">
+          <div *ngIf="userForm.get('allowanceAmount').touched || submitted" style='color:red'>
+            <div *ngIf="userForm.get('allowanceAmount').hasError('required')">Amount is required</div>
+
+          </div>
+          <br>
+
+
+          <label for="lastName">Comment</label>
+          <textarea style="overflow: hidden" #text [(ngModel)]="allowanceComment" formControlName="allowanceComment" id="textarea"
+            name='allowanceComment' class="form-control" id="exampleTextarea" rows=""></textarea>
+          <div *ngIf="userForm.get('allowanceComment').touched || submitted" style='color:red'>
+            <div *ngIf="userForm.get('allowanceComment').hasError('required')">Comment is required</div>
+
+          </div>
+          <br>
+
+          <button type="button" [disabled]="!userForm.valid" *ngIf='!updatebtnVisibility' (click)="addAllowance(allowance)" class="btn btn-primary">Submit</button>
+          <button type="button" *ngIf='updatebtnVisibility' [disabled]="!userForm.valid" (click)="updateAllowance()" class="btn btn-success">Update</button>
+          <button type="button" (click)="routerNavigate()" style="background-color: rgb(248, 70, 0)" class="btn btn-primary router-button">Back</button>
+
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="col-sm-6">
+    <table class="table table-striped table-inverse table-content">
+      <thead>
+        <tr>
+          <th>Allow.Name</th>
+          <th class="text-right">Comment</th>
+          <th class="text-right">Amount</th>
+          <th class="text-right">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr tr *ngFor='let employeeAlowancesDetail of allowanceDetail; let i = index'>
+          <td>{{employeeAlowancesDetail.name}}</td>
+          <!-- <td class="text-right">{{employeeAlowancesDetail.comment| truncate : 10 : "…"}}</td> -->
+          <td class="text-right">
+            <p placement="top" class="yellow" [ngbTooltip]="employeeAlowancesDetail.comment">{{employeeAlowancesDetail.comment | truncate : 10 : "…"}}</p>
+          </td>
+          <td class="text-right">{{employeeAlowancesDetail.amount | number : '1.2-2'}}</td>
+          <td class="bauttonx" style="padding:10px;">
+            <div class="row" style='margin:0px;'>
+              <div class="col-sm-6 icon-data btn-action">
+
+              </div>
+              <div class="col-sm-3 icon-data btn-action">
+                <i class="fa fa-trash-o button-icon icon-data remove-button" style="color:red;float:right;padding:0px;margin-left:10px" aria-hidden="true"
+                  (click)='deleteAllowanceRow(employeeAlowancesDetail,i)'></i>
+              </div>
+              <div class="col-sm-3 icon-data btn-action">
+                <i class="fa fa-pencil button-icon button-icon icon-data  pencil-button  " aria-hidden="true" style="color:rgb(12, 247, 12);float:right"
+                  (click)="selectSample()" (click)="updateAllowanceRow(employeeAlowancesDetail, i)"></i>
+              </div>
+            </div>
+
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Gross Deduction</th>
+          <td></td>
+
+          <th class="text-right">{{totalAllowanceAmount | number : '1.2-2'}}</th>
+          <td></td>
+        </tr>
+
+
+
+      </tbody>
+    </table>
+  </div>

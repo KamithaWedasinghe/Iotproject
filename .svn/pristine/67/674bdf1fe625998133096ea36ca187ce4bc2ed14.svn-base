@@ -1,0 +1,6 @@
+.welcome{
+    font-size: 70px;
+    margin-top: 20%;
+    margin-left: 12%;
+    color: #0055ff;
+}

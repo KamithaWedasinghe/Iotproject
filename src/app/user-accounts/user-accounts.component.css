@@ -1,0 +1,11 @@
+@media(min-width: 768px) {
+  .field-label-responsive {
+    padding-top: .5rem;
+    text-align: right;
+  }
+}
+.fram-padding{
+  position: relative;
+  padding-top: 4%;
+  right: 6%;  
+}

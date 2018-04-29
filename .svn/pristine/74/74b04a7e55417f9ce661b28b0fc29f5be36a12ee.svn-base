@@ -1,0 +1,263 @@
+import { Component, OnInit } from '@angular/core';
+import { PayrollMasterService } from '../services/payrollMaster.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import alertify from 'alertify.js';
+declare var jQuery: any;
+
+
+@Component({
+  selector: 'app-setting',
+  templateUrl: './setting.component.html',
+  styleUrls: ['./setting.component.css']
+})
+export class SettingComponent implements OnInit {
+  allAllowances;
+  // newAllowanceType;
+  allDeductions;
+  newDeductionType;
+  allowanceInputText;
+  deductionInputText;
+  editIdAllowance;
+  editIdDeduction;
+  editAllowanceText;
+  editDeductionText;
+  idForBlock;
+  // deleteAllowanceId;
+
+  constructor(private router: Router, private PayrollMasterService: PayrollMasterService, private formBuilder: FormBuilder) { }
+
+  ngOnInit() {
+    this.getAllowanceTypes();
+    this.getDeductionTypes();
+  }
+
+  getAllowanceTypes() {
+    this.PayrollMasterService.getAllowances().then(details => {
+      this.allAllowances = details.json().data;
+    });
+  }
+
+  getDeductionTypes() {
+    this.PayrollMasterService.getDeductions().then(details => {
+      this.allDeductions = details.json().data;
+    });
+  }
+  showBlockAllowance() {
+    var x = document.getElementById("allowanceText");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+
+  }
+  showBlockDeduction() {
+    var x = document.getElementById("deductionText");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+
+  }
+  showBlockEditAllowance(id,name) {
+    this.editIdAllowance = id;
+    jQuery('#editAllowanceText').val(name);
+    var x = document.getElementById("editAllowInput");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+  showBlockEditDeduction(id,name) {
+    this.editIdDeduction = id;
+    jQuery('#editDeductionText').val(name);
+    var x = document.getElementById("editDeducInput");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
+  }
+
+
+  addAllowanceType() {
+    if (this.allowanceInputText != null) {
+      this.PayrollMasterService.setAllowances(this.allowanceInputText).then(details => {
+        let responses = details.json().error;
+        jQuery('#allowanceInputText').val('');
+        this.allowanceInputText = null;
+        if (responses == false) {
+
+
+          alertify.delay(2000);
+          alertify.logPosition("bottom right");
+          alertify.success('Save Successfuly');
+          this.showBlockAllowance();
+          this.getAllowanceTypes();
+        } else {
+          this.showBlockAllowance();
+          alertify.delay(2000);
+          alertify.logPosition("bottom right");
+          alertify.error("Try Again");
+        }
+      });
+    } else {
+      this.showBlockAllowance();
+      alertify.delay(2000);
+      alertify.logPosition("bottom right");
+      alertify.error("Fill Text Field");
+    }
+  }
+
+  addDeductionType() {
+    if (this.deductionInputText != null) {
+      this.PayrollMasterService.setDedctions(this.deductionInputText).then(details => {
+        let responses = details.json().error;
+        jQuery('#deductionInputText').val('');
+        this.deductionInputText = null;
+        if (responses == false) {
+
+
+          alertify.delay(2000);
+          alertify.logPosition("bottom right");
+          alertify.success('Save Successfuly');
+          this.showBlockDeduction();
+          this.getDeductionTypes();
+        } else {
+          this.showBlockDeduction();
+          alertify.delay(2000);
+          alertify.logPosition("bottom right");
+          alertify.error("Try Again");
+        }
+      });
+    } else {
+      this.showBlockDeduction();
+      alertify.delay(2000);
+      alertify.logPosition("bottom right");
+      alertify.error("Fill Text Field");
+    }
+  }
+
+  editAllowanceType() {
+    let editData = {
+      id: this.editIdAllowance,
+      key: 'name',
+      value: this.editAllowanceText
+    }
+   
+    if (editData.id != null && editData.value != null) {
+      this.PayrollMasterService.updateAllowances(editData).then(details => {
+        let responses = details.json().error;
+        jQuery('#editAllowanceText').val('');
+        this.idForBlock = null;
+        this.editAllowanceText = null;
+
+        if (responses == false) {
+
+
+          alertify.delay(2000);
+          alertify.logPosition("bottom right");
+          alertify.success('Save Successfuly');
+          this.showBlockEditAllowance(this.idForBlock,null);
+          this.getAllowanceTypes();
+        } else {
+          this.showBlockEditAllowance(this.idForBlock,null);
+          alertify.delay(2000);
+          alertify.logPosition("bottom right");
+          alertify.error("Try Again");
+        }
+      });
+    } else {
+      this.showBlockEditAllowance(this.idForBlock,null);
+      alertify.delay(2000);
+      alertify.logPosition("bottom right");
+      alertify.error("Not Change");
+    }
+  }
+
+  editDeductionType() {
+    let editData = {
+      id: this.editIdDeduction,
+      key: 'name',
+      value: this.editDeductionText
+    }
+    if (editData.id != null && editData.value != null) {
+      this.PayrollMasterService.updateDeduction(editData).then(details => {
+        let responses = details.json().error;
+        jQuery('#editDeductionText').val('');
+        this.idForBlock = null;
+        this.editDeductionText = null;
+
+        if (responses == false) {
+
+
+          alertify.delay(2000);
+          alertify.logPosition("bottom right");
+          alertify.success('Save Successfuly');
+          this.showBlockEditDeduction(this.idForBlock,null);
+          this.getDeductionTypes();
+        } else {
+          this.showBlockEditDeduction(this.idForBlock,null);
+          alertify.delay(2000);
+          alertify.logPosition("bottom right");
+          alertify.error("Try Again");
+        }
+      });
+    } else {
+      this.showBlockEditDeduction(this.idForBlock,null);
+      alertify.delay(2000);
+      alertify.logPosition("bottom right");
+      alertify.error("Not Change");
+    }
+  }
+  deleteAllowanceType(id) {
+    let deleteAllowanceId = id;
+    if (deleteAllowanceId != null) {
+      this.PayrollMasterService.deleteAllowance(deleteAllowanceId).then(details => {
+        let responses = details.json().error;
+
+        if (responses == false) {
+          alertify.delay(2000);
+          alertify.logPosition("bottom right");
+          alertify.success('Save Successfuly');
+          this.getAllowanceTypes();
+        } else {
+          alertify.delay(2000);
+          alertify.logPosition("bottom right");
+          alertify.error("Try Again");
+        }
+      });
+    } else {
+      alertify.delay(2000);
+      alertify.logPosition("bottom right");
+      alertify.error("Fill Text Field");
+    }
+  }
+
+  deleteDeductionType(id) {
+    let deleteDeductionId = id;
+    if (deleteDeductionId != null) {
+      this.PayrollMasterService.deleteDeduction(deleteDeductionId).then(details => {
+        let responses = details.json().error;
+
+        if (responses == false) {
+          alertify.delay(2000);
+          alertify.logPosition("bottom right");
+          alertify.success('Delete Successfuly');
+          this.getDeductionTypes();
+        } else {
+          alertify.delay(2000);
+          alertify.logPosition("bottom right");
+          alertify.error("Try Again");
+        }
+      });
+    } else {
+      alertify.delay(2000);
+      alertify.logPosition("bottom right");
+      alertify.error("Try again");
+    }
+  }
+}

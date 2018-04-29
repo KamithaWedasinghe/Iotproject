@@ -1,0 +1,68 @@
+import { NgModule } from '@angular/core';
+import { ParollRoutingModule } from './payroll-routing.module';
+import {  EmployeeRegistationComponent } from './employee-registation/employee-registation.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+import { SharedModule } from "../shared/shared.module";
+import { EmployeeDetailComponent } from './employee-detail/employee-detail.component';
+import {DataTableModule} from "angular2-datatable";
+import { DataFilterPipe }   from './data-filter.pipe';
+import { DeductionAlowancesComponent } from './deduction-alowances/deduction-alowances.component';
+import { PayrollComponent } from './payroll.component';
+import { ReadMoreDirective } from 'read-more-directive-angular2';
+import {FocusModule} from 'angular2-focus';
+import { MyInput} from '../directive/autoFocus';
+import { AllowancesComponent } from './deduction-alowances/allowances/allowances.component';
+import { MonthlyAllowanceComponent } from './deduction-alowances/monthly-allowance/monthly-allowance.component';
+import { MonthlyDeductionComponent } from './deduction-alowances/monthly-deduction/monthly-deduction.component';
+import { EmployeePersonalDetailsComponent } from './employee-personal-details/employee-personal-details.component';
+import { ValidationService } from './validation.service';
+import { ControlMessagesComponent } from './control-massage.component';
+<<<<<<< .mine
+import { BootstrapSwitchModule } from 'angular2-bootstrap-switch';
+import { UpdateRegistedEmployeeComponent } from './update-registed-employee/update-registed-employee.component';
+||||||| .r25
+import { BootstrapSwitchModule } from 'angular2-bootstrap-switch';
+=======
+>>>>>>> .r27
+
+
+@NgModule({
+  imports: [
+      ParollRoutingModule,
+      FormsModule,
+      CommonModule,
+      DataTableModule,
+      SharedModule,
+      ReactiveFormsModule,
+      [FocusModule.forRoot()],
+      
+   
+  ],
+      declarations: [ 
+        PayrollComponent,
+      EmployeeRegistationComponent,
+      ControlMessagesComponent,
+      EmployeeDetailComponent,
+      DataFilterPipe,
+      DeductionAlowancesComponent,
+      ReadMoreDirective,
+      MyInput,
+      AllowancesComponent,
+      MonthlyAllowanceComponent,
+      MonthlyDeductionComponent,
+      EmployeePersonalDetailsComponent,
+      UpdateRegistedEmployeeComponent
+    ],
+      providers:[
+      EmployeeRegistationComponent,
+      EmployeeDetailComponent,
+      ValidationService
+    
+  ],
+   
+      exports: [DataFilterPipe]
+ 
+})
+export class PayrollModule { }

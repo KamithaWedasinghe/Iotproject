@@ -1,0 +1,52 @@
+.heading-default{
+    /* margin-top: -5%; */
+    color: #336699;
+    font-size: 16px;
+    font-weight: bold;
+
+}
+.btn{
+    /* margin-left: 1%; */
+    margin-top: 2%;
+    margin-left: 3%;
+}
+.btn-circle {
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 30px;
+  }
+  .detail-body{
+    margin-top: 5%;
+  }
+  .title-label{
+    /* float: right; */
+  }
+  .payroll-run-number{
+      font-size: 36px;
+  }
+  .heading-clicked{
+    color:red;
+    font-size: 16px;
+    font-weight: bold;  
+  }
+  .checklist{
+    margin-top: 5%;
+    margin-left: 10%;
+  }
+  .payroll-run-checkList{
+    font-size: 16px;
+  }
+  .btn-sublit-checklist{
+    margin-top: 5%;
+    /* margin-left: 80%; */
+  }
+  .dryrun{
+    margin-top: 10%;
+  }
+  .finish-dry-run{
+    margin-top: 120px;
+  }

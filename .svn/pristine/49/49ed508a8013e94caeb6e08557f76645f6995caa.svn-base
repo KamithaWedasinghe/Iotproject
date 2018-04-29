@@ -1,0 +1,24 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+@Component({
+  selector: 'app-employee-personal-details',
+  templateUrl: './employee-personal-details.component.html',
+  styleUrls: ['./employee-personal-details.component.css']
+})
+export class EmployeePersonalDetailsComponent implements OnInit {
+  employeeid
+
+  constructor(
+    private route: ActivatedRoute,
+  ) {   }
+
+  ngOnInit( ) {
+    let desc = this.route.snapshot.paramMap.get('id');
+    this.employeeid = desc;
+    let employeeDetail = {
+      id: parseInt(this.employeeid)
+    }
+  }
+
+}

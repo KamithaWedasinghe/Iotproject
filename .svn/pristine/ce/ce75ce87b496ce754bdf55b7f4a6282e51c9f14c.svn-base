@@ -1,0 +1,87 @@
+import { Component, OnInit } from '@angular/core';
+import { PayrollService } from '../../../services/Payroll.service';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import alertify from 'alertify.js';
+import * as moment from 'moment';
+
+
+
+
+@Component({
+  selector: 'app-employee-registation',
+  templateUrl: './employee-registation.component.html',
+  styleUrls: ['./employee-registation.component.css']
+})
+export class EmployeeRegistationComponent implements OnInit {
+  empFirstName
+ 
+  submited;
+  category
+  isDisabled: boolean;
+  form: FormGroup;
+  ef
+
+  employeeRegisterValidation
+  constructor(private router: Router, private wishPayrollService: PayrollService, private fb: FormBuilder) {
+    this.form = fb.group({
+      'empFirstName': ['', [Validators.required, Validators.minLength(5)]]
+    });
+  }
+
+  ngOnInit() {
+   
+    this.wishPayrollService.getEmployeeCategory(this.addEmployeeRegistationDetail)
+      .then((response) => {
+        this.category = response.json().data;
+      })
+
+  }
+
+
+  // add employee ragister form
+
+  addEmployeeRegistationDetail(form) {
+
+    let userinfo = JSON.parse(localStorage.getItem('userInfo'));
+    let username = userinfo.username;
+    let createdate = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+  
+    let data = {
+      username: username,
+      createdate: createdate,
+      formdata: form
+    }
+    this.wishPayrollService.addEmployerRegistationDetail(data).then(response => {
+      this.submited = true;
+
+      console.log(response.json().data)
+     
+
+    })
+  }
+
+  keytab(event, value) {
+    if (value == '') {
+      //do nothing
+    } else {
+      if (event.keyCode === 13) {
+        event.preventDefault()
+        const inputs = Array.prototype.slice.call(document.querySelectorAll("input"))
+        const index =
+          (inputs.indexOf(document.activeElement) + 1) % inputs.length
+        const input = inputs[index]
+        input.focus()
+        input.select()
+
+      }
+    }
+  }
+
+  // getting employee details
+
+
+
+
+
+}

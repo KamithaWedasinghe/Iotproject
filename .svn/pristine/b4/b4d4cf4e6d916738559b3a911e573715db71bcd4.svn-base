@@ -1,0 +1,106 @@
+import { Component, OnInit } from '@angular/core';
+import { PayrollService } from '../../services/Payroll.service';
+import { FormsModule, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import alertify from 'alertify.js';
+import * as moment from 'moment';
+declare var $: any;
+
+
+
+@Component({
+  selector: 'app-employee-registation',
+  templateUrl: './employee-registation.component.html',
+  styleUrls: ['./employee-registation.component.css']
+})
+export class EmployeeRegistationComponent implements OnInit {
+  empFirstName
+  male;
+  submited;
+  category
+  isDisabled: boolean;
+  employeeRegisterValidation
+  female
+  gender = 'male'
+  aa
+  constructor(private router: Router, private wishPayrollService: PayrollService, ) {
+
+
+  }
+
+
+
+  ngOnInit() {
+    $(function () {
+      //Input radio-group visual controls
+      $('.radio-group label').on('click', function () {
+        $(this).removeClass('not-active').siblings().addClass('not-active');
+      });
+    });
+    console.log('jhj')
+    this.wishPayrollService.getEmployeeCategory(this.addEmployeeRegistationDetail)
+      .then((response) => {
+        this.category = response.json().data;
+
+      })
+
+  }
+
+
+  // add employee ragister form
+
+  addEmployeeRegistationDetail(value) {
+    console.log(value.categoryTypeid)
+    if(value.gender==true){
+      this.gender = 'female'
+    }
+    if(value.gender1==false){
+      this.gender = 'male'
+    }
+
+    console.log('ddd', value.gender1)
+    
+    let userinfo = JSON.parse(localStorage.getItem('userInfo'));
+    let username = userinfo.username;
+    let createdate = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
+    value.gender=this.gender;
+    let data = {
+      username: username,
+      createdate: createdate,
+      formdata: value,
+      
+
+    }
+    console.log('ddggggg', data)
+
+    this.wishPayrollService.addEmployerRegistationDetail(data).then(response => {
+      this.submited = true;
+
+     console.log(response.json().data)
+
+
+    })
+  }
+
+  keytab(event, value) {
+    if (value == '') {
+      //do nothing
+    } else {
+      if (event.keyCode === 13) {
+        event.preventDefault()
+        const inputs = Array.prototype.slice.call(document.querySelectorAll("input"))
+        const index =
+          (inputs.indexOf(document.activeElement) + 1) % inputs.length
+        const input = inputs[index]
+        input.focus()
+        input.select()
+
+      }
+    }
+  }
+
+ 
+
+
+
+}

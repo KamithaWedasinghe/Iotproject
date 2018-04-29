@@ -1,0 +1,57 @@
+:host /deep/.tooltip-inner {
+    max-width: 200px;
+    padding: 3px 8px;
+    color: #FFD;
+    text-align: center;
+    background-color: rgb(28, 163, 62);
+}
+.degduction{
+    background-color:whitesmoke;
+    height: 1000px;
+}
+
+
+
+.table-head{
+    background-color: rgba(41, 170, 12, 0.63);
+    color: white;
+    
+}
+tr{
+    height: 50px;
+}
+.header{
+    margin-top:30px;
+    height:70px;
+    padding-left:15px;
+}
+
+.action-button{
+    padding: 5px;
+}
+
+.button-icon{
+    color: white
+}
+
+.xx{
+    border-top-color:transparent;
+    margin-top:50px
+}
+
+
+.router-button{
+    background-color: lightgray;
+}
+
+@media only screen and (max-width: 1300px) {
+    .pencil-button{
+    margin-right:-25px;
+    margin-top:-13px;
+      
+    }
+}
+
+
+
+

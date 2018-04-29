@@ -1,0 +1,136 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card form-body form-body" style="margin-top:30px">
+      <div class="card-header">
+        <strong>Employee Details</strong>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-12" style="height:50px;padding:8px;margin-top:-6px">
+            <div class="row">
+              <div class="col-sm-3">
+
+                <select class="form-control input-sm" [(ngModel)]="rowsOnPage">
+                  <option [ngValue]="5">5</option>
+                  <option [ngValue]="10">10</option>
+                  <option [ngValue]="15">15</option>
+                </select>
+              </div>
+              <div class="col-sm-3">
+                <select class="form-control input-sm" style="padding-top:-3px" [(ngModel)]="sortBy">
+                  <option ngValue="id">Id</option>
+                  <option ngValue="email">First Name</option>
+                  <option ngValue="age">Last Name</option>
+
+                </select>
+              </div>
+
+              <div class="col-sm-3">
+                <select class="form-control input-sm " [(ngModel)]="sortOrder" style='padding:0px'>
+                  <option ngValue="asc">Ascending</option>
+                  <option ngValue="desc">Descending</option>
+                </select>
+              </div>
+              <div class="col-sm-3">
+                <input class="form-control" [(ngModel)]="filterQuery" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+        <table class="table table-striped" [mfData]="data | dataFilter : filterQuery" [mfData]="data" #mf="mfDataTable" [mfRowsOnPage]="rowsOnPage"
+          [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder" style="margin-top:10px;">
+          <thead>
+            <tr>
+              <th style="width:5%">
+                <mfDefaultSorter by="name">Id</mfDefaultSorter>
+              </th>
+              <th style="width:20%">
+                <mfDefaultSorter by="name" class="text-right"> Name</mfDefaultSorter>
+              </th>
+
+              <th style="width:10%">
+                <mfDefaultSorter by="email">Employee Date</mfDefaultSorter>
+              </th>
+              <th style="width: 10%">
+                <mfDefaultSorter by="age">EPF No</mfDefaultSorter>
+              </th>
+
+              <th style="width: 10%">
+                <mfDefaultSorter by="city">Basic Salary</mfDefaultSorter>
+              </th>
+              <th style="width: 15%">
+                <mfDefaultSorter by="city">Telephone Number</mfDefaultSorter>
+              </th>
+              <th style="width: 10%">
+                <mfDefaultSorter by="city" style="margin-left:30px">Action</mfDefaultSorter>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of mf.data">
+              <td>
+                <p>
+                  {{item.identifierId}}
+                </p>
+              </td>
+              <td>{{item.FirstName }} {{item.empLastName}}</td>
+              <td>{{item.employeeDate}}</td>
+              <td>{{item.empEpfNo}}</td>
+              <td>{{item.basicSalery | number : '1.2-2'}}</td>
+              <td>{{item.phonenumber}}</td>
+              <td>
+
+                <div class="row">
+                  <div class="col-sm-2">
+
+                    <i class="fa fa-plus-circle" aria-hidden="true" routerLinkActive="active" [routerLink]="['../deduction-alowances/',item.identifierId]"
+                      style=" cursor:pointer; color:blue"></i>
+
+
+
+
+                  </div>
+                  <div class="col-sm-2">
+
+                    <i class="fa fa-pencil-square-o update-button" aria-hidden="true"routerLinkActive="active" [routerLink]="['../update-registed-employee/',item.identifierId]" style="cursor:pointer;color:red;float:center"></i>
+
+                  </div>
+                  <div class="col-sm-2">
+
+
+                    <i class="fa fa-info-circle fa-lg i-btn information-button" aria-hidden="true" routerLinkActive="active" [routerLink]="['../employee-personal-details/',item.identifierId]"
+                      style="cursor:pointer;color:green;margin-left:-1px"></i>
+
+                  </div>
+                  <div class="col-sm-6">
+
+
+                    
+
+                  </div>
+
+
+
+
+
+
+                </div>
+
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+
+
+          </tfoot>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,290 @@
+<div class="row frame-padding">
+  <div class="col-md-6">
+    <label class="label-main">Allowances</label>
+    <div class="card main-border">
+      <div class="card-block">
+        <button type="button" class="btn btn-primary btn-sm buttion-align" (click)="showBlockAllowance()">
+          <i class="fa fa-plus fa-lg"></i>
+        </button>
+        <!-- <div class="row"> -->
+        <label class="label-internal">Type</label>
+        <hr class="hr1">
+        <!-- allowance add block -->
+        <div class="newType-input" id="allowanceText" style="display:none">
+          <div class="row">
+            <div class="col-md-8">
+              <input type="text" name="allowanceInputText" id="allowanceInputText" class="form-control" onfocus="this.value=''" [(ngModel)]="allowanceInputText">
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="btn btn-primary btn-sm buttion-save" (click)="addAllowanceType()">
+                <b>Save</b>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- allowance edit block -->
+        <div class="newType-input" id="editAllowInput" style="display:none">
+          <div class="row">
+            <div class="col-md-8">
+              <input type="text" name="editAllowanceText" id="editAllowanceText" class="form-control" [(ngModel)]="editAllowanceText">
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="btn btn-primary btn-sm buttion-save" (click)="editAllowanceType()">
+                <b>Save</b>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- all allowances and edit and delete buttons -->
+        <div class="row">
+          <div class="col-md-8">
+            <label class="bc-colr" *ngFor='let allAllowance of allAllowances'>
+              <b>{{allAllowance.name}}</b>
+            </label>
+          </div>
+          <div class="col-md-4">
+            <div *ngFor='let allAllowance of allAllowances' class="btton-groupEditAndDelete">
+              <button type="button" class="btn btn-success edit-button" (click)="showBlockEditAllowance(allAllowance.id,allAllowance.name)">
+                <i class="fa fa-pencil" aria-hidden=""></i>
+              </button>
+              <button class="btn btn-danger delete-button" (click)="deleteAllowanceType(allAllowance.id)">
+                <i class="fa fa-trash-o" aria-hidden=""></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <label class="label-main">Deductions</label>
+    <div class="card main-border">
+      <div class="card-block">
+        <button type="button" class="btn btn-primary btn-sm buttion-align" (click)="showBlockDeduction()">
+          <i class="fa fa-plus fa-lg"></i>
+        </button>
+        <label class="label-internal">Type</label>
+        <hr class="hr1">
+        <!--deduction add block -->
+        <div class="newType-input" id="deductionText" style="display:none">
+          <div class="row">
+            <div class="col-md-8">
+              <input type="text" name="deductionInputText" id="deductionInputText" class="form-control" onfocus="this.value=''" [(ngModel)]="deductionInputText">
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="btn btn-primary btn-sm buttion-save" (click)="addDeductionType()">
+                <b>Save</b>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!--deduction edit block -->
+        <div class="newType-input" id="editDeducInput" style="display:none">
+          <div class="row">
+            <div class="col-md-8">
+              <input type="text" name="editDeductionText" id="editDeductionText" class="form-control" [(ngModel)]="editDeductionText">
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="btn btn-primary btn-sm buttion-save" (click)="editDeductionType()">
+                <b>Save</b>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- decution edit and delete buttion-->
+        <div class="row">
+          <div class="col-md-8">
+            <label class="bc-colr" *ngFor='let allDeduction of allDeductions'>
+              <b>{{allDeduction.name}}</b>
+            </label>
+          </div>
+          <div class="col-md-4">
+            <div *ngFor='let allDeduction of allDeductions' class="btton-groupEditAndDelete">
+              <button class="btn btn-success edit-button" (click)="showBlockEditDeduction(allDeduction.id,allDeduction.name)">
+                <i class="fa fa-pencil" aria-hidden=""></i>
+              </button>
+              <button class="btn btn-danger delete-button" (click)="deleteDeductionType(allDeduction.id)">
+                <i class="fa fa-trash-o" aria-hidden=""></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row frame-padding">
+  <div class="col-md-6">
+    <label class="label-main">Category</label>
+    <div class="card main-border">
+      <div class="card-block">
+        <button type="button" class="btn btn-primary btn-sm buttion-align" (click)="showBlockCategory()">
+          <i class="fa fa-plus fa-lg"></i>
+        </button>
+
+        <label class="label-internal">Type</label>
+        <hr class="hr1">
+        <!-- category add block -->
+        <div class="newType-input" id="categoryText" style="display:none">
+          <div class="row">
+            <div class="col-md-8">
+              <input type="text" name="categoryInputText" id="categoryInputText" class="form-control" onfocus="this.value=''" [(ngModel)]="categoryInputText">
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="btn btn-primary btn-sm buttion-save" (click)="addCategoryType()">
+                <b>Save</b>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- category edit block -->
+        <div class="newType-input" id="editCategoryInput" style="display:none">
+          <div class="row">
+            <div class="col-md-8">
+              <input type="text" name="editCategoryText" id="editCategoryText" class="form-control" [(ngModel)]="editCategoryText">
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="btn btn-primary btn-sm buttion-save" (click)="editCategoryType()">
+                <b>Save</b>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- all category and edit and delete buttons -->
+        <div class="row">
+          <div class="col-md-8">
+            <label class="bc-colr" *ngFor='let category of categories'>
+              <b>{{category.name}}</b>
+            </label>
+          </div>
+          <div class="col-md-4">
+            <div *ngFor='let category of categories' class="btton-groupEditAndDelete">
+              <button type="button" class="btn btn-success edit-button" (click)="showBlockEditCategory(category.id,category.name)">
+                <i class="fa fa-pencil" aria-hidden=""></i>
+              </button>
+              <button class="btn btn-danger delete-button" (click)="deleteCategoryType(category.id)">
+                <i class="fa fa-trash-o" aria-hidden=""></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <label class="label-main">Contribution</label>
+    <div class="card main-border">
+      <div class="card-block">
+        <button type="button" class="btn btn-primary btn-sm buttion-align" (click)="showBlockContribution()">
+          <i class="fa fa-plus fa-lg"></i>
+        </button>
+
+        <label class="label-internal">Type</label>
+        <hr class="hr1">
+        <!-- category add block -->
+        <div class="newType-input" id="contrbutionText" style="display:none">
+          <div class="row">
+            <div class="col-md-8">
+              <input type="text" name="contributionInputText" id="contributionInputText" class="form-control" onfocus="this.value=''" [(ngModel)]="contributionInputText">
+            </div>
+            <div class="col-md-4">
+              <button type="button" class="btn btn-primary btn-sm buttion-save" (click)="addContributionType()">
+                <b>Save</b>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- contribution edit block -->
+        <!-- <div class="newType-input" id="editCategoryInput" style="display:none">
+            <div class="row">
+              <div class="col-md-8">
+                <input type="text"  name="editCategoryText" id="editCategoryText" class="form-control"  [(ngModel)]="editCategoryText">
+              </div>
+              <div class="col-md-4">
+                <button type="button" class="btn btn-primary btn-sm buttion-save" (click)="editCategoryType()">
+                  <b>Save</b>
+                </button>
+              </div>
+            </div>
+          </div> -->
+        <!-- all contribution and edit and delete buttons -->
+        <div class="row">
+          <div class="col-md-8">
+            <label class="bc-colr" *ngFor='let contribution of contributions'>
+              <b>{{contribution.name}}</b>
+            </label>
+          </div>
+          <!-- <div class="col-md-4">
+            <div *ngFor='let category of categories' class="btton-groupEditAndDelete">
+              <button type="button" class="btn btn-primary edit-button" (click)="showBlockEditCategory(category.id,category.name)"> 
+                <i class="fa fa-pencil" aria-hidden=""></i>
+              </button>
+              <button class="btn btn-primary delete-button" (click)="deleteCategoryType(category.id)">
+                <i class="fa fa-trash-o" aria-hidden=""></i>
+              </button>
+            </div>
+          </div> -->
+        </div>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row frame-padding">
+  <div class="col-md-6">
+    <label class="label-main">Pre Requirements</label>
+    <div class="card main-border">
+      <div class="card-block">
+
+
+        <div class="row preReque-styls">
+          <div class="col-md-6">
+            Company name:
+            <span class="required-icon">*</span>
+            <input tabindex="1" type="text" name="nameOfCompany" id="nameOfCompany" value="" class="form-control" [(ngModel)]="nameOfCompany"
+              (blur)="updateCompanayDetails('companyName',nameOfCompany)" [disabled]="userAccessNumber != 8"> Phone Number:
+            <input tabindex="2" type="text" name="phoneNumber" id="phoneNumber" value="" class="form-control" [(ngModel)]="phoneNumber"
+              (blur)="updateCompanayDetails('phoneNumber',phoneNumber)" [disabled]="userAccessNumber != 8"> Address Line 01:
+            <input tabindex="3" type="text" name="addressOne" id="addressOne" value="" class="form-control" [(ngModel)]="addressOne"
+              (blur)="updateCompanayDetails('addressLineOne',addressOne)" [disabled]="userAccessNumber != 8"> Address Line 02:
+            <input tabindex="4" type="text" name="addressTwo" id="addressTwo" value="" class="form-control" [(ngModel)]="addressTwo"
+              (blur)="updateCompanayDetails('addressLineTwo',addressTwo)" [disabled]="userAccessNumber != 8"> City:
+            <input tabindex="5" type="text" name="city" id="city" value="" class="form-control" [(ngModel)]="city" (blur)="updateCompanayDetails('city',city)"
+              [disabled]="userAccessNumber != 8"> Email:
+            <input tabindex="6" type="text" name="email" id="email" value="" class="form-control" [(ngModel)]="email" (blur)="updateCompanayDetails('email',email)"
+              [disabled]="userAccessNumber != 8"> Fax:
+            <input tabindex="7" type="text" name="fax" id="fax" value="" class="form-control" [(ngModel)]="fax" (blur)="updateCompanayDetails('fax',fax)"
+              [disabled]="userAccessNumber != 8">
+
+          </div>
+          <div class="col-md-6">
+            Register Number:
+            <span class="required-icon"></span>
+            <input tabindex="8" type="text" name="registerNumber" id="registerNumber" value="" class="form-control" [(ngModel)]="registerNumber"
+              (blur)="updateCompanayDetails('registerNumber',registerNumber)" [disabled]="userAccessNumber != 8"> ETF(%):
+            <input tabindex="9" type="text" name="companyETF" id="companyETF" value="" class="form-control" [(ngModel)]="companyETF"
+              (blur)="updateCompanayDetails('etfPresentage',companyETF)" [disabled]="userAccessNumber != 8" required OnlyNumber="true"> EPF(%):
+            <input tabindex="10" type="text" name="companyEPF" id="companyEPF" value="" class="form-control" [(ngModel)]="companyEPF"
+              (blur)="updateCompanayDetails('epfPresentage',companyEPF)" [disabled]="userAccessNumber != 8" required OnlyNumber="true"> Tax(%):
+            <input tabindex="11" type="text" name="tax" id="tax" value="" class="form-control" [(ngModel)]="tax" (blur)="updateCompanayDetails('tax',tax)"
+              [disabled]="userAccessNumber != 8" required OnlyNumber="true">
+
+            <label class="main-font">Upload Logo:</label>
+            <image-upload #imageUpload [url]="this.imageUploadApiUrl" (uploadFinished)="imageUploaded($event)" (onRemove)="imageRemoved($event)"
+              [max]="1" [extensions]="['jpg','png']" [fileTooLargeMessage]="'Image too large!'" [maxFileSize]="512000"></image-upload>
+          </div>
+
+        </div>
+        <br>
+
+      </div>
+    </div>
+  </div>
+
+
+</div>

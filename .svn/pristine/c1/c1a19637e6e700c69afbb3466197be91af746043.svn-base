@@ -1,0 +1,17 @@
+import { NgModule } from '@angular/core';
+import { EmployeeRegisterRouter } from './employee-registation.routing.module';
+import { EmployeeRegistationComponent } from './employee-registation/employee-registation.component';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+
+
+
+@NgModule({
+  imports: [
+    EmployeeRegisterRouter,
+    FormsModule,
+    ReactiveFormsModule
+  ],
+  declarations: [  EmployeeRegistationComponent, ]
+ 
+})
+export class EmployeeModule { }

@@ -1,0 +1,74 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="card form-body form-body" style="margin-top:30px">
+      <div class="card-header">
+        <strong>Employee Registation</strong>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="row">
+              <div class="col-sm-7">
+                <div class="card">
+                  <div class="card-block">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <div class="row">
+                          <div class="col-sm-6">
+                              <strong class="strongCss">First Name :-</strong><br>
+                              <strong class="strongCss">Last Name :-</strong><br>
+                              <strong class="strongCss">Employee Id :-</strong><br>
+                              <strong class="strongCss">NIC Number :-</strong><br>
+                              <strong class="strongCss">Phone Number :-</strong><br>
+                              <strong class="strongCss">Email Address :-</strong><br>
+                              <strong class="strongCss">Address :-</strong><br>
+                              <strong class="strongCss"> City :-</strong><br>
+                              <strong class="strongCss"> Street :-</strong><br>
+                              <strong class="strongCss">Postal Code:-</strong><br>
+                              <strong class="strongCss">Job Catogery:-</strong><br>
+                              <strong class="strongCss">Date Employeed:-</strong>
+                              
+                         
+
+                          </div>
+                          <div class="col-sm-6">
+                              <strong class="strongCss">Employee No :- {{employeeid}}</strong>
+
+                          
+
+                          </div>
+
+
+
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-sm-5">
+                <div class="card" style="height:160px">
+                  <div class="card-block">
+                    This is some text within a card block. This is some text within a card block. This is some text within a card block. This
+                    is some text within a card block. This is some text within a card block. This is some text within a card
+                    block. This is some text within a card block.
+                  </div>
+                </div>
+
+
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+
+
+      </div>
+    </div>
+  </div>
+</div>

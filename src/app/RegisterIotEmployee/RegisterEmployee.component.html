@@ -1,0 +1,109 @@
+
+<div class=" kamith">
+    <div class="container">
+            
+        
+        <div class="row register">
+                <div class="col-xs-12 col-sm-8 col-md-3 col-sm-offset-2 col-md-offset-3"></div>
+            <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3 ">
+                <form role="form" [formGroup]="userForm" (ngSubmit)="registerUser(userForm.value)">
+                    <h2 style='color:rgb(1, 9, 26)'>Please Sign Up</h2>
+                    <hr class="colorgraph">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <input type="text" formControlName="firstname"  class="form-control input-lg" placeholder="First Name" tabindex="1" >
+                                <div *ngIf="userForm.get('firstname').touched || submitted" style='color:red'>
+                                    <div *ngIf="userForm.get('firstname').hasError('required')">First Name required</div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <input type="text" formControlName="last_name"   class="form-control input-lg" placeholder="Last Name" tabindex="2" >
+                                <div *ngIf="userForm.get('last_name').touched || submitted" style='color:red'>
+                                        <div *ngIf="userForm.get('last_name').hasError('required')">Last Name required</div>
+                                        
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="email" formControlName="email"   class="form-control input-lg" placeholder="Email Address" tabindex="4" >
+                        <div *ngIf="userForm.get('email').touched || submitted" style='color:red'>
+                                <div *ngIf="userForm.get('email').hasError('required')">Email required</div>
+                               
+                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <input type="password" formControlName="password"  class="form-control input-lg" placeholder="Password" tabindex="5" >
+                                <div *ngIf="userForm.get('password').touched || submitted" style='color:red'>
+                                        <div *ngIf="userForm.get('password').hasError('required')">password required</div>
+                                        <div *ngIf="userForm.get('last_name').hasError('minLength')">password required Min length than 5</div>
+                                    </div>  
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <input type="password" formControlName="password_confirmation"   class="form-control input-lg" placeholder="Confirm Password" tabindex="6" >
+                                <div *ngIf="userForm.get('password_confirmation').touched || submitted" style='color:red'>
+                                        <div *ngIf="userForm.get('password_confirmation').hasError('required')">password confirmation required</div>
+                                        <div *ngIf="userForm.get('last_name').hasError('minLength')">password confirmation required Min length than 5</div>
+                                    </div>  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-4 col-sm-3 col-md-3">
+                            <span class="button-checkbox">
+                                <button type="button" class="btn" data-color="info" tabindex="7">I Agree</button>
+                                <input type="checkbox" name="t_and_c" id="t_and_c" class="hidden" value="1">
+                            </span>
+                        </div>
+                        <div class="col-xs-8 col-sm-9 col-md-9 "><p style='color:rgb(14, 13, 13)'>
+                                <strong class="label label-primary">By clicking Register, you agree to the <a href="#" data-toggle="modal" data-target="#t_and_c_m" style='color:rgb(38, 6, 128)'>
+                            Terms and Conditions</a>
+                            set out by this site, including our Cookie Use.</strong>
+                            </p></div>
+                    </div>
+                    <label class="main-font">Upload Image</label>
+                    <image-upload #imageUpload [url]="this.imageUploadApiUrl" (uploadFinished)="imageUploaded($event)" (onRemove)="imageRemoved($event)"
+                      [max]="1" [extensions]="['jpg','png']" [fileTooLargeMessage]="'Image too large!'" [maxFileSize]="512000"></image-upload>
+                      <br>
+                    
+                    <hr class="colorgraph">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-6"><input type="submit"  [disabled]='!userForm.valid' value="" class="btn btn-success btn-block btn-lg" tabindex="7" value='Register'></div>
+                        <div class="col-xs-12 col-md-6">  <a routerLink="/login">
+                            <button type="button" class="btn btn-success btn-block btn-lg " data-dismiss="modal" tabindex="1">Sign In</button>
+                          </a>
+                        </div>
+                    </div> 
+                </form>
+            </div>
+            <div class="col-xs-12 col-sm-8 col-md-3 col-sm-offset-2 col-md-offset-3"></div>
+        </div>
+    </div>
+        <!-- Modal -->
+        <div class="modal fade" id="t_and_c_m" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 class="modal-title" id="myModalLabel">Terms & Conditions</h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">I Agree</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    

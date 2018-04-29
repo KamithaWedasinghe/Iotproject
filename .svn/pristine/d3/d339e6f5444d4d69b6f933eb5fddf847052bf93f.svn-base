@@ -1,0 +1,88 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { HttpModule } from '@angular/http';
+import { FormsModule }from '@angular/forms';
+import { NgForm } from '@angular/forms';
+import {  ReactiveFormsModule }   from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { NgxBarcodeModule } from 'ngx-barcode';
+
+
+import { AppComponent } from './app.component';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { NAV_DROPDOWN_DIRECTIVES } from './shared/nav-dropdown.directive';
+
+import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { SIDEBAR_TOGGLE_DIRECTIVES } from './shared/sidebar.directive';
+import { AsideToggleDirective } from './shared/aside.directive';
+import { BreadcrumbsComponent } from './shared/breadcrumb.component';
+
+// Routing Module
+import { AppRoutingModule } from './app.routing';
+
+//services
+import { CommonService } from './services/common/common.service';
+import { ConfigService } from './services/config/config.service';
+import { AuthenticationService } from './services/common/authentication.service';
+import {WishHospitalService} from './services/wishHospital.service';
+//import { NewVisitModule} from './diagnose/visits/newVisit/newVisit.module';
+//import {DiagnoseDetailsModule} from './diagnose/details/diagnoseDetails.module'
+//import {VisitedModule} from './diagnose/visits/visited/visited.module';
+// Layouts
+import { FullLayoutComponent } from './layouts/full-layout.component';
+import { SimpleLayoutComponent } from './layouts/simple-layout.component';
+
+//import component
+// import { DiagnoseDetailsComponent } from './diagnose/details/diagnoseDetails.component';
+// import { VisitedComponent } from './diagnose/visits/visited/visited.component';
+// import { NewVisitComponent } from './diagnose/visits/newVisit/newVisit.component';
+import { LoginComponent } from './login/login.component';
+import { AuthGuard }  from './services/common/auth-guard.service';
+//import { EmployeeRegistationComponent } from './payroll/employeeRegistation/employee-registation/employee-registation.component';
+//import { MainComponent } from './main/main.component';
+//import { MainComponentComponent } from './src/app/main-component/main-component.component';
+
+@NgModule({
+  imports: [
+    FormsModule,
+    BrowserModule,
+    AppRoutingModule,
+    BsDropdownModule.forRoot(),
+    TabsModule.forRoot(),
+    ChartsModule,
+    HttpModule,
+    NgxBarcodeModule,
+   
+  ],
+  declarations: [
+    AppComponent,
+    FullLayoutComponent,
+    SimpleLayoutComponent,
+    NAV_DROPDOWN_DIRECTIVES,
+    BreadcrumbsComponent,
+    SIDEBAR_TOGGLE_DIRECTIVES,
+    AsideToggleDirective,
+    // DiagnoseDetailsComponent,
+    // VisitedComponent,
+    // NewVisitComponent,
+    LoginComponent,
+    //EmployeeRegistationComponent,
+    //MainComponent
+  ],
+  providers: [{
+    provide: LocationStrategy,
+    useClass: HashLocationStrategy
+    
+  },
+    DatePipe,
+    CommonService,
+    ConfigService,
+    WishHospitalService,
+    AuthenticationService,
+    AuthGuard
+  ],
+  bootstrap: [ AppComponent ]
+})
+export class AppModule { }

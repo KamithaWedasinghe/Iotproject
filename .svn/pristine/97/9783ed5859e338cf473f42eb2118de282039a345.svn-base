@@ -1,0 +1,156 @@
+<header class="app-header navbar header" style="background-color:rgb(33, 45, 54)">
+  <button class="navbar-toggler d-lg-none" type="button" appMobileSidebarToggler>&#9776;</button>
+  <h2 class="heading" style="color:white">{{companyName}}</h2>
+  <button class="navbar-toggler d-md-down-none" type="button" appSidebarToggler>&#9776;</button>
+  <ul class="nav navbar-nav d-md-down-none">
+
+
+  </ul>
+  <ul class="nav navbar-nav ml-auto profile">
+
+
+
+    <li class="nav-item dropdown" dropdown (onToggle)="toggled($event)">
+      <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
+        <img src="assets/img/avatars/10.jpg" class="img-avatar" alt="Wish Account">
+        <span class="d-md-down-none">{{this.fistLater+this.secondLater}}</span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
+
+        <div class="dropdown-header text-center">
+          <strong>{{companyName}}</strong>
+        </div>
+        <a class="dropdown-item">
+          <i class="fa fa-user"></i> Profile</a>
+        <a class="dropdown-item" (click)="loginPage()">
+          <i class="fa fa-lock"></i> Logout</a>
+
+      </div>
+  </ul>
+</header>
+<div class="app-body body">
+  <div class="sidebar">
+    <nav class="sidebar-nav">
+      <!-- put router links herer -->
+      <ul class="nav" *ngIf="companyName">
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/dashboard']">
+            <i class="icon-speedometer"></i> Dashboard</a>
+        </li>
+        <li class="nav-item nav-dropdown" routerLinkActive="active" appNavDropdown>
+          <a class="nav-link nav-dropdown-toggle" href="#" appNavDropdownToggle>
+            <i class="icon-menu"></i>Payroll</a>
+          <ul class="nav-dropdown-items">
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" [routerLink]="['/employee-detail/detail']">
+                <i class="icon-people"></i>Employee</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" [routerLink]="['/payroll']">
+                <i class="icon-pencil"></i> New Employee</a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a [class.disabled]="(companyName == null) ? true : null" class="nav-link" routerLinkActive="active" [routerLink]="['/setting']">
+            <i class="icon-puzzle"></i>Settings </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/payroll-run']"><i class="icon-puzzle"></i>Payroll-Run </a>
+        </li>
+        
+        <!-- <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/add-attendance']"><i class="icon-puzzle"></i>Add-Attendance </a>
+        </li> -->
+        <li class="nav-item nav-dropdown" routerLinkActive="active" appNavDropdown>
+          <a class="nav-link nav-dropdown-toggle" href="#" appNavDropdownToggle>
+            <i class="icon-menu"></i>Attendance</a>
+          <ul class="nav-dropdown-items">
+            <li class="nav-item">
+              <a class="nav-link" routerLinkActive="active" [routerLink]="['/add-attendance']">
+                <i class="icon-people"></i>Upload</a>
+            </li>
+            <li class="nav-item">
+              <!-- <div *ngIf="companyName"> -->
+              <a class="nav-link" routerLinkActive="active" [routerLink]="['/attendance-confirmation']">
+                <i class="icon-pencil"></i>Confirm</a>
+              <!-- </div> -->
+            </li>
+          </ul>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/preRequirements']">
+            <i class="icon-puzzle"></i>preRequirements </a>
+        </li> -->
+      </ul>
+
+
+      <!-- Only visualize do not put router links here -->
+      <ul class="nav" *ngIf="!companyName">
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/preRequirements']">
+            <i class="icon-speedometer"></i> Dashboard</a>
+        </li>
+        <li class="nav-item nav-dropdown" routerLinkActive="active" appNavDropdown>
+          <a class="nav-link nav-dropdown-toggle" href="#" appNavDropdownToggle>
+            <i class="icon-menu"></i>Payroll</a>
+          <ul class="nav-dropdown-items">
+            <li class="nav-item">
+              <a [class.disabled]="(companyName == null) ? true : null" class="nav-link" routerLinkActive="active" [routerLink]="['/preRequirements']">
+                <i class="icon-people"></i>Employee</a>
+            </li>
+            <li class="nav-item">
+              <!-- <div *ngIf="companyName"> -->
+              <a [class.disabled]="(companyName == null) ? true : null" class="nav-link" routerLinkActive="active" [routerLink]="['/preRequirements']">
+                <i class="icon-pencil"></i> New Employee</a>
+              <!-- </div> -->
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <!-- <div *ngIf="companyName"> -->
+          <a [class.disabled]="(companyName == null) ? true : null" class="nav-link" routerLinkActive="active" [routerLink]="['/preRequirements']">
+            <i class="icon-puzzle"></i>Settings </a>
+          <!-- </div> -->
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/payroll-run']"><i class="icon-puzzle"></i>Payroll-Run </a>
+        </li>
+		     
+       <!-- <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" [routerLink]="['/add-attendance']"><i class="icon-puzzle"></i>Add-Attendance </a>
+        </li> -->
+        <li class="nav-item nav-dropdown" routerLinkActive="active" appNavDropdown>
+            <a class="nav-link nav-dropdown-toggle" href="#" appNavDropdownToggle>
+              <i class="icon-menu"></i>Attendance</a>
+            <ul class="nav-dropdown-items">
+              <li class="nav-item">
+                <a class="nav-link" routerLinkActive="active" [routerLink]="['/add-attendance']">
+                  <i class="icon-people"></i>Upload</a>
+              </li>
+              <li class="nav-item">
+                <!-- <div *ngIf="companyName"> -->
+                <a class="nav-link" routerLinkActive="active" [routerLink]="['/attendance-confirmation']">
+                  <i class="icon-pencil"></i>Confirm</a>
+                <!-- </div> -->
+              </li>
+            </ul>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" [routerLink]="['/preRequirements']">
+              <i class="icon-puzzle"></i>preRequirements </a>
+          </li> -->
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Main content -->
+  <main class="main">
+    <div class="container-fluid">
+      <router-outlet></router-outlet>
+    </div>
+    <!-- /.conainer-fluid -->
+  </main>
+
+
+</div>

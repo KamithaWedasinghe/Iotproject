@@ -1,0 +1,22 @@
+
+.kamith{
+  background-image: url('bg3.jpg');
+  /* background-attachment: fixed; */
+     	
+  /* background-size: cover; */
+    height: 700px;
+}
+
+.colorgraph {
+    height: 5px;
+    border-top: 0;
+    background: #c4e17f;
+    border-radius: 5px;
+    
+  }
+  .register{
+    padding-top: 10%;
+  }
+  /* .kamith{
+    background-image: url('4.jpg');
+  } */

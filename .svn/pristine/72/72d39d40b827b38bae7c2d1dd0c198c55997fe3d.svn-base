@@ -1,0 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-add-attendance-mapping',
+  templateUrl: './add-attendance-mapping.component.html',
+  styleUrls: ['./add-attendance-mapping.component.css']
+})
+export class AddAttendanceMappingComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

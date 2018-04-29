@@ -1,0 +1,123 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="row">
+
+      <div class="col-sm-6">
+        <form [formGroup]="userForm" >
+       
+       
+       
+          <div class="form-group">
+            <label for="empCatogery">Payroll Month</label>
+            <select class="form-control" id="ccmonth" [(ngModel)]="payRollMonth" formControlName="payrollMonth" name='payrollMonth'>
+              <option *ngFor='let displayMonthArray of displayMonthArray' [ngValue]="displayMonthArray.name">{{displayMonthArray.name}} </option>
+            </select>
+          </div>
+
+
+          <div class="form-group">
+            <label for="exampleSelect1">Allowances</label>
+            <select class="form-control" [(ngModel)]="allowance" formControlName="allowance" [disabled]='hiddenType'  name="allowance" id="exampleSelect1">
+              <option *ngFor='let allowanceType of allowancesType' [(ngValue)]="allowanceType.name">{{allowanceType.name}}</option>
+            </select>
+          </div>
+
+  
+
+          <div class="form-group">
+            <label for="lastName">Amount</label>
+            <input type="text" [(ngModel)]="amount" myCurrencyFormatter (ngModelChange)="changeModel($event)"  class="form-control" placeholder="Enter the amount" (keyup.enter)='keytab($event,amount.value)'
+              #deductionAmount OnlyNumber="true" formControlName="amount">
+            <div *ngIf="userForm.get('amount').touched || submitted" style='color:red'>
+              <div *ngIf="userForm.get('amount').hasError('required')">Amount is required</div>
+         
+            </div>
+          </div><br>
+
+
+
+
+         
+            <label for="lastName">Comment</label>
+            <textarea style="overflow: hidden"  [(ngModel)]="comment" #text  formControlName="comment" id="textarea" name='comment' class="form-control" id="exampleTextarea"
+            rows=""></textarea>
+            <div *ngIf="userForm.get('comment').touched || submitted" style='color:red'>
+              <div *ngIf="userForm.get('comment').hasError('required')">Comment is required</div>
+          
+            </div><br>
+         
+    
+          <button type="submit" *ngIf='!updatebtnVisibility' [disabled]="!userForm.valid" (click)="addMonthlyAllowance(allowance,payRollMonth)" class="btn btn-primary">Submit</button>
+          <button type="button"*ngIf='updatebtnVisibility'  (click)="updatedAllowance()" class="btn btn-success">Update</button>
+          <button type="button" (click)="routerNavigate()" style="background-color: rgb(248, 70, 0)" class="btn btn-primary router-button">Back</button>
+          
+        </form>
+      </div>
+      <div class="col-sm-6">
+          <table class="table table-striped table-inverse table-content">
+              <thead>
+                  <tr>
+                      <th>Allowance Name</th>
+                    
+                      <th class="text-right">Comment</th>
+                      <th class="text-right">Amount</th>
+                      <th class="text-right">Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor ='let monthlyAllowance of monthlyAllowanceDetail let i = index'>
+                      <td scope="row">{{monthlyAllowance.name}}</td>
+                   
+                      <td class="text-right">{{monthlyAllowance.comment | truncate : 10 : "…"}}</td>
+                      <td class="text-right">{{monthlyAllowance.amount | number : '1.2-2'}}</td>
+                      <td class="bauttonx" style="padding:10px;">
+                          <div class="row" style='margin:0px;'>
+                                  <div class="col-sm-6 icon-data btn-action">
+                                        
+                                      </div>
+                              <div class="col-sm-3 icon-data btn-action">
+                                  <i class="fa fa-trash-o button-icon icon-data remove-button " style="color:red;float:right;padding:0px;margin-left:10px;cursor:pointer" aria-hidden="true"(click)="deleteAllowanceRow(monthlyAllowance, i)" ></i>
+                                
+                              </div>
+                              <div class="col-sm-3 icon-data btn-action">
+                                  <i class="fa fa-pencil button-icon button-icon icon-data  pencil-button   " aria-hidden="true"   style="color:rgb(12, 247, 12);float:right;cursor:pointer" (click)="selectSample()" (click)="updateMonthlyAllowanceRow(monthlyAllowance, i)" ></i>
+                              </div>
+                          </div>
+                          <!-- <div class="row" style='margin:0px;'>
+                      <div class="col-sm-6">
+                          <a class="btn btn-danger act-btn"   (click)="deleteAllowanceRow(employeeAlowancesDetail, i)" aria-label="Delete"
+                          style="background-color:red;width: -webkit-fill-available; padding:10px;">
+                          <i class="fa fa-trash-o button-icon " aria-hidden="true"></i>
+                        </a>
+                      </div>
+                      <div class="col-sm-6">
+                          <a class="btn btn-success act-btn" (click)="selectSample()" (click)="updateAllowanceRow(employeeAlowancesDetail, i)"
+                          aria-label="update" style="width: -webkit-fill-available; padding:10px;">
+                          <i class="fa fa-pencil button-icon button-icon" aria-hidden="true"></i>
+                        </a>
+                      </div>
+                    </div> -->
+    
+    
+    
+                      </td>
+                  </tr>
+                  <tr>
+                      <th scope="row">Gross Deduction</th>
+                      <td></td>
+    
+                      <th class="text-right">{{totalAllowanceAmount| number : '1.2-2'}}</th>
+                      <td></td>
+                  </tr>
+    
+    
+    
+              </tbody>
+          </table>
+      
+      </div>
+    </div>
+
+
+  </div>
+</div>

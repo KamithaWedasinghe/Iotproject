@@ -1,0 +1,75 @@
+<div class="container div-main">
+  <div class="row">
+    <div class="col-md-6">
+      <label>Select Month</label>
+      <div class="row">
+        <div class="col-md-7">
+          <input type="text" class="form-control input-lg input-text-month-id" width="100%" size="1" [(ngModel)]="lastPayRollRunMonth">
+          <!-- <select id="select"  class="form-control input-lg" size="1" name="payrollrunmonth" [(ngModel)]="payrollrunmonth" required>
+            <option *ngFor="let displayMonthArray of displayMonthArray"></option>
+          </select> -->
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <label>Enter Employee ID</label>
+      <div class="row">
+        <div class="col-md-7">
+          <input id="employeeID" type="text" class="form-control input-lg input-text-month-id" width="100%" [(ngModel)]="employeeID">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row btn-get-details">
+    <div class="col-md-6">
+      <button type="button" (click)="getAttendanceDetails()" class="btn btn-primary">Get-Details</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="excell-table-view">
+        <table border="1">
+          <tr *ngFor="let attendanceDetail of attendanceDetails">
+            <td *ngIf="attendanceDetail.employeeId!=null" class="attendance-td-css">{{attendanceDetail.employeeId}}</td>
+            <td *ngIf="attendanceDetail.runId!=null" class="attendance-td-css">{{attendanceDetail.runId}}</td>
+            <td *ngIf="attendanceDetail.project!=null" class="attendance-td-css">{{attendanceDetail.project}}</td>
+            <td *ngIf="attendanceDetail.email!=null" class="attendance-td-css">{{attendanceDetail.email}}</td>
+            <td *ngIf="attendanceDetail.inDate!=null" class="attendance-td-css">{{attendanceDetail.inDate}}</td>
+            <td *ngIf="attendanceDetail.inTime!=null" class="attendance-td-css">{{attendanceDetail.inTime}}</td>
+            <td *ngIf="attendanceDetail.outTime!=null" class="attendance-td-css">{{attendanceDetail.outTime}}</td>
+            <td *ngIf="attendanceDetail.outDate!=null" class="attendance-td-css">{{attendanceDetail.outDate}}</td>
+            <td *ngIf="attendanceDetail.duration!=null" class="attendance-td-css">{{attendanceDetail.duration}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="(isSuccessGetAttendanceDetails) && (workDays!=0 || leaveDays!=0 || allDays!=0)" class="row">
+    <div class="col-md-6">
+      <div *ngIf="workDays!=0" class="row">
+        <div class="col-md-3">
+          <label>Work Days :</label>
+        </div>
+        <div class="col-md-3">
+          <label>{{workDays}}</label>
+        </div>
+      </div>
+      <div *ngIf="leaveDays!=0" class="row">
+        <div class="col-md-3">
+          <label>Leave Days :</label>
+        </div>
+        <div class="col-md-3">
+          <label>{{leaveDays}}</label>
+        </div>
+      </div>
+      <div *ngIf="allDays!=0" class="row">
+        <div class="col-md-3">
+          <label>All Days :</label>
+        </div>
+        <div class="col-md-3">
+          <label>{{allDays}}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

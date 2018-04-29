@@ -1,0 +1,45 @@
+ 
+.navbar {
+  /* margin-bottom: 50px; */
+  border-radius: 0;
+  background-color: lightgreen;
+  /* background-image: url('3.jpg'); */
+
+}
+
+ 
+ .jumbotron {
+  margin-bottom: 0;
+}
+
+
+/* footer {
+  background-color: #f2f2f2;
+  padding: 25px;
+} */
+.layout-css{
+  padding-bottom: 100%;
+}
+.button-padding1{
+margin-left: -10%;
+position: relative;
+}
+.button-padding2{
+margin-left: 1%;
+position: relative;
+}
+.button-padding3{
+  margin-left: 4%;
+  position: relative;
+  }
+  .userAdmin{
+    float: right;
+
+  }
+  .img-logo {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    width: 150px;
+    float: right;
+}

@@ -1,0 +1,36 @@
+import { Injectable } from '@angular/core';
+import { Http, Response, Headers, RequestOptions } from '@angular/http'
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/throw';
+
+import { CommonService } from './common/common.service';
+
+@Injectable()
+export class PayrollService {
+    constructor(private commonsService: CommonService) {}
+        
+    getDeductionType(){
+        return this.commonsService.apiGet('pr', 'DeductionType');
+     }
+     
+    getEmployeeCategory(data){
+        return this.commonsService.apiGet('pr', 'getCategory');
+     }
+
+     addEmployerRegistationDetail(data){
+        return this.commonsService.apiPost(data,'pr','setEmployee');
+     }
+    
+     getEmployeeDetail(){
+        return this.commonsService.apiGet('pr', 'getEmployeeDetails');
+     }
+      
+     getEmployeeName(id){
+        return this.commonsService.apiPost(id,'pr','getEmployeeName'); 
+     }
+
+
+}

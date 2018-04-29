@@ -1,0 +1,53 @@
+import { Component, OnInit } from '@angular/core';
+import { WishHospitalService } from '../../../services/wishHospital.service';
+import { FormGroup,  FormBuilder, Validators  } from '@angular/forms';
+import { Router } from '@angular/router';
+import alertify from 'alertify.js';
+
+
+
+
+
+@Component({
+  selector: 'app-employee-registation',
+  templateUrl: './employee-registation.component.html',
+  styleUrls: ['./employee-registation.component.css']
+})
+export class EmployeeRegistationComponent implements OnInit {
+
+  fnamee
+  submited;
+  userForm: FormGroup;
+  isDisabled: boolean;
+  constructor( private router:Router,private wishHospitalService: WishHospitalService,private formBuilder: FormBuilder) {
+    this.userForm = this.formBuilder.group({
+      'empfirstName': [null, Validators.required],
+    });
+   }
+
+  ngOnInit() {
+  }
+
+  addEmployeeRegistationDetail(form){
+    let value= form.value
+      if(!value.empFirstName || !value.empLastName || !value.empCategory || !value.empDateEmployee || !value.empPhoneNumber || !value.empEmail || !value.empAddress || !value.empCity || !value.empPostalCode || !value.empBasicSalery ||
+        !value.empAllowance || !value.empTotalSalery){
+          alertify.logPosition("bottom right");
+          alertify.error('Fill the value.');
+          
+      }else
+        this.wishHospitalService.addEmployerRegistationDetail(value).then(response=>{
+          this.submited=true;
+          form.reset();
+          console.log(response.json().data)
+          
+          
+          this.fnamee = response.json().data.fname
+
+        })
+      
+   
+   
+  }
+
+}

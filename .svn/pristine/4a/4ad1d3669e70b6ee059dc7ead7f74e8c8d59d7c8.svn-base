@@ -1,0 +1,29 @@
+import { Injectable } from '@angular/core';
+
+@Injectable()
+export class ConfigService {
+
+    constructor () {}
+
+    getAPIBasePath(): string {
+        return 'http://localhost:81/api/';
+    }
+
+    useWhichAPI(apiName: string): string {
+        switch(apiName) {
+            case 'hm': {
+                return 'hm/v1/';
+            }
+            case 'acclab': {
+                return 'acclab/v1/';
+            }
+            case 'pr': {
+                return 'pr/v1/';
+            }
+           default: {
+                return 'xxx';
+            }
+        }
+    }
+
+}

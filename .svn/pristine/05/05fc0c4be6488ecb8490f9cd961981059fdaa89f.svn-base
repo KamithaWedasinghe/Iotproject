@@ -1,0 +1,30 @@
+import { Component, OnInit } from '@angular/core';
+import{DeductionAlowancesComponent} from '../deduction-alowances.component'
+import { PayrollService } from '../../../services/Payroll.service';
+import 'rxjs/add/operator/map';
+import { DecimalPipe } from '@angular/common';
+@Component({
+  selector: 'app-allowances',
+  templateUrl: './allowances.component.html',
+  styleUrls: ['./allowances.component.css']
+})
+export class AllowancesComponent implements OnInit {
+     employeeId;
+     allowancesType;
+     amount ='World';
+  constructor(  private wishPayrollService: PayrollService,private allowances:DeductionAlowancesComponent) {
+    
+
+   }
+
+  ngOnInit( ) {
+  this.employeeId= this.allowances.employeeid;
+ 
+  this.wishPayrollService.getAllowancesType().then(response => {
+    this.allowancesType = response.json().data
+   
+  })
+  
+  }
+
+}
